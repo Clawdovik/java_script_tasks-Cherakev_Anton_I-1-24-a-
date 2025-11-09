@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PUNK JAVASCRIPT - МОДУЛИ ЧЕРЕЗ ЗАМЫКАНИЯ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            animation: headerGlow 3s infinite alternate;
+        }
+        
+        @keyframes headerGlow {
+            0% { box-shadow: 0 0 15px #ff00ff; }
+            100% { box-shadow: 0 0 25px #ff00ff, 0 0 35px #00ccff; }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+            animation: textPulse 2s infinite;
+        }
+        
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+            animation: containerFloat 6s infinite ease-in-out;
+        }
+        
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 0 20px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            animation: iconSpin 4s infinite linear;
+        }
+        
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+            animation: taskAppear 0.5s ease-out;
+        }
+        
+        @keyframes taskAppear {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+            animation: counterPulse 2s infinite;
+        }
+        
+        @keyframes counterPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px #ff00ff; }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px #ff00ff; }
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            transition: all 0.3s ease;
+        }
+        
+        .code-block:hover {
+            box-shadow: 0 0 20px #ffcc00;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        button.danger {
+            background: linear-gradient(45deg, #ff3300, #ff6600);
+            box-shadow: 0 0 10px #ff3300;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+            transition: all 0.3s ease;
+            animation: outputGlow 3s infinite alternate;
+        }
+        
+        @keyframes outputGlow {
+            0% { box-shadow: 0 0 10px #00ffcc; }
+            100% { box-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc; }
+        }
+
+        .demo-area {
+            background-color: #0a0a12;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #ffcc00;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-area:hover {
+            box-shadow: 0 0 20px #ffcc00;
+        }
+
+        .demo-box {
+            border: 1px solid #ff00ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: rgba(26, 26, 42, 0.7);
+        }
+
+        .demo-box h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        .element-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .demo-element {
+            padding: 15px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: elementFloat 3s infinite ease-in-out;
+        }
+        
+        @keyframes elementFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .demo-element:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff00ff;
+            animation: none;
+        }
+
+        .highlighted {
+            background: rgba(0, 255, 0, 0.3) !important;
+            border-color: #00ff00 !important;
+            box-shadow: 0 0 15px #00ff00 !important;
+            animation: highlightPulse 1s infinite;
+        }
+        
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 0 0 15px #00ff00; }
+            50% { box-shadow: 0 0 25px #00ff00; }
+        }
+
+        .active-element {
+            background: rgba(0, 204, 255, 0.3) !important;
+            border-color: #00ccff !important;
+            box-shadow: 0 0 15px #00ccff !important;
+        }
+
+        .module-container {
+            border: 1px solid #00ccff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 204, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .module-container:hover {
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        .module-title {
+            color: #00ccff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+            animation: notePulse 4s infinite;
+        }
+        
+        @keyframes notePulse {
+            0%, 100% { box-shadow: 0 0 10px #ff00ff; }
+            50% { box-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+            animation: footerGlow 3s infinite alternate;
+        }
+        
+        @keyframes footerGlow {
+            0% { box-shadow: 0 0 15px #ff00ff; }
+            100% { box-shadow: 0 0 25px #ff00ff, 0 0 35px #ffcc00; }
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .element-group {
+                flex-direction: column;
+            }
+            
+            .demo-element {
+                width: 100%;
+            }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff00ff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx, 0), var(--ty, -100px));
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON JAVASCRIPT - МОДУЛИ ЧЕРЕЗ ЗАМЫКАНИЯ</h1>
+        <p class="subtitle">Создание модулей через замыкания и предотвращение конфликтов переменных</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+            <p>Модули через замыкания позволяют создавать изолированные пространства имен и предотвращать конфликты переменных.</p>
+        </div>
+
+        <!-- Раздел 1: Основы модулей через замыкания -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔒</div>
+                <h2>МОДУЛИ ЧЕРЕЗ ЗАМЫКАНИЯ И КОНФЛИКТЫ ПЕРЕМЕННЫХ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Базовые модули через замыкания</div>
+                <div class="code-block">// Проблема: конфликт глобальных переменных
+var counter = 0; // Глобальная переменная
+
+function increment() {
+    counter++;
+    return counter;
+}
+
+function decrement() {
+    counter--;
+    return counter;
+}
+
+// Другая часть кода может случайно изменить нашу переменную
+var counter = 100; // Конфликт! Переопределение переменной
+
+// Решение: модули через замыкания
+var CounterModule = (function() {
+    // Приватная переменная - недоступна извне
+    var counter = 0;
+    
+    // Публичные методы - доступны извне
+    return {
+        increment: function() {
+            counter++;
+            return counter;
+        },
+        decrement: function() {
+            counter--;
+            return counter;
+        },
+        getValue: function() {
+            return counter;
+        },
+        reset: function() {
+            counter = 0;
+            return counter;
+        }
+    };
+})();
+
+// Использование модуля
+console.log(CounterModule.getValue()); // 0
+CounterModule.increment(); // 1
+CounterModule.increment(); // 2
+console.log(CounterModule.getValue()); // 2
+
+// Переменная counter защищена от внешнего доступа
+console.log(counter); // 100 (глобальная переменная, не модульная)</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация базовых модулей</h3>
+                        <div class="btn-group">
+                            <button onclick="demoBasicModule()">Тест базового модуля</button>
+                            <button onclick="demoVariableConflict()">Показать конфликт</button>
+                            <button class="secondary" onclick="clearOutput('output1')">Очистить вывод</button>
+                        </div>
+                        <div class="output" id="output1"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Практическое применение модулей</div>
+                <div class="code-block">// Практические примеры модулей
+
+// Модуль для работы с DOM элементами
+var DOMHelper = (function() {
+    // Приватные переменные и функции
+    var defaultStyles = {
+        padding: '10px',
+        margin: '5px',
+        border: '1px solid #ccc'
+    };
+    
+    function applyStyles(element, styles) {
+        Object.assign(element.style, defaultStyles, styles);
+    }
+    
+    // Публичный интерфейс
+    return {
+        createElement: function(tag, options = {}) {
+            var element = document.createElement(tag);
+            
+            if (options.text) {
+                element.textContent = options.text;
+            }
+            
+            if (options.styles) {
+                applyStyles(element, options.styles);
+            }
+            
+            if (options.className) {
+                element.className = options.className;
+            }
+            
+            return element;
+        },
+        
+        addToContainer: function(element, container) {
+            if (typeof container === 'string') {
+                container = document.querySelector(container);
+            }
+            
+            if (container) {
+                container.appendChild(element);
+            }
+        },
+        
+        setDefaultStyles: function(styles) {
+            Object.assign(defaultStyles, styles);
+        }
+    };
+})();
+
+// Модуль для управления состоянием
+var StateManager = (function() {
+    var state = {};
+    var listeners = [];
+    
+    return {
+        setState: function(key, value) {
+            state[key] = value;
+            // Уведомляем всех слушателей
+            listeners.forEach(function(listener) {
+                if (listener.key === key || listener.key === '*') {
+                    listener.callback(value, key);
+                }
+            });
+        },
+        
+        getState: function(key) {
+            return state[key];
+        },
+        
+        subscribe: function(key, callback) {
+            listeners.push({ key: key, callback: callback });
+        },
+        
+        getAllState: function() {
+            return Object.assign({}, state); // Возвращаем копию
+        }
+    };
+})();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация практических модулей</h3>
+                        <div class="btn-group">
+                            <button onclick="demoDOMHelper()">DOM Helper</button>
+                            <button onclick="demoStateManager()">State Manager</button>
+                            <button onclick="demoModuleIntegration()">Интеграция модулей</button>
+                            <button class="secondary" onclick="clearOutput('output2')">Очистить</button>
+                        </div>
+                        <div id="demoContainer" class="module-container">
+                            <div class="module-title">Контейнер для демонстрации</div>
+                        </div>
+                        <div class="output" id="output2"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Передача параметров в модули -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>ПЕРЕДАЧА ПАРАМЕТРОВ В МОДУЛИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Передача родительского элемента</div>
+                <div class="code-block">// Модули с передачей родительского элемента
+
+var TabSystem = (function() {
+    var tabs = [];
+    var activeTab = null;
+    var container = null;
+    
+    function createTabElement(tab) {
+        var tabElement = document.createElement('div');
+        tabElement.className = 'tab';
+        tabElement.textContent = tab.title;
+        tabElement.addEventListener('click', function() {
+            setActiveTab(tab);
+        });
+        return tabElement;
+    }
+    
+    function setActiveTab(tab) {
+        if (activeTab) {
+            activeTab.element.classList.remove('active');
+        }
+        
+        activeTab = tab;
+        tab.element.classList.add('active');
+        
+        // Показываем контент активной вкладки
+        tabs.forEach(function(t) {
+            t.content.style.display = t === tab ? 'block' : 'none';
+        });
+    }
+    
+    return {
+        init: function(parentElement) {
+            container = document.createElement('div');
+            container.className = 'tab-system';
+            parentElement.appendChild(container);
+        },
+        
+        addTab: function(title, contentElement) {
+            var tab = {
+                title: title,
+                content: contentElement,
+                element: null
+            };
+            
+            tab.element = createTabElement(tab);
+            container.appendChild(tab.element);
+            tabs.push(tab);
+            
+            // Скрываем контент
+            contentElement.style.display = 'none';
+            container.parentElement.appendChild(contentElement);
+            
+            // Активируем первую вкладку
+            if (tabs.length === 1) {
+                setActiveTab(tab);
+            }
+            
+            return tab;
+        }
+    };
+})();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация передачи родительского элемента</h3>
+                        <div class="btn-group">
+                            <button onclick="demoTabSystem()">Система вкладок</button>
+                            <button onclick="demoImageGallery()">Галерея изображений</button>
+                            <button class="secondary" onclick="clearOutput('output3')">Очистить</button>
+                        </div>
+                        <div id="parentContainer" class="module-container">
+                            <div class="module-title">Родительский контейнер для модулей</div>
+                        </div>
+                        <div class="output" id="output3"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Передача настроек и параметров по умолчанию</div>
+                <div class="code-block">// Модули с настройками и параметрами по умолчанию
+
+var NotificationSystem = (function() {
+    var defaults = {
+        position: 'top-right',
+        duration: 3000,
+        type: 'info',
+        closeButton: true
+    };
+    
+    var container = null;
+    
+    function createContainer() {
+        container = document.createElement('div');
+        container.className = 'notification-container ' + defaults.position;
+        container.style.cssText = 'position: fixed; z-index: 1000; padding: 10px; max-width: 300px;';
+        
+        switch(defaults.position) {
+            case 'top-right':
+                container.style.top = '20px';
+                container.style.right = '20px';
+                break;
+            case 'top-left':
+                container.style.top = '20px';
+                container.style.left = '20px';
+                break;
+        }
+        
+        document.body.appendChild(container);
+    }
+    
+    function getTypeStyles(type) {
+        var styles = {
+            info: { backgroundColor: '#2196F3', color: 'white' },
+            success: { backgroundColor: '#4CAF50', color: 'white' },
+            warning: { backgroundColor: '#FF9800', color: 'white' },
+            error: { backgroundColor: '#F44336', color: 'white' }
+        };
+        return styles[type] || styles.info;
+    }
+    
+    return {
+        init: function(options) {
+            Object.assign(defaults, options);
+            createContainer();
+        },
+        
+        show: function(message, options = {}) {
+            if (!container) this.init();
+            
+            var notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            var settings = Object.assign({}, defaults, options);
+            var styles = getTypeStyles(settings.type);
+            
+            notification.textContent = message;
+            notification.style.cssText = 'padding: 15px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); background-color: ' + styles.backgroundColor + '; color: ' + styles.color + ';';
+            
+            container.appendChild(notification);
+            
+            if (settings.duration > 0) {
+                setTimeout(function() {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, settings.duration);
+            }
+        }
+    };
+})();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация настроек и параметров по умолчанию</h3>
+                        <div class="btn-group">
+                            <button onclick="demoNotificationSystem()">Система уведомлений</button>
+                            <button onclick="demoModalSystem()">Модальные окна</button>
+                            <button onclick="demoCustomSettings()">Кастомные настройки</button>
+                            <button class="secondary" onclick="clearOutput('output4')">Очистить</button>
+                        </div>
+                        <div class="output" id="output4"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Модули через замыкания © 2025 | Создано в стиле ретро-футуризма</p>
+        <p>Все методы проверены в современных браузерах</p>
+    </footer>
+
+    <script>
+        // Функция для создания частиц
+        function createParticles(event) {
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const particles = 10;
+            
+            for (let i = 0; i < particles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = (rect.left + rect.width / 2) + 'px';
+                particle.style.top = (rect.top + rect.height / 2) + 'px';
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 100 + 'px');
+                particle.style.background = getComputedStyle(button).backgroundImage;
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 2000);
+            }
+        }
+        
+        // Добавляем обработчики для всех кнопок
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', createParticles);
+            });
+        });
+
+        // Функции для выполнения задач
+        
+        function runTask1() {
+            let output = document.getElementById('output1');
+            let result = '=== БАЗОВЫЕ МОДУЛИ ЧЕРЕЗ ЗАМЫКАНИЯ ===\n\n';
+            
+            result += 'Проблема глобальных переменных:\n';
+            result += 'var counter = 0; // Глобальная переменная\n\n';
+            
+            result += 'Решение через модули:\n';
+            result += 'var CounterModule = (function() {\n';
+            result += '  var counter = 0; // Приватная переменная\n\n';
+            result += '  return {\n';
+            result += '    increment: function() { counter++; },\n';
+            result += '    getValue: function() { return counter; }\n';
+            result += '  };\n';
+            result += '})();\n\n';
+            
+            result += 'Преимущества:\n';
+            result += '✅ Изоляция переменных\n';
+            result += '✅ Предотвращение конфликтов\n';
+            result += '✅ Инкапсуляция логики\n';
+            result += '✅ Переиспользуемость кода\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask2() {
+            let output = document.getElementById('output2');
+            let result = '=== ПРАКТИЧЕСКОЕ ПРИМЕНЕНИЕ МОДУЛЕЙ ===\n\n';
+            
+            result += 'Модуль для работы с DOM:\n';
+            result += 'var DOMHelper = (function() {\n';
+            result += '  var defaultStyles = { /* приватные данные */ };\n\n';
+            result += '  return {\n';
+            result += '    createElement: function() { /* публичный метод */ },\n';
+            result += '    addToContainer: function() { /* публичный метод */ }\n';
+            result += '  };\n';
+            result += '})();\n\n';
+            
+            result += 'Модуль управления состоянием:\n';
+            result += 'var StateManager = (function() {\n';
+            result += '  var state = {}; // Приватное состояние\n';
+            result += '  var listeners = []; // Приватные слушатели\n\n';
+            result += '  return {\n';
+            result += '    setState: function(key, value) { /* уведомление слушателей */ },\n';
+            result += '    subscribe: function(key, callback) { /* подписка */ }\n';
+            result += '  };\n';
+            result += '})();\n\n';
+            
+            result += 'Практические преимущества:\n';
+            result += '🎯 Организация кода\n';
+            result += '🎯 Управление зависимостями\n';
+            result += '🎯 Тестируемость\n';
+            result += '🎯 Масштабируемость\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask3() {
+            let output = document.getElementById('output3');
+            let result = '=== ПЕРЕДАЧА РОДИТЕЛЬСКОГО ЭЛЕМЕНТА ===\n\n';
+            
+            result += 'Модуль системы вкладок:\n';
+            result += 'var TabSystem = (function() {\n';
+            result += '  var container = null;\n\n';
+            result += '  return {\n';
+            result += '    init: function(parentElement) {\n';
+            result += '      container = document.createElement("div");\n';
+            result += '      parentElement.appendChild(container);\n';
+            result += '    },\n';
+            result += '    addTab: function(title, content) { /* логика вкладок */ }\n';
+            result += '  };\n';
+            result += '})();\n\n';
+            
+            result += 'Преимущества передачи родительского элемента:\n';
+            result += '🌐 Гибкость размещения\n';
+            result += '🌐 Изоляция DOM\n';
+            result += '🌐 Повторное использование\n';
+            result += '🌐 Управление жизненным циклом\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask4() {
+            let output = document.getElementById('output4');
+            let result = '=== ПЕРЕДАЧА НАСТРОЕК И ПАРАМЕТРОВ ПО УМОЛЧАНИЮ ===\n\n';
+            
+            result += 'Модуль системы уведомлений:\n';
+            result += 'var NotificationSystem = (function() {\n';
+            result += '  var defaults = {\n';
+            result += '    position: "top-right",\n';
+            result += '    duration: 3000\n';
+            result += '  };\n\n';
+            result += '  return {\n';
+            result += '    init: function(options) {\n';
+            result += '      Object.assign(defaults, options);\n';
+            result += '    },\n';
+            result += '    show: function(message, options) {\n';
+            result += '      var settings = Object.assign({}, defaults, options);\n';
+            result += '      // логика показа уведомления\n';
+            result += '    }\n';
+            result += '  };\n';
+            result += '})();\n\n';
+            
+            result += 'Преимущества параметров по умолчанию:\n';
+            result += '⚙️ Гибкая настройка\n';
+            result += '⚙️ Простота использования\n';
+            result += '⚙️ Обратная совместимость\n';
+            result += '⚙️ Единообразие поведения\n';
+            
+            output.textContent = result;
+        }
+
+        // Демонстрационные функции
+        
+        // Задача 1: Базовые модули
+        function demoBasicModule() {
+            const output = document.getElementById('output1');
+            
+            // Демонстрация проблемы
+            var counter = 0;
+            
+            function increment() {
+                counter++;
+                return counter;
+            }
+            
+            // Случайное переопределение
+            var counter = 100;
+            
+            output.textContent = 'Глобальная переменная counter: ' + counter + '\n';
+            output.textContent += 'Функция increment() вернет: ' + increment() + '\n\n';
+            
+            // Демонстрация решения
+            var CounterModule = (function() {
+                var counter = 0;
+                
+                return {
+                    increment: function() {
+                        counter++;
+                        return counter;
+                    },
+                    decrement: function() {
+                        counter--;
+                        return counter;
+                    },
+                    getValue: function() {
+                        return counter;
+                    },
+                    reset: function() {
+                        counter = 0;
+                        return counter;
+                    }
+                };
+            })();
+            
+            output.textContent += '=== РЕШЕНИЕ ЧЕРЕЗ МОДУЛЬ ===\n';
+            output.textContent += 'Начальное значение: ' + CounterModule.getValue() + '\n';
+            CounterModule.increment();
+            CounterModule.increment();
+            output.textContent += 'После двух increment(): ' + CounterModule.getValue() + '\n';
+            output.textContent += 'Глобальная переменная counter: ' + counter + ' (не изменилась!)';
+        }
+        
+        function demoVariableConflict() {
+            const output = document.getElementById('output1');
+            
+            output.textContent = '=== ДЕМОНСТРАЦИЯ КОНФЛИКТА ПЕРЕМЕННЫХ ===\n\n';
+            
+            // Модуль A
+            var ModuleA = (function() {
+                var data = 'Данные модуля A';
+                
+                return {
+                    getData: function() { return data; },
+                    setData: function(newData) { data = newData; }
+                };
+            })();
+            
+            // Модуль B
+            var ModuleB = (function() {
+                var data = 'Данные модуля B';
+                
+                return {
+                    getData: function() { return data; },
+                    process: function() { return data.toUpperCase(); }
+                };
+            })();
+            
+            output.textContent += 'ModuleA.getData(): ' + ModuleA.getData() + '\n';
+            output.textContent += 'ModuleB.getData(): ' + ModuleB.getData() + '\n';
+            output.textContent += 'ModuleB.process(): ' + ModuleB.process() + '\n\n';
+            
+            ModuleA.setData('Новые данные модуля A');
+            output.textContent += 'После изменения ModuleA:\n';
+            output.textContent += 'ModuleA.getData(): ' + ModuleA.getData() + '\n';
+            output.textContent += 'ModuleB.getData(): ' + ModuleB.getData() + ' (не изменился!)\n\n';
+            
+            output.textContent += '✅ Конфликта переменных нет! Каждый модуль имеет свою изолированную переменную data.';
+        }
+        
+        // Задача 2: Практическое применение
+        function demoDOMHelper() {
+            const output = document.getElementById('output2');
+            const container = document.getElementById('demoContainer');
+            
+            // Очищаем контейнер
+            container.innerHTML = '<div class="module-title">Контейнер для демонстрации</div>';
+            
+            var DOMHelper = (function() {
+                var defaultStyles = {
+                    padding: '10px',
+                    margin: '5px',
+                    border: '1px solid #ccc'
+                };
+                
+                function applyStyles(element, styles) {
+                    Object.assign(element.style, defaultStyles, styles);
+                }
+                
+                return {
+                    createElement: function(tag, options = {}) {
+                        var element = document.createElement(tag);
+                        
+                        if (options.text) {
+                            element.textContent = options.text;
+                        }
+                        
+                        if (options.styles) {
+                            applyStyles(element, options.styles);
+                        }
+                        
+                        if (options.className) {
+                            element.className = options.className;
+                        }
+                        
+                        return element;
+                    },
+                    
+                    addToContainer: function(element, container) {
+                        if (typeof container === 'string') {
+                            container = document.querySelector(container);
+                        }
+                        
+                        if (container) {
+                            container.appendChild(element);
+                        }
+                    }
+                };
+            })();
+            
+            // Создаем элементы с помощью модуля
+            var button = DOMHelper.createElement('button', {
+                text: 'Кнопка создана через модуль',
+                styles: {
+                    backgroundColor: '#ff00ff',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px'
+                }
+            });
+            
+            var input = DOMHelper.createElement('input', {
+                placeholder: 'Введите текст...',
+                styles: {
+                    padding: '8px',
+                    border: '2px solid #00ffcc',
+                    borderRadius: '4px'
+                }
+            });
+            
+            DOMHelper.addToContainer(button, container);
+            DOMHelper.addToContainer(input, container);
+            
+            output.textContent = 'Созданы элементы через DOMHelper модуль:\n';
+            output.textContent += '- Кнопка с кастомными стилями\n';
+            output.textContent += '- Поле ввода с границей неонового цвета\n\n';
+            output.textContent += 'Модуль инкапсулирует логику создания элементов и применения стилей.';
+        }
+        
+        function demoStateManager() {
+            const output = document.getElementById('output2');
+            
+            var StateManager = (function() {
+                var state = {};
+                var listeners = [];
+                
+                return {
+                    setState: function(key, value) {
+                        state[key] = value;
+                        listeners.forEach(function(listener) {
+                            if (listener.key === key || listener.key === '*') {
+                                listener.callback(value, key);
+                            }
+                        });
+                    },
+                    
+                    getState: function(key) {
+                        return state[key];
+                    },
+                    
+                    subscribe: function(key, callback) {
+                        listeners.push({ key: key, callback: callback });
+                    },
+                    
+                    getAllState: function() {
+                        return Object.assign({}, state);
+                    }
+                };
+            })();
+            
+            // Подписываемся на изменения
+            StateManager.subscribe('counter', function(value) {
+                output.textContent += 'Слушатель: counter изменился на ' + value + '\n';
+            });
+            
+            StateManager.subscribe('user', function(value) {
+                output.textContent += 'Слушатель: user изменился на ' + (value ? value.name : 'null') + '\n';
+            });
+            
+            StateManager.subscribe('*', function(value, key) {
+                output.textContent += 'Общий слушатель: ' + key + ' = ' + value + '\n';
+            });
+            
+            output.textContent = '=== ДЕМОНСТРАЦИЯ STATE MANAGER ===\n\n';
+            
+            // Изменяем состояние
+            StateManager.setState('counter', 0);
+            StateManager.setState('user', { name: 'Алексей', role: 'admin' });
+            StateManager.setState('counter', 5);
+            StateManager.setState('theme', 'dark');
+            
+            output.textContent += '\nТекущее состояние:\n';
+            output.textContent += JSON.stringify(StateManager.getAllState(), null, 2);
+        }
+        
+        function demoModuleIntegration() {
+            const output = document.getElementById('output2');
+            const container = document.getElementById('demoContainer');
+            
+            container.innerHTML = '<div class="module-title">Интеграция модулей</div>';
+            
+            // Создаем простой модуль счетчика
+            var CounterModule = (function() {
+                var count = 0;
+                
+                return {
+                    increment: function() { return ++count; },
+                    getCount: function() { return count; },
+                    reset: function() { count = 0; return count; }
+                };
+            })();
+            
+            // Создаем модуль UI для счетчика
+            var CounterUI = (function() {
+                var container = null;
+                var display = null;
+                
+                return {
+                    init: function(parentElement) {
+                        container = document.createElement('div');
+                        container.style.cssText = 'padding: 20px; border: 2px solid #00ffcc; border-radius: 8px; margin: 10px 0; text-align: center;';
+                        
+                        display = document.createElement('div');
+                        display.textContent = 'Счетчик: 0';
+                        display.style.cssText = 'font-size: 24px; margin-bottom: 15px; color: #00ffcc;';
+                        
+                        var incrementBtn = document.createElement('button');
+                        incrementBtn.textContent = 'Увеличить';
+                        incrementBtn.style.cssText = 'padding: 10px 20px; background: #ff00ff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 0 5px;';
+                        
+                        var resetBtn = document.createElement('button');
+                        resetBtn.textContent = 'Сбросить';
+                        resetBtn.style.cssText = 'padding: 10px 20px; background: #ff3300; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 0 5px;';
+                        
+                        incrementBtn.addEventListener('click', function() {
+                            var newCount = CounterModule.increment();
+                            display.textContent = 'Счетчик: ' + newCount;
+                        });
+                        
+                        resetBtn.addEventListener('click', function() {
+                            var newCount = CounterModule.reset();
+                            display.textContent = 'Счетчик: ' + newCount;
+                        });
+                        
+                        container.appendChild(display);
+                        container.appendChild(incrementBtn);
+                        container.appendChild(resetBtn);
+                        parentElement.appendChild(container);
+                    }
+                };
+            })();
+            
+            // Интегрируем модули
+            CounterUI.init(container);
+            
+            output.textContent = '=== ИНТЕГРАЦИЯ МОДУЛЕЙ ===\n\n';
+            output.textContent += 'CounterModule - логика счетчика\n';
+            output.textContent += 'CounterUI - пользовательский интерфейс\n\n';
+            output.textContent += 'Модули работают вместе, но остаются независимыми:\n';
+            output.textContent += '✅ Каждый модуль решает свою задачу\n';
+            output.textContent += '✅ Легко тестировать по отдельности\n';
+            output.textContent += '✅ Можно заменить один модуль без изменения другого';
+        }
+        
+        // Задача 3: Передача родительского элемента
+        function demoTabSystem() {
+            const output = document.getElementById('output3');
+            const container = document.getElementById('parentContainer');
+            
+            container.innerHTML = '<div class="module-title">Система вкладок</div>';
+            
+            var TabSystem = (function() {
+                var tabs = [];
+                var activeTab = null;
+                var container = null;
+                
+                function createTabElement(tab) {
+                    var tabElement = document.createElement('div');
+                    tabElement.className = 'tab';
+                    tabElement.textContent = tab.title;
+                    tabElement.style.cssText = 'display: inline-block; padding: 10px 20px; margin: 0 5px; background: #1a1a2a; border: 1px solid #ff00ff; border-radius: 5px 5px 0 0; cursor: pointer; color: #ff00ff;';
+                    tabElement.addEventListener('click', function() {
+                        setActiveTab(tab);
+                    });
+                    return tabElement;
+                }
+                
+                function setActiveTab(tab) {
+                    if (activeTab) {
+                        activeTab.element.style.backgroundColor = '#1a1a2a';
+                        activeTab.element.style.color = '#ff00ff';
+                    }
+                    
+                    activeTab = tab;
+                    tab.element.style.backgroundColor = '#ff00ff';
+                    tab.element.style.color = '#0a0a12';
+                    
+                    tabs.forEach(function(t) {
+                        t.content.style.display = t === tab ? 'block' : 'none';
+                    });
+                }
+                
+                return {
+                    init: function(parentElement) {
+                        container = document.createElement('div');
+                        container.className = 'tab-system';
+                        parentElement.appendChild(container);
+                    },
+                    
+                    addTab: function(title, contentElement) {
+                        var tab = {
+                            title: title,
+                            content: contentElement,
+                            element: null
+                        };
+                        
+                        tab.element = createTabElement(tab);
+                        container.appendChild(tab.element);
+                        tabs.push(tab);
+                        
+                        contentElement.style.display = 'none';
+                        contentElement.style.cssText += 'padding: 20px; border: 1px solid #ff00ff; border-radius: 0 0 5px 5px; margin-top: -1px;';
+                        container.parentElement.appendChild(contentElement);
+                        
+                        if (tabs.length === 1) {
+                            setActiveTab(tab);
+                        }
+                        
+                        return tab;
+                    }
+                };
+            })();
+            
+            // Инициализируем систему вкладок
+            TabSystem.init(container);
+            
+            // Создаем контент для вкладок
+            var content1 = document.createElement('div');
+            content1.innerHTML = '<h3>Вкладка 1</h3><p>Содержимое первой вкладки</p>';
+            
+            var content2 = document.createElement('div');
+            content2.innerHTML = '<h3>Вкладка 2</h3><p>Содержимое второй вкладки</p>';
+            
+            var content3 = document.createElement('div');
+            content3.innerHTML = '<h3>Вкладка 3</h3><p>Содержимое третьей вкладки</p>';
+            
+            // Добавляем вкладки
+            TabSystem.addTab('Вкладка 1', content1);
+            TabSystem.addTab('Вкладка 2', content2);
+            TabSystem.addTab('Вкладка 3', content3);
+            
+            output.textContent = 'Создана система вкладок с передачей родительского элемента\n';
+            output.textContent += 'Модуль самостоятельно управляет DOM внутри переданного контейнера';
+        }
+        
+        function demoImageGallery() {
+            const output = document.getElementById('output3');
+            const container = document.getElementById('parentContainer');
+            
+            container.innerHTML = '<div class="module-title">Галерея изображений</div>';
+            
+            var ImageGallery = (function() {
+                var container = null;
+                var images = [];
+                var currentIndex = 0;
+                
+                function showImage(index) {
+                    if (images.length === 0) return;
+                    
+                    currentIndex = index;
+                    if (currentIndex >= images.length) currentIndex = 0;
+                    if (currentIndex < 0) currentIndex = images.length - 1;
+                    
+                    container.innerHTML = '';
+                    var img = document.createElement('img');
+                    img.src = images[currentIndex];
+                    img.style.maxWidth = '100%';
+                    img.style.border = '2px solid #00ffcc';
+                    img.style.borderRadius = '5px';
+                    container.appendChild(img);
+                    
+                    var info = document.createElement('div');
+                    info.textContent = 'Изображение ' + (currentIndex + 1) + ' из ' + images.length;
+                    info.style.cssText = 'text-align: center; margin-top: 10px; color: #ffcc00;';
+                    container.appendChild(info);
+                }
+                
+                return {
+                    init: function(parentElement) {
+                        container = document.createElement('div');
+                        container.className = 'image-gallery';
+                        parentElement.appendChild(container);
+                        
+                        var controls = document.createElement('div');
+                        controls.style.cssText = 'display: flex; justify-content: center; gap: 10px; margin: 10px 0;';
+                        
+                        var prevBtn = document.createElement('button');
+                        prevBtn.textContent = '← Назад';
+                        prevBtn.addEventListener('click', function() {
+                            showImage(currentIndex - 1);
+                        });
+                        
+                        var nextBtn = document.createElement('button');
+                        nextBtn.textContent = 'Вперед →';
+                        nextBtn.addEventListener('click', function() {
+                            showImage(currentIndex + 1);
+                        });
+                        
+                        controls.appendChild(prevBtn);
+                        controls.appendChild(nextBtn);
+                        parentElement.appendChild(controls);
+                    },
+                    
+                    addImage: function(src) {
+                        images.push(src);
+                        if (images.length === 1) {
+                            showImage(0);
+                        }
+                    }
+                };
+            })();
+            
+            // Инициализируем галерею
+            ImageGallery.init(container);
+            
+            // Добавляем демонстрационные изображения
+            ImageGallery.addImage('https://via.placeholder.com/300x200/ff00ff/ffffff?text=Image+1');
+            ImageGallery.addImage('https://via.placeholder.com/300x200/00ffcc/ffffff?text=Image+2');
+            ImageGallery.addImage('https://via.placeholder.com/300x200/ffcc00/ffffff?text=Image+3');
+            
+            output.textContent = 'Создана галерея изображений с навигацией\n';
+            output.textContent += 'Модуль получает родительский элемент и создает внутри него всю необходимую структуру';
+        }
+        
+        // Задача 4: Настройки и параметры по умолчанию
+        function demoNotificationSystem() {
+            const output = document.getElementById('output4');
+            
+            var NotificationSystem = (function() {
+                var defaults = {
+                    position: 'top-right',
+                    duration: 3000,
+                    type: 'info'
+                };
+                
+                var container = null;
+                
+                function createContainer() {
+                    container = document.createElement('div');
+                    container.className = 'notification-container';
+                    container.style.cssText = 'position: fixed; z-index: 1000; padding: 10px; max-width: 300px;';
+                    
+                    switch(defaults.position) {
+                        case 'top-right':
+                            container.style.top = '20px';
+                            container.style.right = '20px';
+                            break;
+                        case 'top-left':
+                            container.style.top = '20px';
+                            container.style.left = '20px';
+                            break;
+                    }
+                    
+                    document.body.appendChild(container);
+                }
+                
+                function getTypeStyles(type) {
+                    var styles = {
+                        info: { backgroundColor: '#2196F3', color: 'white' },
+                        success: { backgroundColor: '#4CAF50', color: 'white' },
+                        warning: { backgroundColor: '#FF9800', color: 'white' },
+                        error: { backgroundColor: '#F44336', color: 'white' }
+                    };
+                    return styles[type] || styles.info;
+                }
+                
+                return {
+                    init: function(options) {
+                        Object.assign(defaults, options);
+                        createContainer();
+                    },
+                    
+                    show: function(message, options = {}) {
+                        if (!container) this.init();
+                        
+                        var notification = document.createElement('div');
+                        notification.className = 'notification';
+                        
+                        var settings = Object.assign({}, defaults, options);
+                        var styles = getTypeStyles(settings.type);
+                        
+                        notification.textContent = message;
+                        notification.style.cssText = 'padding: 15px; margin-bottom: 10px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); background-color: ' + styles.backgroundColor + '; color: ' + styles.color + ';';
+                        
+                        container.appendChild(notification);
+                        
+                        if (settings.duration > 0) {
+                            setTimeout(function() {
+                                if (notification.parentElement) {
+                                    notification.remove();
+                                }
+                            }, settings.duration);
+                        }
+                    }
+                };
+            })();
+            
+            // Инициализируем с кастомными настройками
+            NotificationSystem.init({
+                position: 'top-right',
+                duration: 5000
+            });
+            
+            // Показываем уведомления разных типов
+            NotificationSystem.show('Обычное уведомление');
+            NotificationSystem.show('Успех!', { type: 'success' });
+            NotificationSystem.show('Предупреждение', { type: 'warning' });
+            NotificationSystem.show('Ошибка', { type: 'error' });
+            
+            output.textContent = 'Показаны уведомления разных типов с настройками по умолчанию\n';
+            output.textContent += 'Позиция: top-right, Длительность: 5 секунд\n\n';
+            output.textContent += 'Модуль использует параметры по умолчанию, которые можно переопределить для каждого уведомления';
+        }
+        
+        function demoModalSystem() {
+            const output = document.getElementById('output4');
+            
+            var Modal = (function() {
+                var defaults = {
+                    width: '500px',
+                    closeOnBackdrop: true
+                };
+                
+                var activeModal = null;
+                
+                function createBackdrop() {
+                    var backdrop = document.createElement('div');
+                    backdrop.className = 'modal-backdrop';
+                    backdrop.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: flex; justify-content: center; align-items: center;';
+                    return backdrop;
+                }
+                
+                function createModal(content, options) {
+                    var modal = document.createElement('div');
+                    modal.className = 'modal';
+                    modal.style.cssText = 'background: #1a1a2a; border-radius: 8px; padding: 20px; width: ' + options.width + '; position: relative; color: #00ffcc; border: 2px solid #ff00ff; box-shadow: 0 0 20px #ff00ff;';
+                    
+                    var closeBtn = document.createElement('button');
+                    closeBtn.textContent = '×';
+                    closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 20px; cursor: pointer; color: #ff00ff;';
+                    
+                    modal.appendChild(closeBtn);
+                    
+                    if (typeof content === 'string') {
+                        modal.innerHTML += content;
+                    } else {
+                        modal.appendChild(content);
+                    }
+                    
+                    return { backdrop: createBackdrop(), modal: modal, closeBtn: closeBtn };
+                }
+                
+                return {
+                    open: function(content, options = {}) {
+                        if (activeModal) this.close();
+                        
+                        var settings = Object.assign({}, defaults, options);
+                        var modalElements = createModal(content, settings);
+                        
+                        modalElements.backdrop.appendChild(modalElements.modal);
+                        document.body.appendChild(modalElements.backdrop);
+                        
+                        modalElements.closeBtn.addEventListener('click', function() {
+                            Modal.close();
+                        });
+                        
+                        if (settings.closeOnBackdrop) {
+                            modalElements.backdrop.addEventListener('click', function(e) {
+                                if (e.target === modalElements.backdrop) {
+                                    Modal.close();
+                                }
+                            });
+                        }
+                        
+                        activeModal = modalElements;
+                    },
+                    
+                    close: function() {
+                        if (activeModal) {
+                            document.body.removeChild(activeModal.backdrop);
+                            activeModal = null;
+                        }
+                    }
+                };
+            })();
+            
+            // Открываем модальное окно с кастомными настройками
+            var modalContent = '<h2 style="color: #ff00ff; margin-top: 0;">Модальное окно</h2><p>Это модальное окно создано через модуль с передачей параметров.</p><p>Ширина установлена в 400px вместо стандартных 500px.</p><button onclick="Modal.close()" style="background: #ff00ff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 15px;">Закрыть</button>';
+            
+            Modal.open(modalContent, { width: '400px' });
+            
+            output.textContent = 'Открыто модальное окно с кастомной шириной 400px\n';
+            output.textContent += 'Настройки по умолчанию переопределены для этого экземпляра';
+        }
+        
+        function demoCustomSettings() {
+            const output = document.getElementById('output4');
+            
+            // Модуль с расширенными настройками
+            var ConfigurableModule = (function() {
+                var config = {
+                    theme: 'dark',
+                    language: 'ru',
+                    animations: true,
+                    debug: false
+                };
+                
+                var privateData = 'Приватные данные';
+                
+                function applyConfig() {
+                    // Применяем конфигурацию
+                    if (config.debug) {
+                        console.log('Конфигурация применена:', config);
+                    }
+                }
+                
+                return {
+                    // Методы для работы с конфигурацией
+                    setConfig: function(newConfig) {
+                        Object.assign(config, newConfig);
+                        applyConfig();
+                        return this; // Для чейнинга
+                    },
+                    
+                    getConfig: function() {
+                        return Object.assign({}, config); // Возвращаем копию
+                    },
+                    
+                    resetConfig: function() {
+                        config = {
+                            theme: 'dark',
+                            language: 'ru',
+                            animations: true,
+                            debug: false
+                        };
+                        applyConfig();
+                        return this;
+                    },
+                    
+                    // Бизнес-логика, использующая конфигурацию
+                    doSomething: function() {
+                        var message = 'Действие выполнено в теме ' + config.theme;
+                        if (config.debug) {
+                            message += ' (режим отладки)';
+                        }
+                        return message;
+                    }
+                };
+            })();
+            
+            output.textContent = '=== КОНФИГУРИРУЕМЫЙ МОДУЛЬ ===\n\n';
+            
+            output.textContent += 'Начальная конфигурация:\n';
+            output.textContent += JSON.stringify(ConfigurableModule.getConfig(), null, 2) + '\n\n';
+            
+            output.textContent += 'Результат doSomething(): ' + ConfigurableModule.doSomething() + '\n\n';
+            
+            // Меняем конфигурацию
+            ConfigurableModule.setConfig({
+                theme: 'light',
+                debug: true
+            });
+            
+            output.textContent += 'Конфигурация после изменений:\n';
+            output.textContent += JSON.stringify(ConfigurableModule.getConfig(), null, 2) + '\n\n';
+            
+            output.textContent += 'Результат doSomething(): ' + ConfigurableModule.doSomething() + '\n\n';
+            
+            // Чейнинг методов
+            ConfigurableModule
+                .resetConfig()
+                .setConfig({ language: 'en' })
+                .doSomething();
+                
+            output.textContent += 'Конфигурация после сброса и установки языка:\n';
+            output.textContent += JSON.stringify(ConfigurableModule.getConfig(), null, 2);
+        }
+
+        // Функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).textContent = '';
+        }
+    </script>
+</body>
+</html>

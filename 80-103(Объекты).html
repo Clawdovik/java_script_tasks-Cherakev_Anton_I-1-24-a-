@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Объекты</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ОБЪЕКТЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с объектами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Создание и базовые операции с объектами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>СОЗДАНИЕ И БАЗОВЫЕ ОПЕРАЦИИ С ОБЪЕКТАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Создание объекта с числовыми ключами</div>
+                <div class="code-block">let obj = {
+    1: 'пн',
+    2: 'вт',
+    3: 'ср',
+    4: 'чт',
+    5: 'пт',
+    6: 'сб',
+    7: 'вс',
+}
+console.log(obj[1]);
+console.log(obj);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Неупорядоченность объектов</div>
+                <div class="code-block">let obj2 = {
+    3: '1',
+    1: '2',
+    2: '3',
+}
+console.log(obj2[1]);
+console.log('Весь объект:', obj2);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Вывод объекта через alert</div>
+                <div class="code-block">let testObj = {name: 'Test', value: 123};
+alert(testObj); // Покажет [object Object]
+console.log(testObj); // Покажет корректно</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Строковые ключи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔤</div>
+                <h2>СТРОКОВЫЕ КЛЮЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Объект со строковыми ключами</div>
+                <div class="code-block">let obj3 = {
+    first: 'Cherakaev',
+    last: 'Anton',
+    age: 23,
+}
+console.log('Person - ' + obj3['first'] + ' ' + 
+    obj3['last'] + ' ' + obj3['age'] + ' years old');</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Альтернативный синтаксис (точка)</div>
+                <div class="code-block">let obj4 = {
+    key1: 1,
+    key2: 2,
+    key3: 3,
+}
+console.log('obj4.key1 =', obj4.key1);
+console.log('obj4["key2"] =', obj4["key2"]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Заполнение объекта</div>
+                <div class="code-block">let obj5 = {};
+obj5.key1 = 'Ключ 1';
+obj5['key2'] = 'Ключ 2';
+obj5.thirdKey = 'Ключ 3';
+
+console.log('Пустой объект: {}');
+console.log('Заполненный объект:', obj5);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Ограничения и особенности -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ОГРАНИЧЕНИЯ И ОСОБЕННОСТИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Некорректные ключи</div>
+                <div class="code-block">let badKeys = {
+    '123abc': 'Начинается с цифры', // Не рекомендуется
+    'key-with-dash': 'Через дефис',   // Не рекомендуется
+    'key with space': 'С пробелом',   // Не рекомендуется
+}
+
+console.log(badKeys['123abc']);
+console.log(badKeys['key-with-dash']);
+console.log(badKeys['key with space']);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Разные типы значений</div>
+                <div class="code-block">let mixedObj = {
+    string: 'Текст',
+    number: 42,
+    boolean: true,
+    array: [1, 2, 3],
+    nested: { key: 'значение' },
+    null: null,
+    undefined: undefined
+}
+
+console.log('Объект с разными типами значений:');
+console.log(mixedObj);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Изменение значений объекта</div>
+                <div class="code-block">let user = {
+    name: 'Cherakaev',
+    age: 23,
+    city: 'Simferopol'
+}
+
+console.log('Исходный объект:', user);
+
+user.age = 23;
+user['city'] = 'Simpferopol';
+user.country = 'Russia';
+
+console.log('Измененный объект:', user);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Объект автомобиля</div>
+                <div class="code-block">let car = {
+    brand: 'Toyota',
+    model: 'Camry',
+    year: 2022,
+    color: 'синий',
+    engine: '2.5L'
+}
+
+console.log(`Марка: ${car.brand}`);
+console.log(`Модель: ${car.model}`);
+console.log(`Год: ${car.year}`);
+console.log(`Цвет: ${car.color}`);
+console.log(`Двигатель: ${car.engine}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Объект товара</div>
+                <div class="code-block">let product = {
+    name: 'Смартфон',
+    price: 29999,
+    inStock: true,
+    features: ['экран 6.1"', '128ГБ', 'камера 12Мп'],
+    specifications: {
+        screen: '6.1"',
+        memory: '128GB',
+        camera: '12MP'
+    }
+}
+
+console.log('Название:', product.name);
+console.log('Цена:', product.price + ' руб.');
+console.log('В наличии:', product.inStock ? 'Да' : 'Нет');
+console.log('Характеристики:', product.features.join(', '));
+console.log('Разрешение камеры:', product.specifications.camera);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Динамическое создание объекта</div>
+                <div class="code-block">let student = {};
+let properties = ['name', 'age', 'grade', 'subject'];
+
+properties.forEach(prop => {
+    student[prop] = 'значение ' + prop;
+});
+
+student.name = 'Cherakaev';
+student.age = 23;
+student.grade = 'A';
+student.subject = 'JavaScript';
+
+console.log('Динамически созданный объект:');
+console.log(student);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Объекты &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Создание и базовые операции с объектами
+        function runTask1() {
+            let obj = {
+                1: 'пн',
+                2: 'вт',
+                3: 'ср',
+                4: 'чт',
+                5: 'пт',
+                6: 'сб',
+                7: 'вс',
+            }
+            let output = `obj[1] = ${obj[1]}\n`;
+            output += `Весь объект: ${JSON.stringify(obj, null, 2)}`;
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let obj2 = {
+                3: '1',
+                1: '2',
+                2: '3',
+            }
+            let output = `obj2[1] = ${obj2[1]}\n`;
+            output += `Весь объект: ${JSON.stringify(obj2, null, 2)}`;
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        function runTask3() {
+            let testObj = {name: 'Test', value: 123};
+            let output = `alert(testObj) покажет: [object Object]\n`;
+            output += `console.log(testObj) покажет: ${JSON.stringify(testObj, null, 2)}`;
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        // Раздел 2: Строковые ключи
+        function runTask4() {
+            let obj3 = {
+                first: 'Igor',
+                last: 'Averyanov',
+                age: 24,
+            }
+            let result = 'Person - ' + obj3['first'] + ' ' + obj3['last'] + ' ' + obj3['age'] + ' years old';
+            document.getElementById('output4').innerHTML = result;
+        }
+
+        function runTask5() {
+            let obj4 = {
+                key1: 1,
+                key2: 2,
+                key3: 3,
+            }
+            let output = `obj4.key1 = ${obj4.key1}\n`;
+            output += `obj4["key2"] = ${obj4["key2"]}\n`;
+            output += `Весь объект: ${JSON.stringify(obj4, null, 2)}`;
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let obj5 = {};
+            obj5.key1 = 'Ключ 1';
+            obj5['key2'] = 'Ключ 2';
+            obj5.thirdKey = 'Ключ 3';
+
+            let output = `Пустой объект: {}\n`;
+            output += `Заполненный объект: ${JSON.stringify(obj5, null, 2)}`;
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 3: Ограничения и особенности
+        function runTask7() {
+            let badKeys = {
+                '123abc': 'Начинается с цифры',
+                'key-with-dash': 'Через дефис',
+                'key with space': 'С пробелом',
+            }
+
+            let output = `badKeys['123abc'] = ${badKeys['123abc']}\n`;
+            output += `badKeys['key-with-dash'] = ${badKeys['key-with-dash']}\n`;
+            output += `badKeys['key with space'] = ${badKeys['key with space']}\n`;
+            output += `Весь объект: ${JSON.stringify(badKeys, null, 2)}`;
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let mixedObj = {
+                string: 'Текст',
+                number: 42,
+                boolean: true,
+                array: [1, 2, 3],
+                nested: { key: 'значение' },
+                null: null,
+                undefined: undefined
+            }
+
+            let output = 'Объект с разными типами значений:\n';
+            output += JSON.stringify(mixedObj, null, 2);
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        function runTask9() {
+            let user = {
+                name: 'Cherakaev',
+                age: 23,
+                city: 'Simpferopol'
+            }
+
+            let output = `Исходный объект: ${JSON.stringify(user, null, 2)}\n\n`;
+
+            user.age = 23;
+            user['city'] = 'Simferopol';
+            user.country = 'Russia';
+
+            output += `Измененный объект: ${JSON.stringify(user, null, 2)}`;
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        // Раздел 4: Практические задачи
+        function runTask10() {
+            let car = {
+                brand: 'Toyota',
+                model: 'Camry',
+                year: 2022,
+                color: 'синий',
+                engine: '2.5L'
+            }
+
+            let output = `Марка: ${car.brand}\n`;
+            output += `Модель: ${car.model}\n`;
+            output += `Год: ${car.year}\n`;
+            output += `Цвет: ${car.color}\n`;
+            output += `Двигатель: ${car.engine}`;
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        function runTask11() {
+            let product = {
+                name: 'Смартфон',
+                price: 29999,
+                inStock: true,
+                features: ['экран 6.1"', '128ГБ', 'камера 12Мп'],
+                specifications: {
+                    screen: '6.1"',
+                    memory: '128GB',
+                    camera: '12MP'
+                }
+            }
+
+            let output = `Название: ${product.name}\n`;
+            output += `Цена: ${product.price} руб.\n`;
+            output += `В наличии: ${product.inStock ? 'Да' : 'Нет'}\n`;
+            output += `Характеристики: ${product.features.join(', ')}\n`;
+            output += `Разрешение камеры: ${product.specifications.camera}`;
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let student = {};
+            let properties = ['name', 'age', 'grade', 'subject'];
+
+            properties.forEach(prop => {
+                student[prop] = 'значение ' + prop;
+            });
+
+            student.name = 'Cherakaev';
+            student.age = 20;
+            student.grade = 'A';
+            student.subject = 'JavaScript';
+
+            let output = 'Динамически созданный объект:\n';
+            output += JSON.stringify(student, null, 2);
+            document.getElementById('output12').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

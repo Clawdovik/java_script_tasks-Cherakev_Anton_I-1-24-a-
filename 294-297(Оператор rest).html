@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Оператор Rest и Работа с Массивами</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ОПЕРАТОР REST И РАБОТА С МАССИВАМИ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с оператором rest и преобразованием массивов</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Оператор Rest -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ОПЕРАТОР REST</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Сумма произвольного количества чисел</div>
+                <div class="code-block">// Функция для суммирования произвольного количества чисел
+function sumNumbers(...numbers) {
+    let total = 0;
+    for (let number of numbers) {
+        total += number;
+    }
+    return total;
+}
+
+// Альтернативный вариант с reduce
+function sumNumbersReduce(...numbers) {
+    return numbers.reduce((sum, current) => sum + current, 0);
+}
+
+// Примеры использования
+console.log("Сумма 1, 2, 3:", sumNumbers(1, 2, 3));
+console.log("Сумма 10, 20, 30, 40:", sumNumbers(10, 20, 30, 40));
+console.log("Сумма 5:", sumNumbers(5));
+console.log("Сумма (пусто):", sumNumbers());
+
+console.log("С reduce - 1, 2, 3:", sumNumbersReduce(1, 2, 3));</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Объединение строк с разделителем</div>
+                <div class="code-block">// Функция для объединения строк с заданным разделителем
+function joinStrings(separator, ...strings) {
+    return strings.join(separator);
+}
+
+// Функция для создания списка элементов
+function createList(...items) {
+    return items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+}
+
+// Примеры использования
+console.log("Объединение с запятой:");
+console.log(joinStrings(', ', 'Яблоко', 'Банан', 'Апельсин'));
+
+console.log("Объединение с дефисом:");
+console.log(joinStrings(' - ', 'HTML', 'CSS', 'JavaScript', 'React'));
+
+console.log("Создание списка:");
+console.log(createList('Изучить JavaScript', 'Попрактиковаться', 'Создать проект'));</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Сумма цифр -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧮</div>
+                <h2>СУММА ЦИФР</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Сумма цифр числа</div>
+                <div class="code-block">// Функция для вычисления суммы цифр числа
+function sumOfDigits(number) {
+    let sum = 0;
+    let num = Math.abs(number); // Работаем с положительным числом
+    
+    while (num > 0) {
+        sum += num % 10; // Получаем последнюю цифру
+        num = Math.floor(num / 10); // Убираем последнюю цифру
+    }
+    
+    return sum;
+}
+
+// Альтернативный вариант с преобразованием в строку
+function sumOfDigitsString(number) {
+    return number.toString()
+                .split('')
+                .filter(char => char !== '-') // Игнорируем минус для отрицательных чисел
+                .map(Number)
+                .reduce((sum, digit) => sum + digit, 0);
+}
+
+// Примеры использования
+console.log("Сумма цифр 123:", sumOfDigits(123));
+console.log("Сумма цифр 4567:", sumOfDigits(4567));
+console.log("Сумма цифр -789:", sumOfDigits(-789));
+console.log("Сумма цифр 0:", sumOfDigits(0));
+
+console.log("Через строку - 123:", sumOfDigitsString(123));</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Рекурсивная сумма цифр</div>
+                <div class="code-block">// Рекурсивная функция для суммы цифр
+function recursiveSumOfDigits(number) {
+    number = Math.abs(number);
+    
+    if (number < 10) {
+        return number;
+    }
+    
+    return (number % 10) + recursiveSumOfDigits(Math.floor(number / 10));
+}
+
+// Функция для нахождения цифрового корня
+function digitalRoot(number) {
+    let result = recursiveSumOfDigits(number);
+    
+    // Продолжаем суммировать, пока не получим одну цифру
+    while (result >= 10) {
+        result = recursiveSumOfDigits(result);
+    }
+    
+    return result;
+}
+
+// Примеры использования
+console.log("Рекурсивная сумма цифр 123:", recursiveSumOfDigits(123));
+console.log("Рекурсивная сумма цифр 9876:", recursiveSumOfDigits(9876));
+console.log("Цифровой корень 123:", digitalRoot(123));
+console.log("Цифровой корень 9876:", digitalRoot(9876));
+console.log("Цифровой корень 999:", digitalRoot(999));</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Массивы в двухмерный -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>МАССИВЫ В ДВУХМЕРНЫЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Преобразование в матрицу</div>
+                <div class="code-block">// Функция для преобразования одномерного массива в двумерный
+function createMatrix(array, rows, cols) {
+    if (array.length !== rows * cols) {
+        throw new Error('Размер массива не соответствует указанным размерам матрицы');
+    }
+    
+    let matrix = [];
+    let index = 0;
+    
+    for (let i = 0; i < rows; i++) {
+        let row = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(array[index]);
+            index++;
+        }
+        matrix.push(row);
+    }
+    
+    return matrix;
+}
+
+// Функция для автоматического определения размеров
+function autoCreateMatrix(array, itemsPerRow) {
+    let matrix = [];
+    
+    for (let i = 0; i < array.length; i += itemsPerRow) {
+        matrix.push(array.slice(i, i + itemsPerRow));
+    }
+    
+    return matrix;
+}
+
+// Примеры использования
+let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+console.log("Матрица 3x3:");
+console.log(createMatrix(numbers, 3, 3));
+
+let letters = ['a', 'b', 'c', 'd', 'e', 'f'];
+console.log("Матрица 2x3:");
+console.log(createMatrix(letters, 2, 3));
+
+console.log("Автоматическое создание (по 2 элемента):");
+console.log(autoCreateMatrix(numbers, 2));</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Транспонирование матрицы</div>
+                <div class="code-block">// Функция для транспонирования матрицы
+function transposeMatrix(matrix) {
+    if (matrix.length === 0) return [];
+    
+    let rows = matrix.length;
+    let cols = matrix[0].length;
+    let transposed = [];
+    
+    for (let j = 0; j < cols; j++) {
+        let newRow = [];
+        for (let i = 0; i < rows; i++) {
+            newRow.push(matrix[i][j]);
+        }
+        transposed.push(newRow);
+    }
+    
+    return transposed;
+}
+
+// Функция для поворота матрицы на 90 градусов
+function rotateMatrix90(matrix) {
+    let transposed = transposeMatrix(matrix);
+    return transposed.map(row => row.reverse());
+}
+
+// Примеры использования
+let matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+console.log("Исходная матрица:");
+console.log(matrix);
+
+console.log("Транспонированная матрица:");
+console.log(transposeMatrix(matrix));
+
+console.log("Поворот на 90 градусов:");
+console.log(rotateMatrix90(matrix));</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Массивы в один -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2>МАССИВЫ В ОДИН</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Преобразование многомерного массива в одномерный</div>
+                <div class="code-block">// Функция для преобразования многомерного массива в одномерный
+function flattenArray(array) {
+    let result = [];
+    
+    for (let element of array) {
+        if (Array.isArray(element)) {
+            // Рекурсивно обрабатываем вложенные массивы
+            result = result.concat(flattenArray(element));
+        } else {
+            result.push(element);
+        }
+    }
+    
+    return result;
+}
+
+// Альтернативный вариант с reduce
+function flattenArrayReduce(array) {
+    return array.reduce((flat, element) => {
+        return flat.concat(Array.isArray(element) ? flattenArrayReduce(element) : element);
+    }, []);
+}
+
+// Примеры использования
+let nestedArray = [1, [2, 3], [4, [5, 6]], 7];
+console.log("Исходный массив:", nestedArray);
+console.log("Выровненный массив:", flattenArray(nestedArray));
+
+let deepArray = [1, [2, [3, [4, [5]]]]];
+console.log("Глубоко вложенный массив:", deepArray);
+console.log("Выровненный массив:", flattenArray(deepArray));
+
+console.log("С reduce:", flattenArrayReduce(nestedArray));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Объединение нескольких массивов</div>
+                <div class="code-block">// Функция для объединения нескольких массивов
+function mergeArrays(...arrays) {
+    return arrays.flat();
+}
+
+// Функция для объединения с удалением дубликатов
+function mergeUniqueArrays(...arrays) {
+    let merged = arrays.flat();
+    return [...new Set(merged)];
+}
+
+// Функция для объединения объектов в массивах
+function mergeObjectArrays(...arrays) {
+    let merged = arrays.flat();
+    let result = [];
+    let seen = new Set();
+    
+    for (let obj of merged) {
+        let key = JSON.stringify(obj);
+        if (!seen.has(key)) {
+            seen.add(key);
+            result.push(obj);
+        }
+    }
+    
+    return result;
+}
+
+// Примеры использования
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let arr3 = [7, 8, 9];
+
+console.log("Объединение массивов:", mergeArrays(arr1, arr2, arr3));
+
+let arr4 = [1, 2, 3];
+let arr5 = [2, 3, 4];
+let arr6 = [3, 4, 5];
+
+console.log("Объединение с дубликатами:", mergeArrays(arr4, arr5, arr6));
+console.log("Объединение без дубликатов:", mergeUniqueArrays(arr4, arr5, arr6));
+
+let objArr1 = [{id: 1}, {id: 2}];
+let objArr2 = [{id: 2}, {id: 3}];
+console.log("Объединение объектов:", mergeObjectArrays(objArr1, objArr2));</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Комбинированные задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧩</div>
+                <h2>КОМБИНИРОВАННЫЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Обработка матрицы чисел</div>
+                <div class="code-block">// Функция для вычисления суммы всех элементов матрицы
+function sumMatrix(matrix) {
+    return matrix.flat().reduce((sum, num) => sum + num, 0);
+}
+
+// Функция для нахождения максимального элемента в матрице
+function maxInMatrix(matrix) {
+    return Math.max(...matrix.flat());
+}
+
+// Функция для вычисления сумм строк матрицы
+function rowSums(matrix) {
+    return matrix.map(row => row.reduce((sum, num) => sum + num, 0));
+}
+
+// Функция для вычисления сумм столбцов матрицы
+function columnSums(matrix) {
+    if (matrix.length === 0) return [];
+    
+    let cols = matrix[0].length;
+    let sums = new Array(cols).fill(0);
+    
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < cols; j++) {
+            sums[j] += matrix[i][j];
+        }
+    }
+    
+    return sums;
+}
+
+// Пример использования
+let numberMatrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+console.log("Исходная матрица:", numberMatrix);
+console.log("Сумма всех элементов:", sumMatrix(numberMatrix));
+console.log("Максимальный элемент:", maxInMatrix(numberMatrix));
+console.log("Суммы строк:", rowSums(numberMatrix));
+console.log("Суммы столбцов:", columnSums(numberMatrix));</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Универсальная функция обработки данных</div>
+                <div class="code-block">// Универсальная функция для работы с массивами
+function processArrayData(operation, ...arrays) {
+    let flattened = arrays.flat();
+    
+    switch (operation) {
+        case 'sum':
+            return flattened.reduce((sum, num) => sum + num, 0);
+            
+        case 'average':
+            return flattened.reduce((sum, num) => sum + num, 0) / flattened.length;
+            
+        case 'max':
+            return Math.max(...flattened);
+            
+        case 'min':
+            return Math.min(...flattened);
+            
+        case 'unique':
+            return [...new Set(flattened)];
+            
+        case 'sorted':
+            return [...flattened].sort((a, b) => a - b);
+            
+        default:
+            throw new Error('Неизвестная операция: ' + operation);
+    }
+}
+
+// Примеры использования
+let data1 = [1, 2, 3];
+let data2 = [4, [5, 6]];
+let data3 = [7, 8, [9, 10]];
+
+console.log("Сумма:", processArrayData('sum', data1, data2, data3));
+console.log("Среднее:", processArrayData('average', data1, data2, data3));
+console.log("Максимум:", processArrayData('max', data1, data2, data3));
+console.log("Минимум:", processArrayData('min', data1, data2, data3));
+
+let withDuplicates = [1, 2, 2, 3, 4, 4, 5];
+console.log("Уникальные:", processArrayData('unique', withDuplicates));
+console.log("Отсортированные:", processArrayData('sorted', [3, 1, 4, 2]));</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Оператор Rest и Работа с Массивами &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Оператор Rest
+        function runTask1() {
+            function sumNumbers(...numbers) {
+                let total = 0;
+                for (let number of numbers) {
+                    total += number;
+                }
+                return total;
+            }
+
+            function sumNumbersReduce(...numbers) {
+                return numbers.reduce((sum, current) => sum + current, 0);
+            }
+            
+            let output = '';
+            output += "Сумма 1, 2, 3: " + sumNumbers(1, 2, 3) + '\n';
+            output += "Сумма 10, 20, 30, 40: " + sumNumbers(10, 20, 30, 40) + '\n';
+            output += "Сумма 5: " + sumNumbers(5) + '\n';
+            output += "Сумма (пусто): " + sumNumbers() + '\n\n';
+            output += "С reduce - 1, 2, 3: " + sumNumbersReduce(1, 2, 3) + '\n';
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            function joinStrings(separator, ...strings) {
+                return strings.join(separator);
+            }
+
+            function createList(...items) {
+                return items.map((item, index) => `${index + 1}. ${item}`).join('\n');
+            }
+            
+            let output = '';
+            output += "Объединение с запятой:\n";
+            output += joinStrings(', ', 'Яблоко', 'Банан', 'Апельсин') + '\n\n';
+            
+            output += "Объединение с дефисом:\n";
+            output += joinStrings(' - ', 'HTML', 'CSS', 'JavaScript', 'React') + '\n\n';
+            
+            output += "Создание списка:\n";
+            output += createList('Изучить JavaScript', 'Попрактиковаться', 'Создать проект') + '\n';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Сумма цифр
+        function runTask3() {
+            function sumOfDigits(number) {
+                let sum = 0;
+                let num = Math.abs(number);
+                
+                while (num > 0) {
+                    sum += num % 10;
+                    num = Math.floor(num / 10);
+                }
+                
+                return sum;
+            }
+
+            function sumOfDigitsString(number) {
+                return number.toString()
+                            .split('')
+                            .filter(char => char !== '-')
+                            .map(Number)
+                            .reduce((sum, digit) => sum + digit, 0);
+            }
+            
+            let output = '';
+            output += "Сумма цифр 123: " + sumOfDigits(123) + '\n';
+            output += "Сумма цифр 4567: " + sumOfDigits(4567) + '\n';
+            output += "Сумма цифр -789: " + sumOfDigits(-789) + '\n';
+            output += "Сумма цифр 0: " + sumOfDigits(0) + '\n\n';
+            output += "Через строку - 123: " + sumOfDigitsString(123) + '\n';
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            function recursiveSumOfDigits(number) {
+                number = Math.abs(number);
+                
+                if (number < 10) {
+                    return number;
+                }
+                
+                return (number % 10) + recursiveSumOfDigits(Math.floor(number / 10));
+            }
+
+            function digitalRoot(number) {
+                let result = recursiveSumOfDigits(number);
+                
+                while (result >= 10) {
+                    result = recursiveSumOfDigits(result);
+                }
+                
+                return result;
+            }
+            
+            let output = '';
+            output += "Рекурсивная сумма цифр 123: " + recursiveSumOfDigits(123) + '\n';
+            output += "Рекурсивная сумма цифр 9876: " + recursiveSumOfDigits(9876) + '\n';
+            output += "Цифровой корень 123: " + digitalRoot(123) + '\n';
+            output += "Цифровой корень 9876: " + digitalRoot(9876) + '\n';
+            output += "Цифровой корень 999: " + digitalRoot(999) + '\n';
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Массивы в двухмерный
+        function runTask5() {
+            function createMatrix(array, rows, cols) {
+                if (array.length !== rows * cols) {
+                    throw new Error('Размер массива не соответствует указанным размерам матрицы');
+                }
+                
+                let matrix = [];
+                let index = 0;
+                
+                for (let i = 0; i < rows; i++) {
+                    let row = [];
+                    for (let j = 0; j < cols; j++) {
+                        row.push(array[index]);
+                        index++;
+                    }
+                    matrix.push(row);
+                }
+                
+                return matrix;
+            }
+
+            function autoCreateMatrix(array, itemsPerRow) {
+                let matrix = [];
+                
+                for (let i = 0; i < array.length; i += itemsPerRow) {
+                    matrix.push(array.slice(i, i + itemsPerRow));
+                }
+                
+                return matrix;
+            }
+            
+            let output = '';
+            let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            output += "Матрица 3x3:\n" + JSON.stringify(createMatrix(numbers, 3, 3), null, 2) + '\n\n';
+            
+            let letters = ['a', 'b', 'c', 'd', 'e', 'f'];
+            output += "Матрица 2x3:\n" + JSON.stringify(createMatrix(letters, 2, 3), null, 2) + '\n\n';
+            
+            output += "Автоматическое создание (по 2 элемента):\n" + JSON.stringify(autoCreateMatrix(numbers, 2), null, 2) + '\n';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            function transposeMatrix(matrix) {
+                if (matrix.length === 0) return [];
+                
+                let rows = matrix.length;
+                let cols = matrix[0].length;
+                let transposed = [];
+                
+                for (let j = 0; j < cols; j++) {
+                    let newRow = [];
+                    for (let i = 0; i < rows; i++) {
+                        newRow.push(matrix[i][j]);
+                    }
+                    transposed.push(newRow);
+                }
+                
+                return transposed;
+            }
+
+            function rotateMatrix90(matrix) {
+                let transposed = transposeMatrix(matrix);
+                return transposed.map(row => row.reverse());
+            }
+            
+            let output = '';
+            let matrix = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+            ];
+            
+            output += "Исходная матрица:\n" + JSON.stringify(matrix, null, 2) + '\n\n';
+            output += "Транспонированная матрица:\n" + JSON.stringify(transposeMatrix(matrix), null, 2) + '\n\n';
+            output += "Поворот на 90 градусов:\n" + JSON.stringify(rotateMatrix90(matrix), null, 2) + '\n';
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Массивы в один
+        function runTask7() {
+            function flattenArray(array) {
+                let result = [];
+                
+                for (let element of array) {
+                    if (Array.isArray(element)) {
+                        result = result.concat(flattenArray(element));
+                    } else {
+                        result.push(element);
+                    }
+                }
+                
+                return result;
+            }
+
+            function flattenArrayReduce(array) {
+                return array.reduce((flat, element) => {
+                    return flat.concat(Array.isArray(element) ? flattenArrayReduce(element) : element);
+                }, []);
+            }
+            
+            let output = '';
+            let nestedArray = [1, [2, 3], [4, [5, 6]], 7];
+            output += "Исходный массив: " + JSON.stringify(nestedArray) + '\n';
+            output += "Выровненный массив: " + JSON.stringify(flattenArray(nestedArray)) + '\n\n';
+            
+            let deepArray = [1, [2, [3, [4, [5]]]]];
+            output += "Глубоко вложенный массив: " + JSON.stringify(deepArray) + '\n';
+            output += "Выровненный массив: " + JSON.stringify(flattenArray(deepArray)) + '\n\n';
+            
+            output += "С reduce: " + JSON.stringify(flattenArrayReduce(nestedArray)) + '\n';
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            function mergeArrays(...arrays) {
+                return arrays.flat();
+            }
+
+            function mergeUniqueArrays(...arrays) {
+                let merged = arrays.flat();
+                return [...new Set(merged)];
+            }
+
+            function mergeObjectArrays(...arrays) {
+                let merged = arrays.flat();
+                let result = [];
+                let seen = new Set();
+                
+                for (let obj of merged) {
+                    let key = JSON.stringify(obj);
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        result.push(obj);
+                    }
+                }
+                
+                return result;
+            }
+            
+            let output = '';
+            let arr1 = [1, 2, 3];
+            let arr2 = [4, 5, 6];
+            let arr3 = [7, 8, 9];
+
+            output += "Объединение массивов: " + JSON.stringify(mergeArrays(arr1, arr2, arr3)) + '\n\n';
+            
+            let arr4 = [1, 2, 3];
+            let arr5 = [2, 3, 4];
+            let arr6 = [3, 4, 5];
+
+            output += "Объединение с дубликатами: " + JSON.stringify(mergeArrays(arr4, arr5, arr6)) + '\n';
+            output += "Объединение без дубликатов: " + JSON.stringify(mergeUniqueArrays(arr4, arr5, arr6)) + '\n\n';
+            
+            let objArr1 = [{id: 1}, {id: 2}];
+            let objArr2 = [{id: 2}, {id: 3}];
+            output += "Объединение объектов: " + JSON.stringify(mergeObjectArrays(objArr1, objArr2)) + '\n';
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Комбинированные задачи
+        function runTask9() {
+            function sumMatrix(matrix) {
+                return matrix.flat().reduce((sum, num) => sum + num, 0);
+            }
+
+            function maxInMatrix(matrix) {
+                return Math.max(...matrix.flat());
+            }
+
+            function rowSums(matrix) {
+                return matrix.map(row => row.reduce((sum, num) => sum + num, 0));
+            }
+
+            function columnSums(matrix) {
+                if (matrix.length === 0) return [];
+                
+                let cols = matrix[0].length;
+                let sums = new Array(cols).fill(0);
+                
+                for (let i = 0; i < matrix.length; i++) {
+                    for (let j = 0; j < cols; j++) {
+                        sums[j] += matrix[i][j];
+                    }
+                }
+                
+                return sums;
+            }
+            
+            let output = '';
+            let numberMatrix = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+            ];
+
+            output += "Исходная матрица: " + JSON.stringify(numberMatrix) + '\n';
+            output += "Сумма всех элементов: " + sumMatrix(numberMatrix) + '\n';
+            output += "Максимальный элемент: " + maxInMatrix(numberMatrix) + '\n';
+            output += "Суммы строк: " + JSON.stringify(rowSums(numberMatrix)) + '\n';
+            output += "Суммы столбцов: " + JSON.stringify(columnSums(numberMatrix)) + '\n';
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            function processArrayData(operation, ...arrays) {
+                let flattened = arrays.flat();
+                
+                switch (operation) {
+                    case 'sum':
+                        return flattened.reduce((sum, num) => sum + num, 0);
+                        
+                    case 'average':
+                        return flattened.reduce((sum, num) => sum + num, 0) / flattened.length;
+                        
+                    case 'max':
+                        return Math.max(...flattened);
+                        
+                    case 'min':
+                        return Math.min(...flattened);
+                        
+                    case 'unique':
+                        return [...new Set(flattened)];
+                        
+                    case 'sorted':
+                        return [...flattened].sort((a, b) => a - b);
+                        
+                    default:
+                        throw new Error('Неизвестная операция: ' + operation);
+                }
+            }
+            
+            let output = '';
+            let data1 = [1, 2, 3];
+            let data2 = [4, [5, 6]];
+            let data3 = [7, 8, [9, 10]];
+
+            output += "Сумма: " + processArrayData('sum', data1, data2, data3) + '\n';
+            output += "Среднее: " + processArrayData('average', data1, data2, data3) + '\n';
+            output += "Максимум: " + processArrayData('max', data1, data2, data3) + '\n';
+            output += "Минимум: " + processArrayData('min', data1, data2, data3) + '\n\n';
+            
+            let withDuplicates = [1, 2, 2, 3, 4, 4, 5];
+            output += "Уникальные: " + JSON.stringify(processArrayData('unique', withDuplicates)) + '\n';
+            output += "Отсортированные: " + JSON.stringify(processArrayData('sorted', [3, 1, 4, 2])) + '\n';
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

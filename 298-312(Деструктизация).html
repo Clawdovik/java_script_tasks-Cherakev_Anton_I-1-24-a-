@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Деструктуризация</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ДЕСТРУКТУРИЗАЦИЯ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с деструктуризацией массивов и объектов</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Деструктуризация массивов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>ДЕСТРУКТУРИЗАЦИЯ МАССИВОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Базовая деструктуризация массивов</div>
+                <div class="code-block">// Базовая деструктуризация массива
+const colors = ['красный', 'зеленый', 'синий'];
+
+// Деструктуризация элементов массива
+const [firstColor, secondColor, thirdColor] = colors;
+
+console.log("Первый цвет:", firstColor);
+console.log("Второй цвет:", secondColor);
+console.log("Третий цвет:", thirdColor);
+
+// Деструктуризация с пропуском элементов
+const [primaryColor, , tertiaryColor] = colors;
+console.log("Основной цвет:", primaryColor);
+console.log("Третичный цвет:", tertiaryColor);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Массив из функции и остаток массива</div>
+                <div class="code-block">// Функция, возвращающая массив
+function getCoordinates() {
+    return [40.7128, -74.0060, 85, 'Нью-Йорк'];
+}
+
+// Деструктуризация результата функции
+const [latitude, longitude, elevation, city] = getCoordinates();
+console.log("Широта:", latitude);
+console.log("Долгота:", longitude);
+console.log("Высота:", elevation);
+console.log("Город:", city);
+
+// Использование остатка массива (...)
+const numbers = [1, 2, 3, 4, 5, 6];
+const [first, second, ...rest] = numbers;
+console.log("Первое число:", first);
+console.log("Второе число:", second);
+console.log("Остальные числа:", rest);
+
+// Обработка лишних значений
+const [a, b, c, ...others] = [10, 20, 30, 40, 50, 60];
+console.log("a, b, c:", a, b, c);
+console.log("Лишние значения:", others);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Значения по умолчанию для массивов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ЗНАЧЕНИЯ ПО УМОЛЧАНИЮ ДЛЯ МАССИВОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Значения по умолчанию и объявление переменных</div>
+                <div class="code-block">// Значения по умолчанию для массивов
+const partialArray = [100, 200];
+const [x = 0, y = 0, z = 300] = partialArray;
+
+console.log("x:", x); // 100 (из массива)
+console.log("y:", y); // 200 (из массива)
+console.log("z:", z); // 300 (по умолчанию)
+
+// Функции по умолчанию для массивов
+function getDefaultMessage() {
+    return 'Сообщение по умолчанию';
+}
+
+const messages = ['Привет'];
+const [msg1 = getDefaultMessage(), msg2 = getDefaultMessage()] = messages;
+console.log("msg1:", msg1); // 'Привет' (из массива)
+console.log("msg2:", msg2); // 'Сообщение по умолчанию' (функция)
+
+// Объявление переменных при деструктуризации
+const [newVar1, newVar2] = [500, 600];
+console.log("newVar1:", newVar1);
+console.log("newVar2:", newVar2);
+
+// Деструктуризация с существующими переменными
+let varA, varB;
+[varA, varB] = [700, 800];
+console.log("varA:", varA);
+console.log("varB:", varB);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Продвинутые техники работы с массивами</div>
+                <div class="code-block">// Обмен значений переменных
+let value1 = 'первое';
+let value2 = 'второе';
+console.log("До обмена:", value1, value2);
+
+[value1, value2] = [value2, value1];
+console.log("После обмена:", value1, value2);
+
+// Деструктуризация вложенных массивов
+const nestedArray = [1, [2, 3], [4, [5, 6]]];
+const [first, [second, third], [fourth, [fifth, sixth]]] = nestedArray;
+console.log("Вложенная деструктуризация:");
+console.log("first:", first);
+console.log("second:", second);
+console.log("third:", third);
+console.log("fourth:", fourth);
+console.log("fifth:", fifth);
+console.log("sixth:", sixth);
+
+// Деструктуризация с пропуском нескольких элементов
+const longArray = ['A', 'B', 'C', 'D', 'E', 'F'];
+const [alpha, , , delta, ...remaining] = longArray;
+console.log("alpha:", alpha);
+console.log("delta:", delta);
+console.log("remaining:", remaining);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Деструктуризация объектов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ДЕСТРУКТУРИЗАЦИЯ ОБЪЕКТОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Базовая деструктуризация объектов</div>
+                <div class="code-block">// Базовая деструктуризация объекта
+const user = {
+    name: 'Анна',
+    age: 25,
+    email: 'anna@example.com',
+    city: 'Москва'
+};
+
+// Деструктуризация объекта
+const { name, age, email } = user;
+console.log("Имя:", name);
+console.log("Возраст:", age);
+console.log("Email:", email);
+
+// Имена переменных для объектов (алиасы)
+const { name: userName, age: userAge, city: userCity } = user;
+console.log("userName:", userName);
+console.log("userAge:", userAge);
+console.log("userCity:", userCity);
+
+// Деструктуризация с несуществующими свойствами
+const { name: personName, country = 'Россия' } = user;
+console.log("personName:", personName);
+console.log("country:", country); // Значение по умолчанию</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Значения по умолчанию и вложенные объекты</div>
+                <div class="code-block">// Значения по умолчанию для объектов
+const product = {
+    title: 'Ноутбук',
+    price: 50000
+};
+
+const { 
+    title, 
+    price, 
+    category = 'электроника',
+    discount = 0 
+} = product;
+
+console.log("Название:", title);
+console.log("Цена:", price);
+console.log("Категория:", category);
+console.log("Скидка:", discount);
+
+// Вложенная деструктуризация объектов
+const company = {
+    name: 'TechCorp',
+    address: {
+        street: 'ул. Пушкина',
+        city: 'Санкт-Петербург',
+        coordinates: {
+            lat: 59.9343,
+            lng: 30.3351
+        }
+    }
+};
+
+const { 
+    name: companyName, 
+    address: { 
+        city: companyCity, 
+        coordinates: { 
+            lat, 
+            lng 
+        } 
+    } 
+} = company;
+
+console.log("Компания:", companyName);
+console.log("Город:", companyCity);
+console.log("Координаты:", lat, lng);
+
+// Объявление переменных для объектов
+const { title: productTitle, price: productPrice } = product;
+console.log("productTitle:", productTitle);
+console.log("productPrice:", productPrice);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Переменные и значения по умолчанию -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>ПЕРЕМЕННЫЕ И ЗНАЧЕНИЯ ПО УМОЛЧАНИЮ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Комбинирование алиасов и значений по умолчанию</div>
+                <div class="code-block">// Переменные и значения по умолчанию для объектов
+const employee = {
+    firstName: 'Иван',
+    lastName: 'Петров'
+};
+
+// Комбинирование алиасов и значений по умолчанию
+const { 
+    firstName: fName = 'Неизвестно', 
+    lastName: lName = 'Неизвестно', 
+    position: jobTitle = 'Сотрудник',
+    department: dept = 'Общий отдел'
+} = employee;
+
+console.log("Имя:", fName);
+console.log("Фамилия:", lName);
+console.log("Должность:", jobTitle);
+console.log("Отдел:", dept);
+
+// Деструктуризация с вычисляемыми именами свойств
+const propName = 'age';
+const dynamicUser = {
+    name: 'Мария',
+    age: 30,
+    [propName]: 30
+};
+
+const { name: userName, [propName]: userAge } = dynamicUser;
+console.log("Динамическая деструктуризация:");
+console.log("userName:", userName);
+console.log("userAge:", userAge);
+
+// Остаток объекта (...rest)
+const fullProfile = {
+    username: 'developer',
+    email: 'dev@example.com',
+    phone: '+79991234567',
+    country: 'Россия',
+    language: 'Russian'
+};
+
+const { username, email, ...additionalInfo } = fullProfile;
+console.log("username:", username);
+console.log("email:", email);
+console.log("Дополнительная информация:", additionalInfo);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Практические примеры использования</div>
+                <div class="code-block">// Практический пример: обработка ответа API
+function processApiResponse(response) {
+    // Предположим, что response - это объект от API
+    const {
+        data: {
+            user: {
+                id,
+                name,
+                profile: { avatar, bio = 'Нет описания' }
+            } = {},
+            posts = [],
+            metadata: { page, totalPages } = {}
+        } = {},
+        status,
+        message = 'Успешно'
+    } = response;
+
+    return {
+        userId: id,
+        userName: name,
+        userAvatar: avatar,
+        userBio: bio,
+        userPosts: posts,
+        currentPage: page,
+        totalPages: totalPages,
+        responseStatus: status,
+        responseMessage: message
+    };
+}
+
+// Пример использования
+const apiResponse = {
+    data: {
+        user: {
+            id: 123,
+            name: 'Алексей',
+            profile: {
+                avatar: 'avatar.jpg',
+                bio: 'Full-stack разработчик'
+            }
+        },
+        posts: ['Пост 1', 'Пост 2'],
+        metadata: {
+            page: 1,
+            totalPages: 5
+        }
+    },
+    status: 200
+};
+
+const processed = processApiResponse(apiResponse);
+console.log("Обработанный ответ API:", processed);
+
+// Деструктуризация с обработкой ошибок
+const partialResponse = {
+    data: {
+        user: null
+    },
+    status: 404
+};
+
+const safeProcessed = processApiResponse(partialResponse);
+console.log("Безопасная обработка:", safeProcessed);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Параметры функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎛️</div>
+                <h2>ПАРАМЕТРЫ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Деструктуризация параметров функций</div>
+                <div class="code-block">// Деструктуризация объектов параметров функций
+function createUser({ name, age, email, role = 'user' }) {
+    return {
+        username: name.toLowerCase().replace(/\s+/g, ''),
+        age,
+        email,
+        role,
+        createdAt: new Date().toISOString()
+    };
+}
+
+// Использование функции
+const userConfig = {
+    name: 'Сергей Иванов',
+    age: 28,
+    email: 'sergey@example.com'
+};
+
+const newUser = createUser(userConfig);
+console.log("Новый пользователь:", newUser);
+
+// Деструктуризация с вложенными объектами
+function updateProfile({ 
+    user: { id, name }, 
+    profile: { bio = '', avatar = 'default.jpg' } = {} 
+}) {
+    return {
+        userId: id,
+        userName: name,
+        userBio: bio,
+        userAvatar: avatar,
+        updatedAt: new Date().toLocaleString()
+    };
+}
+
+const updateData = {
+    user: {
+        id: 456,
+        name: 'Ольга'
+    },
+    profile: {
+        bio: 'Frontend разработчик'
+    }
+};
+
+const updatedProfile = updateProfile(updateData);
+console.log("Обновленный профиль:", updatedProfile);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Комбинирование массивов и объектов в параметрах</div>
+                <div class="code-block">// Комбинирование деструктуризации массивов и объектов
+function processOrder([firstItem, ...otherItems], { 
+    customer: { name, phone } = {}, 
+    shipping: { address, method = 'standard' } = {} 
+}) {
+    return {
+        primaryItem: firstItem,
+        additionalItems: otherItems,
+        customerName: name,
+        customerPhone: phone,
+        shippingAddress: address,
+        shippingMethod: method,
+        processedAt: new Date().toLocaleString()
+    };
+}
+
+// Пример использования
+const orderItems = ['Ноутбук', 'Мышка', 'Сумка'];
+const orderInfo = {
+    customer: {
+        name: 'Дмитрий',
+        phone: '+79998887766'
+    },
+    shipping: {
+        address: 'ул. Ленина, 123',
+        method: 'express'
+    }
+};
+
+const orderResult = processOrder(orderItems, orderInfo);
+console.log("Обработанный заказ:", orderResult);
+
+// Деструктуризация в стрелочных функциях
+const calculateStats = ([min, max, ...values]) => {
+    const sum = values.reduce((acc, val) => acc + val, 0);
+    const average = sum / values.length;
+    
+    return {
+        minimum: min,
+        maximum: max,
+        totalValues: values.length,
+        sum: sum,
+        average: average.toFixed(2)
+    };
+};
+
+const dataArray = [10, 90, 20, 30, 40, 50, 60, 70, 80];
+const stats = calculateStats(dataArray);
+console.log("Статистика данных:", stats);
+
+// Деструктуризация с значениями по умолчанию для всей функции
+function configureApp({
+    theme = 'dark',
+    language = 'ru',
+    notifications = true,
+    fontSize = 16
+} = {}) {
+    return {
+        theme,
+        language,
+        notifications,
+        fontSize,
+        configuredAt: new Date().toLocaleString()
+    };
+}
+
+console.log("Конфигурация по умолчанию:", configureApp());
+console.log("Кастомная конфигурация:", configureApp({ theme: 'light', fontSize: 18 }));</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Деструктуризация &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Деструктуризация массивов
+        function runTask1() {
+            const colors = ['красный', 'зеленый', 'синий'];
+            const [firstColor, secondColor, thirdColor] = colors;
+            const [primaryColor, , tertiaryColor] = colors;
+            
+            let output = '';
+            output += "Первый цвет: " + firstColor + '\n';
+            output += "Второй цвет: " + secondColor + '\n';
+            output += "Третий цвет: " + thirdColor + '\n\n';
+            output += "Основной цвет: " + primaryColor + '\n';
+            output += "Третичный цвет: " + tertiaryColor + '\n';
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            function getCoordinates() {
+                return [40.7128, -74.0060, 85, 'Нью-Йорк'];
+            }
+
+            const [latitude, longitude, elevation, city] = getCoordinates();
+            const numbers = [1, 2, 3, 4, 5, 6];
+            const [first, second, ...rest] = numbers;
+            const [a, b, c, ...others] = [10, 20, 30, 40, 50, 60];
+            
+            let output = '';
+            output += "Широта: " + latitude + '\n';
+            output += "Долгота: " + longitude + '\n';
+            output += "Высота: " + elevation + '\n';
+            output += "Город: " + city + '\n\n';
+            output += "Первое число: " + first + '\n';
+            output += "Второе число: " + second + '\n';
+            output += "Остальные числа: " + JSON.stringify(rest) + '\n\n';
+            output += "a, b, c: " + a + ', ' + b + ', ' + c + '\n';
+            output += "Лишние значения: " + JSON.stringify(others) + '\n';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Значения по умолчанию для массивов
+        function runTask3() {
+            const partialArray = [100, 200];
+            const [x = 0, y = 0, z = 300] = partialArray;
+
+            function getDefaultMessage() {
+                return 'Сообщение по умолчанию';
+            }
+
+            const messages = ['Привет'];
+            const [msg1 = getDefaultMessage(), msg2 = getDefaultMessage()] = messages;
+            const [newVar1, newVar2] = [500, 600];
+            
+            let varA, varB;
+            [varA, varB] = [700, 800];
+            
+            let output = '';
+            output += "x: " + x + '\n';
+            output += "y: " + y + '\n';
+            output += "z: " + z + '\n\n';
+            output += "msg1: " + msg1 + '\n';
+            output += "msg2: " + msg2 + '\n\n';
+            output += "newVar1: " + newVar1 + '\n';
+            output += "newVar2: " + newVar2 + '\n\n';
+            output += "varA: " + varA + '\n';
+            output += "varB: " + varB + '\n';
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let value1 = 'первое';
+            let value2 = 'второе';
+            
+            let output = '';
+            output += "До обмена: " + value1 + ', ' + value2 + '\n';
+            [value1, value2] = [value2, value1];
+            output += "После обмена: " + value1 + ', ' + value2 + '\n\n';
+            
+            const nestedArray = [1, [2, 3], [4, [5, 6]]];
+            const [first, [second, third], [fourth, [fifth, sixth]]] = nestedArray;
+            
+            output += "Вложенная деструктуризация:\n";
+            output += "first: " + first + '\n';
+            output += "second: " + second + '\n';
+            output += "third: " + third + '\n';
+            output += "fourth: " + fourth + '\n';
+            output += "fifth: " + fifth + '\n';
+            output += "sixth: " + sixth + '\n\n';
+            
+            const longArray = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const [alpha, , , delta, ...remaining] = longArray;
+            output += "alpha: " + alpha + '\n';
+            output += "delta: " + delta + '\n';
+            output += "remaining: " + JSON.stringify(remaining) + '\n';
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Деструктуризация объектов
+        function runTask5() {
+            const user = {
+                name: 'Анна',
+                age: 25,
+                email: 'anna@example.com',
+                city: 'Москва'
+            };
+
+            const { name, age, email } = user;
+            const { name: userName, age: userAge, city: userCity } = user;
+            const { name: personName, country = 'Россия' } = user;
+            
+            let output = '';
+            output += "Имя: " + name + '\n';
+            output += "Возраст: " + age + '\n';
+            output += "Email: " + email + '\n\n';
+            output += "userName: " + userName + '\n';
+            output += "userAge: " + userAge + '\n';
+            output += "userCity: " + userCity + '\n\n';
+            output += "personName: " + personName + '\n';
+            output += "country: " + country + '\n';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            const product = {
+                title: 'Ноутбук',
+                price: 50000
+            };
+
+            const { 
+                title, 
+                price, 
+                category = 'электроника',
+                discount = 0 
+            } = product;
+
+            const company = {
+                name: 'TechCorp',
+                address: {
+                    street: 'ул. Пушкина',
+                    city: 'Санкт-Петербург',
+                    coordinates: {
+                        lat: 59.9343,
+                        lng: 30.3351
+                    }
+                }
+            };
+
+            const { 
+                name: companyName, 
+                address: { 
+                    city: companyCity, 
+                    coordinates: { 
+                        lat, 
+                        lng 
+                    } 
+                } 
+            } = company;
+
+            const { title: productTitle, price: productPrice } = product;
+            
+            let output = '';
+            output += "Название: " + title + '\n';
+            output += "Цена: " + price + '\n';
+            output += "Категория: " + category + '\n';
+            output += "Скидка: " + discount + '\n\n';
+            output += "Компания: " + companyName + '\n';
+            output += "Город: " + companyCity + '\n';
+            output += "Координаты: " + lat + ', ' + lng + '\n\n';
+            output += "productTitle: " + productTitle + '\n';
+            output += "productPrice: " + productPrice + '\n';
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Переменные и значения по умолчанию
+        function runTask7() {
+            const employee = {
+                firstName: 'Иван',
+                lastName: 'Петров'
+            };
+
+            const { 
+                firstName: fName = 'Неизвестно', 
+                lastName: lName = 'Неизвестно', 
+                position: jobTitle = 'Сотрудник',
+                department: dept = 'Общий отдел'
+            } = employee;
+
+            const propName = 'age';
+            const dynamicUser = {
+                name: 'Мария',
+                age: 30,
+                [propName]: 30
+            };
+
+            const { name: userName, [propName]: userAge } = dynamicUser;
+
+            const fullProfile = {
+                username: 'developer',
+                email: 'dev@example.com',
+                phone: '+79991234567',
+                country: 'Россия',
+                language: 'Russian'
+            };
+
+            const { username, email, ...additionalInfo } = fullProfile;
+            
+            let output = '';
+            output += "Имя: " + fName + '\n';
+            output += "Фамилия: " + lName + '\n';
+            output += "Должность: " + jobTitle + '\n';
+            output += "Отдел: " + dept + '\n\n';
+            output += "Динамическая деструктуризация:\n";
+            output += "userName: " + userName + '\n';
+            output += "userAge: " + userAge + '\n\n';
+            output += "username: " + username + '\n';
+            output += "email: " + email + '\n';
+            output += "Дополнительная информация: " + JSON.stringify(additionalInfo, null, 2) + '\n';
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            function processApiResponse(response) {
+                const {
+                    data: {
+                        user: {
+                            id,
+                            name,
+                            profile: { avatar, bio = 'Нет описания' }
+                        } = {},
+                        posts = [],
+                        metadata: { page, totalPages } = {}
+                    } = {},
+                    status,
+                    message = 'Успешно'
+                } = response;
+
+                return {
+                    userId: id,
+                    userName: name,
+                    userAvatar: avatar,
+                    userBio: bio,
+                    userPosts: posts,
+                    currentPage: page,
+                    totalPages: totalPages,
+                    responseStatus: status,
+                    responseMessage: message
+                };
+            }
+
+            const apiResponse = {
+                data: {
+                    user: {
+                        id: 123,
+                        name: 'Алексей',
+                        profile: {
+                            avatar: 'avatar.jpg',
+                            bio: 'Full-stack разработчик'
+                        }
+                    },
+                    posts: ['Пост 1', 'Пост 2'],
+                    metadata: {
+                        page: 1,
+                        totalPages: 5
+                    }
+                },
+                status: 200
+            };
+
+            const processed = processApiResponse(apiResponse);
+            const partialResponse = {
+                data: {
+                    user: null
+                },
+                status: 404
+            };
+
+            const safeProcessed = processApiResponse(partialResponse);
+            
+            let output = '';
+            output += "Обработанный ответ API: " + JSON.stringify(processed, null, 2) + '\n\n';
+            output += "Безопасная обработка: " + JSON.stringify(safeProcessed, null, 2) + '\n';
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Параметры функций
+        function runTask9() {
+            function createUser({ name, age, email, role = 'user' }) {
+                return {
+                    username: name.toLowerCase().replace(/\s+/g, ''),
+                    age,
+                    email,
+                    role,
+                    createdAt: new Date().toISOString()
+                };
+            }
+
+            function updateProfile({ 
+                user: { id, name }, 
+                profile: { bio = '', avatar = 'default.jpg' } = {} 
+            }) {
+                return {
+                    userId: id,
+                    userName: name,
+                    userBio: bio,
+                    userAvatar: avatar,
+                    updatedAt: new Date().toLocaleString()
+                };
+            }
+
+            const userConfig = {
+                name: 'Сергей Иванов',
+                age: 28,
+                email: 'sergey@example.com'
+            };
+
+            const newUser = createUser(userConfig);
+            const updateData = {
+                user: {
+                    id: 456,
+                    name: 'Ольга'
+                },
+                profile: {
+                    bio: 'Frontend разработчик'
+                }
+            };
+
+            const updatedProfile = updateProfile(updateData);
+            
+            let output = '';
+            output += "Новый пользователь: " + JSON.stringify(newUser, null, 2) + '\n\n';
+            output += "Обновленный профиль: " + JSON.stringify(updatedProfile, null, 2) + '\n';
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            function processOrder([firstItem, ...otherItems], { 
+                customer: { name, phone } = {}, 
+                shipping: { address, method = 'standard' } = {} 
+            }) {
+                return {
+                    primaryItem: firstItem,
+                    additionalItems: otherItems,
+                    customerName: name,
+                    customerPhone: phone,
+                    shippingAddress: address,
+                    shippingMethod: method,
+                    processedAt: new Date().toLocaleString()
+                };
+            }
+
+            const calculateStats = ([min, max, ...values]) => {
+                const sum = values.reduce((acc, val) => acc + val, 0);
+                const average = sum / values.length;
+                
+                return {
+                    minimum: min,
+                    maximum: max,
+                    totalValues: values.length,
+                    sum: sum,
+                    average: average.toFixed(2)
+                };
+            };
+
+            function configureApp({
+                theme = 'dark',
+                language = 'ru',
+                notifications = true,
+                fontSize = 16
+            } = {}) {
+                return {
+                    theme,
+                    language,
+                    notifications,
+                    fontSize,
+                    configuredAt: new Date().toLocaleString()
+                };
+            }
+
+            const orderItems = ['Ноутбук', 'Мышка', 'Сумка'];
+            const orderInfo = {
+                customer: {
+                    name: 'Дмитрий',
+                    phone: '+79998887766'
+                },
+                shipping: {
+                    address: 'ул. Ленина, 123',
+                    method: 'express'
+                }
+            };
+
+            const orderResult = processOrder(orderItems, orderInfo);
+            const dataArray = [10, 90, 20, 30, 40, 50, 60, 70, 80];
+            const stats = calculateStats(dataArray);
+            
+            let output = '';
+            output += "Обработанный заказ: " + JSON.stringify(orderResult, null, 2) + '\n\n';
+            output += "Статистика данных: " + JSON.stringify(stats, null, 2) + '\n\n';
+            output += "Конфигурация по умолчанию: " + JSON.stringify(configureApp(), null, 2) + '\n';
+            output += "Кастомная конфигурация: " + JSON.stringify(configureApp({ theme: 'light', fontSize: 18 }), null, 2) + '\n';
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

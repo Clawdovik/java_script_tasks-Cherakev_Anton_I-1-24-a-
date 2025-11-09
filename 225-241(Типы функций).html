@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Типы функций</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ТИПЫ ФУНКЦИЙ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Разнообразие способов создания и использования функций</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Исходный код функции и результат -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2>ИСХОДНЫЙ КОД ФУНКЦИИ И РЕЗУЛЬТАТ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Исходный код функции и результат</div>
+                <div class="code-block">// Function Declaration
+function multiply(a, b) {
+    return a * b;
+}
+
+// Получение исходного кода функции
+console.log("Исходный код функции multiply:");
+console.log(multiply.toString());
+
+// Результат выполнения функции
+console.log("Результат multiply(5, 3):", multiply(5, 3));
+
+// Сравнение функции и её результата
+console.log("Тип функции:", typeof multiply);
+console.log("Тип результата:", typeof multiply(5, 3));
+
+// Функция, возвращающая свой собственный код
+function selfCode() {
+    return selfCode.toString();
+}
+
+console.log("Функция, возвращающая свой код:");
+console.log(selfCode());</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Функция как переменная</div>
+                <div class="code-block">// Функция - это объект, который можно присваивать переменным
+const greet = function(name) {
+    return `Привет, ${name}!`;
+};
+
+console.log("Тип переменной greet:", typeof greet);
+console.log("Вызов greet('Мир'):", greet('Мир'));
+
+// Функции можно передавать как аргументы
+function processUser(name, processor) {
+    return processor(name);
+}
+
+console.log("Передача функции как аргумента:");
+console.log(processUser("Анна", greet));
+
+// Функции можно возвращать из функций
+function createGreeter(greeting) {
+    return function(name) {
+        return `${greeting}, ${name}!`;
+    };
+}
+
+const helloGreeter = createGreeter("Hello");
+const hiGreeter = createGreeter("Hi");
+
+console.log("helloGreeter('John'):", helloGreeter('John'));
+console.log("hiGreeter('Jane'):", hiGreeter('Jane'));</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Запись функции в другую переменную -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ЗАПИСЬ ФУНКЦИИ В ДРУГУЮ ПЕРЕМЕННУЮ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Присваивание функций в переменные</div>
+                <div class="code-block">// Исходная функция
+function originalFunction(x) {
+    return x * x;
+}
+
+// Присваивание функции другой переменной
+const squared = originalFunction;
+
+console.log("originalFunction(5):", originalFunction(5));
+console.log("squared(5):", squared(5));
+
+// Проверка идентичности
+console.log("originalFunction === squared:", originalFunction === squared);
+console.log("originalFunction.toString() === squared.toString():", 
+    originalFunction.toString() === squared.toString());
+
+// Цепочка присваиваний
+const funcA = function() { return "A"; };
+const funcB = funcA;
+const funcC = funcB;
+
+console.log("funcA():", funcA());
+console.log("funcB():", funcB());
+console.log("funcC():", funcC());
+console.log("Все равны:", funcA === funcB && funcB === funcC);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Совпадение имени функции и переменной</div>
+                <div class="code-block">// Function Declaration
+function calculate(x) {
+    return x + 10;
+}
+
+console.log("calculate(5):", calculate(5));
+
+// Присваивание новой функции переменной calculate
+calculate = function(x) {
+    return x * 2;
+};
+
+console.log("calculate(5) после переопределения:", calculate(5));
+
+// Интересный случай с Function Declaration
+console.log("Исследование hoisting:");
+
+// Function Declaration "всплывает"
+console.log("testHoisting(10):", testHoisting(10));
+
+function testHoisting(x) {
+    return x + 100;
+}
+
+// Переопределение после использования
+testHoisting = function(x) {
+    return x - 50;
+};
+
+console.log("testHoisting(10) после переопределения:", testHoisting(10));
+
+// Попытка переопределить const функцию
+try {
+    const constFunc = function() { return "original"; };
+    constFunc = function() { return "new"; }; // Ошибка!
+} catch (e) {
+    console.log("Ошибка при переопределении const:", e.message);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Типы объявлений функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎭</div>
+                <h2>ТИПЫ ОБЪЯВЛЕНИЙ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Разница объявлений функции</div>
+                <div class="code-block">// 1. Function Declaration (поднимается)
+console.log("До объявления:", declarationFunc()); // Работает!
+
+function declarationFunc() {
+    return "Function Declaration";
+}
+
+// 2. Function Expression (не поднимается)
+try {
+    console.log("До присваивания:", expressionFunc()); // Ошибка!
+} catch (e) {
+    console.log("Ошибка с Function Expression:", e.message);
+}
+
+const expressionFunc = function() {
+    return "Function Expression";
+};
+
+// 3. Arrow Function (не поднимается)
+const arrowFunc = () => {
+    return "Arrow Function";
+};
+
+// 4. Named Function Expression
+const namedExpression = function internalName() {
+    console.log("Внутреннее имя:", internalName.name);
+    return "Named Expression";
+};
+
+console.log("--- После всех объявлений ---");
+console.log("declarationFunc():", declarationFunc());
+console.log("expressionFunc():", expressionFunc());
+console.log("arrowFunc():", arrowFunc());
+console.log("namedExpression():", namedExpression());
+
+// Различия в this и arguments
+function regularFunction() {
+    return {
+        hasThis: this !== undefined,
+        hasArguments: arguments.length > 0
+    };
+}
+
+const arrowFunction = () => {
+    return {
+        hasThis: this !== undefined,
+        hasArguments: arguments !== undefined // arguments не определен в стрелочных функциях
+    };
+};
+
+console.log("regularFunction(1,2,3):", regularFunction(1,2,3));
+console.log("arrowFunction(1,2,3):", arrowFunction(1,2,3));</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Точка с запятой и нюансы выражений</div>
+                <div class="code-block">// Function Declaration - точка с запятой не нужна
+function func1() {
+    return "Function Declaration"
+} // нет точки с запятой
+
+// Function Expression - точка с запятой рекомендуется
+const func2 = function() {
+    return "Function Expression";
+}; // точка с запятой
+
+// Стрелочная функция - точка с запятой рекомендуется
+const func3 = () => {
+    return "Arrow Function";
+}; // точка с запятой
+
+// Проблема без точки с запятой (редкий случай)
+const a = 1
+const b = 2
+(function() {
+    console.log("Это IIFE, а не умножение!");
+})()
+// Без точки с запятой выше это может быть воспринято как:
+// const b = 2(function() { ... })()
+// что вызовет ошибку
+
+// Function Expression с именем
+const factorial = function fact(n) {
+    console.log("Внутреннее имя функции:", fact.name);
+    if (n <= 1) return 1;
+    return n * fact(n - 1); // Рекурсия через внутреннее имя
+};
+
+console.log("factorial(5):", factorial(5));
+// console.log(fact(5)); // Ошибка - fact не доступен снаружи
+
+// Проверка типа функции
+console.log("Тип factorial:", typeof factorial);
+console.log("factorial instanceof Function:", factorial instanceof Function);
+console.log("factorial.constructor:", factorial.constructor);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Выражения и объекты с функциями -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ВЫРАЖЕНИЯ И ОБЪЕКТЫ С ФУНКЦИЯМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Выражение слева и справа</div>
+                <div class="code-block">// Функция как часть выражения справа
+const result1 = (function() {
+    return "Немедленно вызываемая функция";
+})();
+
+const result2 = function() { 
+    return "Обычная функция"; 
+};
+
+console.log("result1:", result1);
+console.log("result2:", result2);
+console.log("result2():", result2());
+
+// Функция в арифметическом выражении
+const calculations = {
+    add: function(a, b) { return a + b; },
+    multiply: (a, b) => a * b,
+    power: function power(x, n) {
+        return n === 0 ? 1 : x * power(x, n - 1);
+    }
+};
+
+console.log("calculations.add(2, 3):", calculations.add(2, 3));
+console.log("calculations.multiply(4, 5):", calculations.multiply(4, 5));
+console.log("calculations.power(2, 8):", calculations.power(2, 8));
+
+// Функция как результат тернарного оператора
+const getProcessor = (type) => 
+    type === "uppercase" 
+        ? (str) => str.toUpperCase()
+        : (str) => str.toLowerCase();
+
+const upperProcessor = getProcessor("uppercase");
+const lowerProcessor = getProcessor("lowercase");
+
+console.log('upperProcessor("hello"):', upperProcessor("hello"));
+console.log('lowerProcessor("WORLD"):', lowerProcessor("WORLD"));
+
+// Функция в логическом выражении
+const config = {
+    debug: true,
+    logger: function(message) {
+        if (this.debug) {
+            console.log("DEBUG:", message);
+        }
+    }
+};
+
+config.logger("Приложение запущено");</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Объект с функциями и их применение</div>
+                <div class="code-block">// Объект-калькулятор с методами
+const calculator = {
+    // Свойства
+    memory: 0,
+    history: [],
+    
+    // Методы
+    add: function(a, b) {
+        const result = a + b;
+        this.history.push(`${a} + ${b} = ${result}`);
+        return result;
+    },
+    
+    subtract(a, b) { // Сокращенный синтаксис метода
+        const result = a - b;
+        this.history.push(`${a} - ${b} = ${result}`);
+        return result;
+    },
+    
+    // Стрелочная функция (не имеет своего this)
+    clearHistory: () => {
+        // this.history = []; // Не сработает - this не объект calculator
+        console.log("Стрелочная функция не может использовать this объекта");
+    },
+    
+    // Метод, использующий другие методы
+    calculate: function(operation, a, b) {
+        let result;
+        switch(operation) {
+            case '+': result = this.add(a, b); break;
+            case '-': result = this.subtract(a, b); break;
+            case '*': result = this.multiply(a, b); break;
+            case '/': result = this.divide(a, b); break;
+            default: throw new Error("Неизвестная операция");
+        }
+        this.memory = result;
+        return result;
+    },
+    
+    // Динамическое добавление методов
+    multiply: function(a, b) { return a * b; },
+    divide: function(a, b) { return a / b; },
+    
+    // Геттер для последней операции
+    get lastOperation() {
+        return this.history[this.history.length - 1] || "Нет операций";
+    },
+    
+    // Метод для отображения истории
+    showHistory: function() {
+        console.log("История операций:");
+        this.history.forEach((op, index) => {
+            console.log(`${index + 1}. ${op}`);
+        });
+    }
+};
+
+// Использование калькулятора
+console.log("calculator.add(10, 5):", calculator.add(10, 5));
+console.log("calculator.subtract(10, 3):", calculator.subtract(10, 3));
+console.log("calculator.calculate('*', 4, 5):", calculator.calculate('*', 4, 5));
+console.log("Последняя операция:", calculator.lastOperation);
+
+calculator.showHistory();
+
+// Объект с функциями-обработчиками
+const eventHandlers = {
+    onClick: function(event) {
+        console.log("Клик по:", event.target);
+        this.clickCount++;
+    },
+    
+    onHover: function(event) {
+        console.log("Наведение на элемент");
+    },
+    
+    // Инициализация
+    clickCount: 0,
+    init: function() {
+        console.log("Обработчики инициализированы, кликов:", this.clickCount);
+    }
+};
+
+eventHandlers.init();
+// Имитация событий
+eventHandlers.onClick({ target: "button#submit" });
+eventHandlers.onClick({ target: "div.container" });
+console.log("Всего кликов:", eventHandlers.clickCount);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Типы функций &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Глобальные переменные для задач
+        let calculate = function(x) { return x + 10; };
+        let testHoisting = function(x) { return x + 100; };
+
+        // Раздел 1: Исходный код функции и результат
+        function runTask1() {
+            let output = '';
+            
+            function multiply(a, b) {
+                return a * b;
+            }
+
+            function selfCode() {
+                return selfCode.toString();
+            }
+            
+            output += "Исходный код функции multiply:\n";
+            output += multiply.toString() + "\n\n";
+            output += "Результат multiply(5, 3): " + multiply(5, 3) + "\n\n";
+            output += "Тип функции: " + typeof multiply + "\n";
+            output += "Тип результата: " + typeof multiply(5, 3) + "\n\n";
+            output += "Функция, возвращающая свой код:\n";
+            output += selfCode() + "\n";
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = '';
+            
+            const greet = function(name) {
+                return `Привет, ${name}!`;
+            };
+
+            function processUser(name, processor) {
+                return processor(name);
+            }
+
+            function createGreeter(greeting) {
+                return function(name) {
+                    return `${greeting}, ${name}!`;
+                };
+            }
+            
+            output += "Тип переменной greet: " + typeof greet + "\n";
+            output += "Вызов greet('Мир'): " + greet('Мир') + "\n\n";
+            output += "Передача функции как аргумента:\n";
+            output += processUser("Анна", greet) + "\n\n";
+            
+            const helloGreeter = createGreeter("Hello");
+            const hiGreeter = createGreeter("Hi");
+            
+            output += "helloGreeter('John'): " + helloGreeter('John') + "\n";
+            output += "hiGreeter('Jane'): " + hiGreeter('Jane') + "\n";
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Запись функции в другую переменную
+        function runTask3() {
+            let output = '';
+            
+            function originalFunction(x) {
+                return x * x;
+            }
+
+            const squared = originalFunction;
+            const funcA = function() { return "A"; };
+            const funcB = funcA;
+            const funcC = funcB;
+            
+            output += "originalFunction(5): " + originalFunction(5) + "\n";
+            output += "squared(5): " + squared(5) + "\n\n";
+            output += "originalFunction === squared: " + (originalFunction === squared) + "\n";
+            output += "originalFunction.toString() === squared.toString(): " + 
+                (originalFunction.toString() === squared.toString()) + "\n\n";
+            
+            output += "funcA(): " + funcA() + "\n";
+            output += "funcB(): " + funcB() + "\n";
+            output += "funcC(): " + funcC() + "\n";
+            output += "Все равны: " + (funcA === funcB && funcB === funcC) + "\n";
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = '';
+            
+            // Сохраняем исходные значения
+            const originalCalculate = calculate;
+            const originalTestHoisting = testHoisting;
+            
+            output += "calculate(5): " + calculate(5) + "\n\n";
+            
+            calculate = function(x) {
+                return x * 2;
+            };
+            
+            output += "calculate(5) после переопределения: " + calculate(5) + "\n\n";
+            
+            output += "Исследование hoisting:\n";
+            output += "testHoisting(10): " + testHoisting(10) + "\n\n";
+            
+            function testHoisting(x) {
+                return x + 100;
+            }
+            
+            testHoisting = function(x) {
+                return x - 50;
+            };
+            
+            output += "testHoisting(10) после переопределения: " + testHoisting(10) + "\n\n";
+            
+            try {
+                const constFunc = function() { return "original"; };
+                constFunc = function() { return "new"; };
+            } catch (e) {
+                output += "Ошибка при переопределении const: " + e.message + "\n";
+            }
+            
+            // Восстанавливаем исходные значения
+            calculate = originalCalculate;
+            testHoisting = originalTestHoisting;
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Типы объявлений функций
+        function runTask5() {
+            let output = '';
+            
+            output += "До объявления: " + declarationFunc() + "\n\n";
+            
+            function declarationFunc() {
+                return "Function Declaration";
+            }
+
+            try {
+                output += "До присваивания: " + expressionFunc() + "\n";
+            } catch (e) {
+                output += "Ошибка с Function Expression: " + e.message + "\n";
+            }
+
+            const expressionFunc = function() {
+                return "Function Expression";
+            };
+
+            const arrowFunc = () => {
+                return "Arrow Function";
+            };
+
+            const namedExpression = function internalName() {
+                output += "Внутреннее имя: " + internalName.name + "\n";
+                return "Named Expression";
+            };
+            
+            output += "\n--- После всех объявлений ---\n";
+            output += "declarationFunc(): " + declarationFunc() + "\n";
+            output += "expressionFunc(): " + expressionFunc() + "\n";
+            output += "arrowFunc(): " + arrowFunc() + "\n";
+            output += "namedExpression(): " + namedExpression() + "\n\n";
+            
+            function regularFunction() {
+                return {
+                    hasThis: this !== undefined,
+                    hasArguments: arguments.length > 0
+                };
+            }
+
+            const arrowFunction = () => {
+                return {
+                    hasThis: this !== undefined,
+                    hasArguments: arguments !== undefined
+                };
+            };
+            
+            output += "regularFunction(1,2,3): " + JSON.stringify(regularFunction(1,2,3)) + "\n";
+            output += "arrowFunction(1,2,3): " + JSON.stringify(arrowFunction(1,2,3)) + "\n";
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = '';
+            
+            function func1() {
+                return "Function Declaration"
+            }
+
+            const func2 = function() {
+                return "Function Expression";
+            };
+
+            const func3 = () => {
+                return "Arrow Function";
+            };
+
+            const factorial = function fact(n) {
+                output += "Внутреннее имя функции: " + fact.name + "\n";
+                if (n <= 1) return 1;
+                return n * fact(n - 1);
+            };
+            
+            output += "factorial(5): " + factorial(5) + "\n\n";
+            output += "Тип factorial: " + typeof factorial + "\n";
+            output += "factorial instanceof Function: " + (factorial instanceof Function) + "\n";
+            output += "factorial.constructor: " + factorial.constructor + "\n";
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Выражения и объекты с функциями
+        function runTask7() {
+            let output = '';
+            
+            const result1 = (function() {
+                return "Немедленно вызываемая функция";
+            })();
+
+            const result2 = function() { 
+                return "Обычная функция"; 
+            };
+            
+            output += "result1: " + result1 + "\n";
+            output += "result2: " + result2 + "\n";
+            output += "result2(): " + result2() + "\n\n";
+            
+            const calculations = {
+                add: function(a, b) { return a + b; },
+                multiply: (a, b) => a * b,
+                power: function power(x, n) {
+                    return n === 0 ? 1 : x * power(x, n - 1);
+                }
+            };
+            
+            output += "calculations.add(2, 3): " + calculations.add(2, 3) + "\n";
+            output += "calculations.multiply(4, 5): " + calculations.multiply(4, 5) + "\n";
+            output += "calculations.power(2, 8): " + calculations.power(2, 8) + "\n\n";
+            
+            const getProcessor = (type) => 
+                type === "uppercase" 
+                    ? (str) => str.toUpperCase()
+                    : (str) => str.toLowerCase();
+
+            const upperProcessor = getProcessor("uppercase");
+            const lowerProcessor = getProcessor("lowercase");
+            
+            output += 'upperProcessor("hello"): ' + upperProcessor("hello") + "\n";
+            output += 'lowerProcessor("WORLD"): ' + lowerProcessor("WORLD") + "\n";
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = '';
+            
+            const calculator = {
+                memory: 0,
+                history: [],
+                
+                add: function(a, b) {
+                    const result = a + b;
+                    this.history.push(`${a} + ${b} = ${result}`);
+                    return result;
+                },
+                
+                subtract(a, b) {
+                    const result = a - b;
+                    this.history.push(`${a} - ${b} = ${result}`);
+                    return result;
+                },
+                
+                clearHistory: () => {
+                    output += "Стрелочная функция не может использовать this объекта\n";
+                },
+                
+                calculate: function(operation, a, b) {
+                    let result;
+                    switch(operation) {
+                        case '+': result = this.add(a, b); break;
+                        case '-': result = this.subtract(a, b); break;
+                        case '*': result = this.multiply(a, b); break;
+                        case '/': result = this.divide(a, b); break;
+                        default: throw new Error("Неизвестная операция");
+                    }
+                    this.memory = result;
+                    return result;
+                },
+                
+                multiply: function(a, b) { return a * b; },
+                divide: function(a, b) { return a / b; },
+                
+                get lastOperation() {
+                    return this.history[this.history.length - 1] || "Нет операций";
+                },
+                
+                showHistory: function() {
+                    output += "История операций:\n";
+                    this.history.forEach((op, index) => {
+                        output += `${index + 1}. ${op}\n`;
+                    });
+                }
+            };
+            
+            output += "calculator.add(10, 5): " + calculator.add(10, 5) + "\n";
+            output += "calculator.subtract(10, 3): " + calculator.subtract(10, 3) + "\n";
+            output += "calculator.calculate('*', 4, 5): " + calculator.calculate('*', 4, 5) + "\n";
+            output += "Последняя операция: " + calculator.lastOperation + "\n\n";
+            
+            calculator.showHistory();
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

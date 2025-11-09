@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript Tasks</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с типами данных, преобразованиями и операциями</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Работа со строками и числами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>РАБОТА СО СТРОКАМИ И ЧИСЛАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Сумма цифр строки</div>
+                <div class="code-block">let test = '12345';
+console.log(test[0] + test[1]); // Выведет 12
+console.log(Number(test[0]) + Number(test[1])); // Выведет 3</div>
+                <div class="btn-group">
+                    <button onclick="runTask1_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Сумма цифр числа</div>
+                <div class="code-block">let test2 = 12345;
+test2 = String(test2);
+console.log(Number(test2[0]) + Number(test2[1]) + Number(test2[2]) + Number(test2[3]) + Number(test2[4]));</div>
+                <div class="btn-group">
+                    <button onclick="runTask1_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Произведение цифр строки</div>
+                <div class="code-block">let test3 = '12345';
+console.log(test3[0] * test3[1] * test3[2] * test3[3] * test3[4]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Реверс числа</div>
+                <div class="code-block">let test4 = 12345;
+test4 = String(test4);
+test4 = test4[4] + test4[3] + test4[2] + test4[1] + test4[0];
+console.log(test4);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1_4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Автоматическое преобразование типов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>АВТОМАТИЧЕСКОЕ ПРЕОБРАЗОВАНИЕ ТИПОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> '5' + 2</div>
+                <div class="code-block">let a = '5' + 2;
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> '5' + '2'</div>
+                <div class="code-block">let a = '5' + '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> 5 + '2'</div>
+                <div class="code-block">let a = 5 + '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> 5 + 2</div>
+                <div class="code-block">let a = 5 + 2;
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> '5' * '2'</div>
+                <div class="code-block">let a = '5' * '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> '5' - '2'</div>
+                <div class="code-block">let a = '5' - '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> '5' / '2'</div>
+                <div class="code-block">let a = '5' / '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> '5' % '2'</div>
+                <div class="code-block">let a = '5' % '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> '5s' * '2'</div>
+                <div class="code-block">let a = '5s' * '2';
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> (-'5') + (-'2')</div>
+                <div class="code-block">let a = (-'5') + (-'2');
+console.log(a);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2_10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2_10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2_10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Вывод в документ -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📄</div>
+                <h2>ВЫВОД В ДОКУМЕНТ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> document.write с div</div>
+                <div class="code-block">document.write('&lt;div class="js_div"&gt;Какой-то div с классом js_div&lt;/div&gt;');</div>
+                <div class="btn-group">
+                    <button onclick="runTask3_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">16</span> document.write с курсивом</div>
+                <div class="code-block">document.write('&lt;i&gt;Какой-то курсивный текст&lt;/i&gt; &lt;br&gt;');</div>
+                <div class="btn-group">
+                    <button onclick="runTask3_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">17</span> document.write с переменной</div>
+                <div class="code-block">let str = 'text';
+document.write(`&lt;i&gt;${str}&lt;/i&gt;&lt;br&gt;`)</div>
+                <div class="btn-group">
+                    <button onclick="runTask3_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">18</span> document.write с числами</div>
+                <div class="code-block">document.write(`1&lt;br&gt;2&lt;br&gt;3&lt;br&gt;4&lt;br&gt;5`)</div>
+                <div class="btn-group">
+                    <button onclick="runTask3_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3_4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Функции parseInt и parseFloat -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📏</div>
+                <h2>ФУНКЦИИ PARSEINT И PARSEFLOAT</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">19</span> Сумма пикселей (parseInt)</div>
+                <div class="code-block">let a1 = '5px';
+let b1 = '6px';
+console.log(parseInt(a1) + parseInt(b1));</div>
+                <div class="btn-group">
+                    <button onclick="runTask4_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">20</span> Сумма пикселей (parseFloat)</div>
+                <div class="code-block">let a2 = '5.5px';
+let b2 = '6.25px';
+console.log(parseFloat(a2) + parseFloat(b2));</div>
+                <div class="btn-group">
+                    <button onclick="runTask4_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">21</span> Сумма пикселей с добавлением 'px'</div>
+                <div class="code-block">let a2 = '5.5px';
+let b2 = '6.25px';
+console.log(parseFloat(a2) + parseFloat(b2) + 'px');</div>
+                <div class="btn-group">
+                    <button onclick="runTask4_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4_3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Математические расчеты -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧮</div>
+                <h2>МАТЕМАТИЧЕСКИЕ РАСЧЕТЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">22</span> Секунд в сутках</div>
+                <div class="code-block">const hourPerDay = 24;
+const minutesPerHour = 60;
+const secondsPerMinute = 60;
+let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+console.log(secondsPerDay);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">23</span> Секунд в месяце (30 дней)</div>
+                <div class="code-block">const countDays = 30;
+let secondsPerMonth = countDays * secondsPerDay;
+console.log(secondsPerMonth);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">24</span> Секунд в году</div>
+                <div class="code-block">const countMonths = 12;
+let secondsPerYear = secondsPerMonth * countMonths;
+console.log(secondsPerYear);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">25</span> Минут в сутках</div>
+                <div class="code-block">let minutesPerDay = secondsPerDay / secondsPerMinute;
+console.log(minutesPerDay);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">26</span> Минут в году</div>
+                <div class="code-block">let minutesPerYear = secondsPerYear / secondsPerMinute;
+console.log(minutesPerYear);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">27</span> Байт в мегабайте</div>
+                <div class="code-block">const bytePerKbyte = 1024;
+const kbytePerMbyte = 1024;
+let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+console.log(bytePerMbyte);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">28</span> Байт в гигабайте</div>
+                <div class="code-block">const mbytePerGbyte = 1024;
+let bytePerGbyte = mbytePerGbyte * bytePerMbyte;
+console.log(bytePerGbyte);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">29</span> Байт в 10 гигабайтах</div>
+                <div class="code-block">const countGbyte = 10;
+let bytePerCountGbyte = countGbyte * bytePerGbyte;
+console.log(bytePerCountGbyte);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">30</span> Байт в терабайте</div>
+                <div class="code-block">const gbytePerTbyte = 1024;
+let bytePerTbyte = gbytePerTbyte * bytePerGbyte;
+console.log(bytePerTbyte);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">31</span> Килобайт в терабайте</div>
+                <div class="code-block">let kbytePerTbyte = bytePerTbyte / bytePerKbyte;
+console.log(kbytePerTbyte);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5_10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5_10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5_10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Инкремент и декремент -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">➕➖</div>
+                <h2>ИНКРЕМЕНТ И ДЕКРЕМЕНТ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">32</span> Инкремент и декремент</div>
+                <div class="code-block">let num1 = 10;
+num1++; // 11
+num1++; // 12
+num1--; // 11
+console.log(num1);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">33</span> Префиксный и постфиксный инкремент</div>
+                <div class="code-block">let a1 = 0;
+let a2 = 0;
+console.log(++a1, a2++);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6_2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Исправление ошибок -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🐛</div>
+                <h2>ИСПРАВЛЕНИЕ ОШИБОК</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">34</span> Сумма чисел (исправление)</div>
+                <div class="code-block">let num1 = 1;
+let num2 = 2;
+// console.log('сумма: ' + num1 + num2); - здесь ошибка, числа сложатся, как строки
+console.log('сумма: ' + (num1 + num2)); // Правильное решение</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">35</span> Сумма чисел с третьей переменной</div>
+                <div class="code-block">let a = 1;
+let b = 2;
+// console.log(a + b + c); // Выведет ошибку, не объявлена переменная
+let c = 3;
+console.log(a + b + c); // Правильное решение</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">36</span> Сумма цифр числа (исправление)</div>
+                <div class="code-block">let num3 = '123';
+// let sum = num[0] + num[1] + num[2]; // Произойдет сложение строк
+let sum = Number(num3[0]) + Number(num3[1]) + Number(num3[2]); // Правильное
+console.log(sum);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">37</span> Первая цифра числа (исправление)</div>
+                <div class="code-block">let num4 = 123;
+let numStr4 = String(num4);
+console.log(num4[0]); // Неверно, будет undefined
+console.log(numStr4[0]); // Верно</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">38</span> Постфиксный инкремент (исправление)</div>
+                <div class="code-block">let a5 = 0;
+console.log(a5++); // Потому что переменная не успела записать сложение
+let b5 = 0;
+console.log(++b5); // Правильное решение</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">39</span> Количество цифр в числе (исправление)</div>
+                <div class="code-block">let num6 = 123;
+console.log(num6.length); // Будет undefined, потому что это не строка
+console.log(String(num6).length); // Правильное решение</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">40</span> Секунд в сутках (исправление)</div>
+                <div class="code-block">let a7 = 24 / 60 / 60; // Неправильная формула
+console.log(a7);
+let b7 = 24 * 60 * 60; // Правильное решение
+console.log(b7);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">41</span> Количество цифр в числе 2 (исправление)</div>
+                <div class="code-block">let num8 = 123;
+let str8 = String(num8);
+console.log(num8.length); // Выведет undefined, потому что неправильный тип данных и не та переменная
+console.log(str8.length); // Правильное решение</div>
+                <div class="btn-group">
+                    <button onclick="runTask7_8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7_8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7_8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 8: Работа с символами строк -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔤</div>
+                <h2>РАБОТА С СИМВОЛАМИ СТРОК</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">42</span> Символы строки через один</div>
+                <div class="code-block">let string1 = 'abcde';
+console.log(string1[0] + string1[2] + string1[4]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">43</span> Реверс строки</div>
+                <div class="code-block">let string2 = 'abcde';
+let newString2 = string2[4] + string2[3] + string2[2] + string2[1] + string2[0]; 
+console.log(newString2);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">44</span> Символ по индексу</div>
+                <div class="code-block">let str3 = 'abcde';
+let num = 3;
+console.log(str3[num]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">45</span> Последний символ строки</div>
+                <div class="code-block">let str = 'abcde';
+let last = str[str.length - 1];
+console.log(last);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">46</span> Предпоследний символ строки</div>
+                <div class="code-block">let str = 'abcde';
+let predLast = str[str.length - 2];
+console.log(predLast);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">47</span> Третий с конца символ строки</div>
+                <div class="code-block">let str = 'abcde';
+let predPredLast = str[str.length - 3];
+console.log(predPredLast);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8_6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 9: Геометрические расчеты -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📐</div>
+                <h2>ГЕОМЕТРИЧЕСКИЕ РАСЧЕТЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">48</span> Площадь круга</div>
+                <div class="code-block">let r = 20;
+let squareRound = Math.PI * (r ** 2);
+console.log(squareRound);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">49</span> Площадь квадрата</div>
+                <div class="code-block">let a = 100;
+let squareQuad = a ** 2;
+console.log(squareQuad);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">50</span> Площадь прямоугольника</div>
+                <div class="code-block">let a3 = 20;
+let b3 = 40;
+let square3 = a3 * b3;
+console.log(square3);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">51</span> Периметр прямоугольника</div>
+                <div class="code-block">let a4 = 10;
+let b4 = 100;
+let p4 = a4 + b4;
+console.log(p4);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">52</span> Конвертация температуры: Цельсий в Фаренгейт</div>
+                <div class="code-block">let tc = 25;
+let tf = (9 / 5) * tc + 32;
+console.log(tf);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">53</span> Конвертация температуры: Фаренгейт в Цельсий</div>
+                <div class="code-block">let tf6 = 77;
+let tc6 = ((tf6 - 32) * 5) / 9;
+console.log(tc6);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9_6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 10: Преобразование типов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ПРЕОБРАЗОВАНИЕ ТИПОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">54</span> Конкатенация чисел как строк</div>
+                <div class="code-block">let a1 = 22;
+let b1 = 33;
+console.log(String(a1) + String(b1));</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">55</span> Количество цифр в числе</div>
+                <div class="code-block">let a2 = 12345678;
+console.log(String(a2).length);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">56</span> Сумма количества цифр в двух числах</div>
+                <div class="code-block">let a3 = 12345678;
+let b3 = 89101112;
+console.log(String(a3).length + String(b3).length);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">57</span> Сумма строк как чисел</div>
+                <div class="code-block">let a1 = '10';
+let b1 = '20';
+console.log(Number(a1) + Number(b1));</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">58</span> Number() в выражениях</div>
+                <div class="code-block">console.log( Number('2') + Number('3') );</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">59</span> Число + Number()</div>
+                <div class="code-block">console.log( 2 + Number('3') );</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">60</span> Строка + Number()</div>
+                <div class="code-block">console.log( '2' + Number('3') );</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">61</span> Унарный плюс для преобразования</div>
+                <div class="code-block">let a5 = +'2';
+let b5 = +'3';
+console.log(a5 + b5);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10_8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10_8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10_8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 11: Булевы значения -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">✅❌</div>
+                <h2>БУЛЕВЫ ЗНАЧЕНИЯ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">62</span> true + 3</div>
+                <div class="code-block">console.log(true + 3);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">63</span> true + true</div>
+                <div class="code-block">console.log(true + true);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">64</span> true - true</div>
+                <div class="code-block">console.log(true - true);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">65</span> '1' + true</div>
+                <div class="code-block">console.log('1' + true);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">66</span> String(true) + 1</div>
+                <div class="code-block">console.log(String(true) + 1);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">67</span> String(true) + Number(true)</div>
+                <div class="code-block">console.log(String(true) + Number(true));</div>
+                <div class="btn-group">
+                    <button onclick="runTask11_6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11_6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11_6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 12: Сокращенные операции -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>СОКРАЩЕННЫЕ ОПЕРАЦИИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">68</span> Сокращенные арифметические операции</div>
+                <div class="code-block">let num1 = 47;
+num1 += 7; // 54
+num1 -= 18; // 36
+num1 *= 10; // 360
+num1 /= 15; // 24
+console.log(num1);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12_1"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 13: Функция prompt -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">💬</div>
+                <h2>ФУНКЦИЯ PROMPT</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">69</span> Периметр прямоугольника через prompt</div>
+                <div class="code-block">let q1 = prompt('Введите сторону a:');
+let q2 = prompt('Введите сторону b:');
+alert('Периметр прямоугольника - ' + (Number(q1) + Number(q2)));</div>
+                <div class="btn-group">
+                    <button onclick="runTask13_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13_1"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 14: Метод toFixed -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>МЕТОД TOFIXED</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">70</span> Округление 0.1 * 0.2</div>
+                <div class="code-block">console.log(0.1 * 0.2);
+console.log(+(0.1 * 0.2).toFixed(2));</div>
+                <div class="btn-group">
+                    <button onclick="runTask14_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14_1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">71</span> Округление 0.3 - 0.1</div>
+                <div class="code-block">console.log(0.3 - 0.1);
+console.log(+(0.3 - 0.1).toFixed(2));</div>
+                <div class="btn-group">
+                    <button onclick="runTask14_2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14_2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14_2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 15: Константы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔒</div>
+                <h2>КОНСТАНТЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">72</span> Длина окружности с использованием константы</div>
+                <div class="code-block">const PI = Math.PI;
+const radius = 30;
+console.log(2 * PI * radius);</div>
+                <div class="btn-group">
+                    <button onclick="runTask15_1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15_1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15_1"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript Tasks &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Работа со строками и числами
+        function runTask1_1() {
+            let test = '12345';
+            let output = `test[0] + test[1] = ${test[0] + test[1]}\n`;
+            output += `Number(test[0]) + Number(test[1]) = ${Number(test[0]) + Number(test[1])}`;
+            document.getElementById('output1_1').innerHTML = output;
+        }
+
+        function runTask1_2() {
+            let test2 = 12345;
+            test2 = String(test2);
+            let result = Number(test2[0]) + Number(test2[1]) + Number(test2[2]) + Number(test2[3]) + Number(test2[4]);
+            document.getElementById('output1_2').innerHTML = `Сумма цифр: ${result}`;
+        }
+
+        function runTask1_3() {
+            let test3 = '12345';
+            let result = test3[0] * test3[1] * test3[2] * test3[3] * test3[4];
+            document.getElementById('output1_3').innerHTML = `Произведение цифр: ${result}`;
+        }
+
+        function runTask1_4() {
+            let test4 = 12345;
+            test4 = String(test4);
+            test4 = test4[4] + test4[3] + test4[2] + test4[1] + test4[0];
+            document.getElementById('output1_4').innerHTML = `Реверс числа: ${test4}`;
+        }
+
+        // Раздел 2: Автоматическое преобразование типов
+        function runTask2_1() {
+            let a = '5' + 2;
+            document.getElementById('output2_1').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_2() {
+            let a = '5' + '2';
+            document.getElementById('output2_2').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_3() {
+            let a = 5 + '2';
+            document.getElementById('output2_3').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_4() {
+            let a = 5 + 2;
+            document.getElementById('output2_4').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_5() {
+            let a = '5' * '2';
+            document.getElementById('output2_5').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_6() {
+            let a = '5' - '2';
+            document.getElementById('output2_6').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_7() {
+            let a = '5' / '2';
+            document.getElementById('output2_7').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_8() {
+            let a = '5' % '2';
+            document.getElementById('output2_8').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_9() {
+            let a = '5s' * '2';
+            document.getElementById('output2_9').innerHTML = `Результат: ${a}`;
+        }
+
+        function runTask2_10() {
+            let a = (-'5') + (-'2');
+            document.getElementById('output2_10').innerHTML = `Результат: ${a}`;
+        }
+
+        // Раздел 3: Вывод в документ
+        function runTask3_1() {
+            document.getElementById('output3_1').innerHTML = '<div class="js_div">Какой-то div с классом js_div</div>';
+        }
+
+        function runTask3_2() {
+            document.getElementById('output3_2').innerHTML = '<i>Какой-то курсивный текст</i> <br>';
+        }
+
+        function runTask3_3() {
+            let str = 'text';
+            document.getElementById('output3_3').innerHTML = `<i>${str}</i><br>`;
+        }
+
+        function runTask3_4() {
+            document.getElementById('output3_4').innerHTML = `1<br>2<br>3<br>4<br>5`;
+        }
+
+        // Раздел 4: Функции parseInt и parseFloat
+        function runTask4_1() {
+            let a1 = '5px';
+            let b1 = '6px';
+            let result = parseInt(a1) + parseInt(b1);
+            document.getElementById('output4_1').innerHTML = `Сумма: ${result}`;
+        }
+
+        function runTask4_2() {
+            let a2 = '5.5px';
+            let b2 = '6.25px';
+            let result = parseFloat(a2) + parseFloat(b2);
+            document.getElementById('output4_2').innerHTML = `Сумма: ${result}`;
+        }
+
+        function runTask4_3() {
+            let a2 = '5.5px';
+            let b2 = '6.25px';
+            let result = parseFloat(a2) + parseFloat(b2) + 'px';
+            document.getElementById('output4_3').innerHTML = `Результат: ${result}`;
+        }
+
+        // Раздел 5: Математические расчеты
+        function runTask5_1() {
+            const hourPerDay = 24;
+            const minutesPerHour = 60;
+            const secondsPerMinute = 60;
+            let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+            document.getElementById('output5_1').innerHTML = `Секунд в сутках: ${secondsPerDay}`;
+        }
+
+        function runTask5_2() {
+            const hourPerDay = 24;
+            const minutesPerHour = 60;
+            const secondsPerMinute = 60;
+            let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+            const countDays = 30;
+            let secondsPerMonth = countDays * secondsPerDay;
+            document.getElementById('output5_2').innerHTML = `Секунд в месяце (30 дней): ${secondsPerMonth}`;
+        }
+
+        function runTask5_3() {
+            const hourPerDay = 24;
+            const minutesPerHour = 60;
+            const secondsPerMinute = 60;
+            let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+            const countDays = 30;
+            let secondsPerMonth = countDays * secondsPerDay;
+            const countMonths = 12;
+            let secondsPerYear = secondsPerMonth * countMonths;
+            document.getElementById('output5_3').innerHTML = `Секунд в году: ${secondsPerYear}`;
+        }
+
+        function runTask5_4() {
+            const hourPerDay = 24;
+            const minutesPerHour = 60;
+            const secondsPerMinute = 60;
+            let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+            let minutesPerDay = secondsPerDay / secondsPerMinute;
+            document.getElementById('output5_4').innerHTML = `Минут в сутках: ${minutesPerDay}`;
+        }
+
+        function runTask5_5() {
+            const hourPerDay = 24;
+            const minutesPerHour = 60;
+            const secondsPerMinute = 60;
+            let secondsPerDay = hourPerDay * minutesPerHour * secondsPerMinute;
+            const countDays = 30;
+            let secondsPerMonth = countDays * secondsPerDay;
+            const countMonths = 12;
+            let secondsPerYear = secondsPerMonth * countMonths;
+            let minutesPerYear = secondsPerYear / secondsPerMinute;
+            document.getElementById('output5_5').innerHTML = `Минут в году: ${minutesPerYear}`;
+        }
+
+        function runTask5_6() {
+            const bytePerKbyte = 1024;
+            const kbytePerMbyte = 1024;
+            let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+            document.getElementById('output5_6').innerHTML = `Байт в мегабайте: ${bytePerMbyte}`;
+        }
+
+        function runTask5_7() {
+            const bytePerKbyte = 1024;
+            const kbytePerMbyte = 1024;
+            let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+            const mbytePerGbyte = 1024;
+            let bytePerGbyte = mbytePerGbyte * bytePerMbyte;
+            document.getElementById('output5_7').innerHTML = `Байт в гигабайте: ${bytePerGbyte}`;
+        }
+
+        function runTask5_8() {
+            const bytePerKbyte = 1024;
+            const kbytePerMbyte = 1024;
+            let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+            const mbytePerGbyte = 1024;
+            let bytePerGbyte = mbytePerGbyte * bytePerMbyte;
+            const countGbyte = 10;
+            let bytePerCountGbyte = countGbyte * bytePerGbyte;
+            document.getElementById('output5_8').innerHTML = `Байт в 10 гигабайтах: ${bytePerCountGbyte}`;
+        }
+
+        function runTask5_9() {
+            const bytePerKbyte = 1024;
+            const kbytePerMbyte = 1024;
+            let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+            const mbytePerGbyte = 1024;
+            let bytePerGbyte = mbytePerGbyte * bytePerMbyte;
+            const gbytePerTbyte = 1024;
+            let bytePerTbyte = gbytePerTbyte * bytePerGbyte;
+            document.getElementById('output5_9').innerHTML = `Байт в терабайте: ${bytePerTbyte}`;
+        }
+
+        function runTask5_10() {
+            const bytePerKbyte = 1024;
+            const kbytePerMbyte = 1024;
+            let bytePerMbyte = bytePerKbyte * kbytePerMbyte;
+            const mbytePerGbyte = 1024;
+            let bytePerGbyte = mbytePerGbyte * bytePerMbyte;
+            const gbytePerTbyte = 1024;
+            let bytePerTbyte = gbytePerTbyte * bytePerGbyte;
+            let kbytePerTbyte = bytePerTbyte / bytePerKbyte;
+            document.getElementById('output5_10').innerHTML = `Килобайт в терабайте: ${kbytePerTbyte}`;
+        }
+
+        // Раздел 6: Инкремент и декремент
+        function runTask6_1() {
+            let num1 = 10;
+            num1++; // 11
+            num1++; // 12
+            num1--; // 11
+            document.getElementById('output6_1').innerHTML = `Результат: ${num1}`;
+        }
+
+        function runTask6_2() {
+            let a1 = 0;
+            let a2 = 0;
+            let result1 = ++a1;
+            let result2 = a2++;
+            document.getElementById('output6_2').innerHTML = `++a1 = ${result1}, a2++ = ${result2}\nПосле выполнения: a1 = ${a1}, a2 = ${a2}`;
+        }
+
+        // Раздел 7: Исправление ошибок
+        function runTask7_1() {
+            let num1 = 1;
+            let num2 = 2;
+            let result = 'сумма: ' + (num1 + num2);
+            document.getElementById('output7_1').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask7_2() {
+            let a = 1;
+            let b = 2;
+            let c = 3;
+            let result = a + b + c;
+            document.getElementById('output7_2').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask7_3() {
+            let num3 = '123';
+            let sum = Number(num3[0]) + Number(num3[1]) + Number(num3[2]);
+            document.getElementById('output7_3').innerHTML = `Сумма цифр: ${sum}`;
+        }
+
+        function runTask7_4() {
+            let num4 = 123;
+            let numStr4 = String(num4);
+            let wrong = num4[0];
+            let correct = numStr4[0];
+            document.getElementById('output7_4').innerHTML = `num4[0] = ${wrong}\nnumStr4[0] = ${correct}`;
+        }
+
+        function runTask7_5() {
+            let a5 = 0;
+            let result1 = a5++;
+            let b5 = 0;
+            let result2 = ++b5;
+            document.getElementById('output7_5').innerHTML = `a5++ = ${result1} (a5 после = ${a5})\n++b5 = ${result2} (b5 после = ${b5})`;
+        }
+
+        function runTask7_6() {
+            let num6 = 123;
+            let wrong = num6.length;
+            let correct = String(num6).length;
+            document.getElementById('output7_6').innerHTML = `num6.length = ${wrong}\nString(num6).length = ${correct}`;
+        }
+
+        function runTask7_7() {
+            let a7 = 24 / 60 / 60;
+            let b7 = 24 * 60 * 60;
+            document.getElementById('output7_7').innerHTML = `Неправильно: 24 / 60 / 60 = ${a7}\nПравильно: 24 * 60 * 60 = ${b7}`;
+        }
+
+        function runTask7_8() {
+            let num8 = 123;
+            let str8 = String(num8);
+            let wrong = num8.length;
+            let correct = str8.length;
+            document.getElementById('output7_8').innerHTML = `num8.length = ${wrong}\nstr8.length = ${correct}`;
+        }
+
+        // Раздел 8: Работа с символами строк
+        function runTask8_1() {
+            let string1 = 'abcde';
+            let result = string1[0] + string1[2] + string1[4];
+            document.getElementById('output8_1').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask8_2() {
+            let string2 = 'abcde';
+            let newString2 = string2[4] + string2[3] + string2[2] + string2[1] + string2[0]; 
+            document.getElementById('output8_2').innerHTML = `Реверс строки: ${newString2}`;
+        }
+
+        function runTask8_3() {
+            let str3 = 'abcde';
+            let num = 3;
+            document.getElementById('output8_3').innerHTML = `str3[${num}] = ${str3[num]}`;
+        }
+
+        function runTask8_4() {
+            let str = 'abcde';
+            let last = str[str.length - 1];
+            document.getElementById('output8_4').innerHTML = `Последний символ: ${last}`;
+        }
+
+        function runTask8_5() {
+            let str = 'abcde';
+            let predLast = str[str.length - 2];
+            document.getElementById('output8_5').innerHTML = `Предпоследний символ: ${predLast}`;
+        }
+
+        function runTask8_6() {
+            let str = 'abcde';
+            let predPredLast = str[str.length - 3];
+            document.getElementById('output8_6').innerHTML = `Третий с конца символ: ${predPredLast}`;
+        }
+
+        // Раздел 9: Геометрические расчеты
+        function runTask9_1() {
+            let r = 20;
+            let squareRound = Math.PI * (r ** 2);
+            document.getElementById('output9_1').innerHTML = `Площадь круга: ${squareRound}`;
+        }
+
+        function runTask9_2() {
+            let a = 100;
+            let squareQuad = a ** 2;
+            document.getElementById('output9_2').innerHTML = `Площадь квадрата: ${squareQuad}`;
+        }
+
+        function runTask9_3() {
+            let a3 = 20;
+            let b3 = 40;
+            let square3 = a3 * b3;
+            document.getElementById('output9_3').innerHTML = `Площадь прямоугольника: ${square3}`;
+        }
+
+        function runTask9_4() {
+            let a4 = 10;
+            let b4 = 100;
+            let p4 = (a4 + b4) * 2;
+            document.getElementById('output9_4').innerHTML = `Периметр прямоугольника: ${p4}`;
+        }
+
+        function runTask9_5() {
+            let tc = 25;
+            let tf = (9 / 5) * tc + 32;
+            document.getElementById('output9_5').innerHTML = `${tc}°C = ${tf}°F`;
+        }
+
+        function runTask9_6() {
+            let tf6 = 77;
+            let tc6 = ((tf6 - 32) * 5) / 9;
+            document.getElementById('output9_6').innerHTML = `${tf6}°F = ${tc6}°C`;
+        }
+
+        // Раздел 10: Преобразование типов
+        function runTask10_1() {
+            let a1 = 22;
+            let b1 = 33;
+            let result = String(a1) + String(b1);
+            document.getElementById('output10_1').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask10_2() {
+            let a2 = 12345678;
+            let result = String(a2).length;
+            document.getElementById('output10_2').innerHTML = `Количество цифр: ${result}`;
+        }
+
+        function runTask10_3() {
+            let a3 = 12345678;
+            let b3 = 89101112;
+            let result = String(a3).length + String(b3).length;
+            document.getElementById('output10_3').innerHTML = `Сумма количества цифр: ${result}`;
+        }
+
+        function runTask10_4() {
+            let a1 = '10';
+            let b1 = '20';
+            let result = Number(a1) + Number(b1);
+            document.getElementById('output10_4').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask10_5() {
+            let result = Number('2') + Number('3');
+            document.getElementById('output10_5').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask10_6() {
+            let result = 2 + Number('3');
+            document.getElementById('output10_6').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask10_7() {
+            let result = '2' + Number('3');
+            document.getElementById('output10_7').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask10_8() {
+            let a5 = +'2';
+            let b5 = +'3';
+            let result = a5 + b5;
+            document.getElementById('output10_8').innerHTML = `Результат: ${result}`;
+        }
+
+        // Раздел 11: Булевы значения
+        function runTask11_1() {
+            let result = true + 3;
+            document.getElementById('output11_1').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask11_2() {
+            let result = true + true;
+            document.getElementById('output11_2').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask11_3() {
+            let result = true - true;
+            document.getElementById('output11_3').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask11_4() {
+            let result = '1' + true;
+            document.getElementById('output11_4').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask11_5() {
+            let result = String(true) + 1;
+            document.getElementById('output11_5').innerHTML = `Результат: ${result}`;
+        }
+
+        function runTask11_6() {
+            let result = String(true) + Number(true);
+            document.getElementById('output11_6').innerHTML = `Результат: ${result}`;
+        }
+
+        // Раздел 12: Сокращенные операции
+        function runTask12_1() {
+            let num1 = 47;
+            num1 += 7;
+            num1 -= 18;
+            num1 *= 10;
+            num1 /= 15;
+            document.getElementById('output12_1').innerHTML = `Результат: ${num1}`;
+        }
+
+        // Раздел 13: Функция prompt
+        function runTask13_1() {
+            let q1 = 10;
+            let q2 = 20;
+            let result = 'Периметр прямоугольника - ' + (Number(q1) + Number(q2));
+            document.getElementById('output13_1').innerHTML = `Результат: ${result}\n(В реальном сценарии будут использоваться значения из prompt)`;
+        }
+
+        // Раздел 14: Метод toFixed
+        function runTask14_1() {
+            let result1 = 0.1 * 0.2;
+            let result2 = +(0.1 * 0.2).toFixed(2);
+            document.getElementById('output14_1').innerHTML = `0.1 * 0.2 = ${result1}\n+(0.1 * 0.2).toFixed(2) = ${result2}`;
+        }
+
+        function runTask14_2() {
+            let result1 = 0.3 - 0.1;
+            let result2 = +(0.3 - 0.1).toFixed(2);
+            document.getElementById('output14_2').innerHTML = `0.3 - 0.1 = ${result1}\n+(0.3 - 0.1).toFixed(2) = ${result2}`;
+        }
+
+        // Раздел 15: Константы
+        function runTask15_1() {
+            const PI = Math.PI;
+            const radius = 30;
+            let result = 2 * PI * radius;
+            document.getElementById('output15_1').innerHTML = `Длина окружности: ${result}`;
+        }
+    </script>
+</body>
+</html>

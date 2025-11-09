@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Узлы DOM</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Демо элементы */
+        .demo-container {
+            background-color: #1a1a2a;
+            border: 1px solid #666;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-element {
+            background-color: #2a2a3a;
+            border: 1px solid #444;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .node-highlight {
+            background-color: #3a2a3a !important;
+            border: 2px solid #ff00ff !important;
+            box-shadow: 0 0 10px #ff00ff !important;
+        }
+
+        .text-node {
+            background-color: #2a3a2a !important;
+            border: 2px solid #00ffcc !important;
+            box-shadow: 0 0 10px #00ffcc !important;
+        }
+
+        .element-node {
+            background-color: #3a3a2a !important;
+            border: 2px solid #ffcc00 !important;
+            box-shadow: 0 0 10px #ffcc00 !important;
+        }
+
+        .comment-node {
+            background-color: #2a2a4a !important;
+            border: 2px solid #00ccff !important;
+            box-shadow: 0 0 10px #00ccff !important;
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Таблица типов узлов */
+        .node-types {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .node-types th {
+            background-color: #2a2a3a;
+            color: #ff00ff;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ff00ff;
+        }
+
+        .node-types td {
+            padding: 10px;
+            border: 1px solid #444;
+            background-color: #1a1a2a;
+        }
+
+        .node-types tr:hover td {
+            background-color: #2a2a3a;
+        }
+
+        .node-value {
+            color: #ffcc00;
+        }
+
+        .node-type {
+            color: #00ffcc;
+        }
+
+        .node-name {
+            color: #ff00ff;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .node-types {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - УЗЛЫ DOM</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с узлами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>DOM (Document Object Model) представляет документ как дерево узлов. Каждый элемент, текст, комментарий - это узел.</p>
+        </div>
+
+        <!-- Раздел 1: Основы узлов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🌳</div>
+                <h2>ОСНОВЫ УЗЛОВ DOM</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Перебор узлов циклом</div>
+                <div class="code-block">// Перебор всех дочерних узлов элемента
+const container = document.getElementById('nodes-container');
+
+// childNodes - все узлы (включая текстовые и комментарии)
+const allChildNodes = container.childNodes;
+console.log('Все дочерние узлы:', allChildNodes);
+
+// Перебор через for...of
+let output = 'Дочерние узлы:\\n';
+for (let node of allChildNodes) {
+    output += `- ${node.nodeName} (${node.nodeType}): ${node.nodeValue || node.textContent}\\n`;
+}
+
+// Перебор через forEach (предварительно преобразуем в массив)
+Array.from(allChildNodes).forEach((node, index) => {
+    console.log(`Узел ${index}:`, node);
+});</div>
+                <div class="demo-container" id="nodes-container">
+                    <!-- Это комментарий -->
+                    Текстовый узел перед элементом
+                    <div class="demo-element">Элемент 1</div>
+                    Еще текстовый узел
+                    <div class="demo-element">Элемент 2</div>
+                    <!-- Еще один комментарий -->
+                    Последний текстовый узел
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="highlightNodes()">ПОДСВЕТИТЬ УЗЛЫ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Название узлов</div>
+                <div class="code-block">// Получение имени узла (nodeName)
+const container = document.getElementById('node-name-container');
+
+// nodeName для разных типов узлов
+const nodesInfo = Array.from(container.childNodes).map(node => {
+    return {
+        node: node,
+        nodeName: node.nodeName,
+        nodeType: node.nodeType,
+        description: getNodeDescription(node)
+    };
+});
+
+function getNodeDescription(node) {
+    switch(node.nodeType) {
+        case Node.ELEMENT_NODE:
+            return `Элемент <${node.tagName.toLowerCase()}>`;
+        case Node.TEXT_NODE:
+            return 'Текстовый узел';
+        case Node.COMMENT_NODE:
+            return 'Комментарий';
+        default:
+            return 'Другой тип узла';
+    }
+}
+
+// Вывод информации об узлах
+nodesInfo.forEach(info => {
+    console.log(`${info.nodeName} (тип ${info.nodeType}): ${info.description}`);
+});</div>
+                <div class="demo-container" id="node-name-container">
+                    <!-- Комментарий к элементу -->
+                    Текст перед элементом
+                    <div class="demo-element" data-test="value">
+                        Элемент с атрибутом
+                        <span>Вложенный элемент</span>
+                    </div>
+                    Текст после элемента
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="showNodeNames()">ПОКАЗАТЬ ИМЕНА</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Типы узлов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>ТИПЫ УЗЛОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Тип узлов</div>
+                <div class="code-block">// Определение типа узла (nodeType)
+const container = document.getElementById('node-type-container');
+
+// Константы типов узлов
+const NODE_TYPES = {
+    1: 'ELEMENT_NODE',
+    3: 'TEXT_NODE', 
+    8: 'COMMENT_NODE',
+    9: 'DOCUMENT_NODE',
+    10: 'DOCUMENT_TYPE_NODE',
+    11: 'DOCUMENT_FRAGMENT_NODE'
+};
+
+// Анализ всех узлов
+const nodesAnalysis = Array.from(container.childNodes).map(node => {
+    const typeName = NODE_TYPES[node.nodeType] || `Неизвестный (${node.nodeType})`;
+    
+    return {
+        node: node,
+        nodeType: node.nodeType,
+        typeName: typeName,
+        content: getNodeContent(node)
+    };
+});
+
+function getNodeContent(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+        return node.textContent.trim() || '(пустой текст)';
+    } else if (node.nodeType === Node.COMMENT_NODE) {
+        return node.textContent;
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+        return `<${node.tagName.toLowerCase()}>`;
+    }
+    return '-';
+}
+
+// Вывод анализа
+nodesAnalysis.forEach(analysis => {
+    console.log(`Тип ${analysis.nodeType} (${analysis.typeName}): ${analysis.content}`);
+});</div>
+                <div class="demo-container" id="node-type-container">
+                    Первый текстовый узел
+                    <!-- Важный комментарий -->
+                    <div class="demo-element">
+                        Элемент div
+                        <span>Вложенный span</span>
+                    </div>
+                    Второй текстовый узел
+                    <p>Элемент параграфа</p>
+                    <!-- Финальный комментарий -->
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="showNodeTypes()">ТАБЛИЦА ТИПОВ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Таблица типов узлов</div>
+                <table class="node-types">
+                    <thead>
+                        <tr>
+                            <th>Константа</th>
+                            <th>Значение</th>
+                            <th>Описание</th>
+                            <th>Пример</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="node-name">Node.ELEMENT_NODE</td>
+                            <td class="node-type">1</td>
+                            <td>Узел элемента</td>
+                            <td class="node-value">&lt;div&gt;, &lt;p&gt;, &lt;span&gt;</td>
+                        </tr>
+                        <tr>
+                            <td class="node-name">Node.ATTRIBUTE_NODE</td>
+                            <td class="node-type">2</td>
+                            <td>Узел атрибута</td>
+                            <td class="node-value">class, id, src</td>
+                        </tr>
+                        <tr>
+                            <td class="node-name">Node.TEXT_NODE</td>
+                            <td class="node-type">3</td>
+                            <td>Текстовый узел</td>
+                            <td class="node-value">Текст между элементами</td>
+                        </tr>
+                        <tr>
+                            <td class="node-name">Node.COMMENT_NODE</td>
+                            <td class="node-type">8</td>
+                            <td>Узел комментария</td>
+                            <td class="node-value">&lt;!-- комментарий --&gt;</td>
+                        </tr>
+                        <tr>
+                            <td class="node-name">Node.DOCUMENT_NODE</td>
+                            <td class="node-type">9</td>
+                            <td>Узел документа</td>
+                            <td class="node-value">document</td>
+                        </tr>
+                        <tr>
+                            <td class="node-name">Node.DOCUMENT_TYPE_NODE</td>
+                            <td class="node-type">10</td>
+                            <td>Узел типа документа</td>
+                            <td class="node-value">&lt;!DOCTYPE html&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Работа с текстовыми узлами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📝</div>
+                <h2>ТЕКСТ УЗЛОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Текст узлов</div>
+                <div class="code-block">// Работа с текстовым содержимым узлов
+const container = document.getElementById('text-node-container');
+
+// Разные способы получения текста
+const textInfo = Array.from(container.childNodes).map(node => {
+    return {
+        node: node,
+        nodeType: node.nodeType,
+        nodeName: node.nodeName,
+        
+        // nodeValue - для текстовых узлов и комментариев
+        nodeValue: node.nodeValue,
+        
+        // textContent - весь текст, включая вложенный
+        textContent: node.textContent,
+        
+        // innerText - только видимый текст (с учетом CSS)
+        innerText: node.innerText,
+        
+        // innerHTML - HTML содержимое (только для элементов)
+        innerHTML: node.innerHTML || 'N/A'
+    };
+});
+
+// Вывод сравнения
+textInfo.forEach(info => {
+    if (info.nodeType === Node.TEXT_NODE) {
+        console.log(`Текстовый узел: "${info.nodeValue}"`);
+    } else if (info.nodeType === Node.ELEMENT_NODE) {
+        console.log(`Элемент ${info.nodeName}:`);
+        console.log(`  textContent: "${info.textContent}"`);
+        console.log(`  innerText: "${info.innerText}"`);
+        console.log(`  innerHTML: ${info.innerHTML}`);
+    }
+});</div>
+                <div class="demo-container" id="text-node-container">
+                    Обычный текстовый узел
+                    <div class="demo-element">
+                        Элемент с <span style="color: #ff00ff">разным</span> текстом
+                        <div style="display: none">Скрытый текст</div>
+                    </div>
+                    Еще текстовый узел
+                    <p>Параграф с <b>жирным</b> текстом</p>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="compareTextMethods()">СРАВНИТЬ МЕТОДЫ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Создание и изменение текстовых узлов</div>
+                <div class="code-block">// Создание и манипуляция текстовыми узлами
+const container = document.getElementById('text-manipulation-container');
+
+// Создание нового текстового узла
+const newTextNode = document.createTextNode(' - НОВЫЙ ТЕКСТ - ');
+
+// Добавление текстового узла в конец
+container.appendChild(newTextNode);
+
+// Создание элемента с текстом
+const newElement = document.createElement('div');
+newElement.className = 'demo-element';
+newElement.textContent = 'Динамически созданный элемент';
+
+// Добавление элемента
+container.appendChild(newElement);
+
+// Изменение существующего текстового узла
+const firstTextNode = container.childNodes[0];
+if (firstTextNode.nodeType === Node.TEXT_NODE) {
+    firstTextNode.nodeValue = 'ИЗМЕНЕННЫЙ ТЕКСТ';
+}
+
+// Удаление текстового узла
+const textNodes = Array.from(container.childNodes)
+    .filter(node => node.nodeType === Node.TEXT_NODE);
+    
+if (textNodes.length > 1) {
+    container.removeChild(textNodes[1]);
+}</div>
+                <div class="demo-container" id="text-manipulation-container">
+                    Исходный текстовый узел
+                    <div class="demo-element">Исходный элемент</div>
+                    Другой текстовый узел для удаления
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="resetTask6()">СБРОСИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Практические примеры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ПРАКТИЧЕСКИЕ ПРИМЕРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Анализ DOM-структуры</div>
+                <div class="code-block">// Комплексный анализ DOM-структуры
+function analyzeDOMStructure(element, depth = 0) {
+    const indent = '  '.repeat(depth);
+    let analysis = '';
+    
+    // Информация о текущем узле
+    analysis += `${indent}${getNodeInfo(element)}\\n`;
+    
+    // Рекурсивный анализ дочерних узлов
+    Array.from(element.childNodes).forEach(child => {
+        analysis += analyzeDOMStructure(child, depth + 1);
+    });
+    
+    return analysis;
+}
+
+function getNodeInfo(node) {
+    switch(node.nodeType) {
+        case Node.ELEMENT_NODE:
+            return `[ELEMENT] <${node.tagName.toLowerCase()}> ${node.className ? `class="${node.className}"` : ''}`;
+        case Node.TEXT_NODE:
+            const text = node.textContent.trim();
+            return `[TEXT] "${text || '(пусто)'}"`;
+        case Node.COMMENT_NODE:
+            return `[COMMENT] "${node.textContent}"`;
+        default:
+            return `[${node.nodeName}] (тип ${node.nodeType})`;
+    }
+}
+
+// Запуск анализа
+const container = document.getElementById('dom-analysis-container');
+const domAnalysis = analyzeDOMStructure(container);</div>
+                <div class="demo-container" id="dom-analysis-container">
+                    <!-- Начало контейнера -->
+                    Текстовое содержимое
+                    <div class="demo-element main-element" data-role="main">
+                        Главный элемент
+                        <span class="nested">Вложенный элемент</span>
+                        <!-- Комментарий внутри -->
+                        Еще текст
+                    </div>
+                    <!-- Конец контейнера -->
+                    Финальный текст
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">АНАЛИЗИРОВАТЬ DOM</button>
+                    <button class="secondary" onclick="showCompactAnalysis()">КОМПАКТНЫЙ АНАЛИЗ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Узлы DOM &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Основы узлов
+        function runTask1() {
+            const container = document.getElementById('nodes-container');
+            const allChildNodes = container.childNodes;
+            
+            let output = 'Перебор дочерних узлов:\n\n';
+            
+            // Перебор через for...of
+            output += 'for...of цикл:\n';
+            for (let node of allChildNodes) {
+                const nodeInfo = getNodeInfo(node);
+                output += `- ${nodeInfo}\n`;
+            }
+            
+            output += '\nArray.from().forEach():\n';
+            Array.from(allChildNodes).forEach((node, index) => {
+                const nodeInfo = getNodeInfo(node);
+                output += `${index}. ${nodeInfo}\n`;
+            });
+            
+            output += `\nВсего узлов: ${allChildNodes.length}`;
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function highlightNodes() {
+            const container = document.getElementById('nodes-container');
+            const nodes = Array.from(container.childNodes);
+            
+            nodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    node.classList.add('element-node');
+                } else if (node.nodeType === Node.TEXT_NODE) {
+                    // Создаем span для текстового узла чтобы его подсветить
+                    const span = document.createElement('span');
+                    span.className = 'text-node';
+                    span.textContent = `ТЕКСТ: "${node.textContent.trim()}"`;
+                    node.parentNode.insertBefore(span, node);
+                    node.remove();
+                } else if (node.nodeType === Node.COMMENT_NODE) {
+                    const div = document.createElement('div');
+                    div.className = 'comment-node';
+                    div.textContent = `КОММЕНТАРИЙ: ${node.textContent}`;
+                    node.parentNode.insertBefore(div, node);
+                    node.remove();
+                }
+            });
+            
+            document.getElementById('output1').innerHTML = 'Узлы подсвечены разными цветами!';
+        }
+
+        function runTask2() {
+            const container = document.getElementById('node-name-container');
+            
+            const nodesInfo = Array.from(container.childNodes).map(node => {
+                return {
+                    node: node,
+                    nodeName: node.nodeName,
+                    nodeType: node.nodeType,
+                    description: getNodeDescription(node)
+                };
+            });
+
+            function getNodeDescription(node) {
+                switch(node.nodeType) {
+                    case Node.ELEMENT_NODE:
+                        return `Элемент <${node.tagName.toLowerCase()}>`;
+                    case Node.TEXT_NODE:
+                        const text = node.textContent.trim();
+                        return `Текстовый узел: "${text || '(пусто)'}"`;
+                    case Node.COMMENT_NODE:
+                        return `Комментарий: "${node.textContent}"`;
+                    default:
+                        return 'Другой тип узла';
+                }
+            }
+
+            let output = 'Названия узлов (nodeName):\n\n';
+            
+            nodesInfo.forEach((info, index) => {
+                output += `${index}. ${info.nodeName} (тип ${info.nodeType})\n`;
+                output += `   ${info.description}\n\n`;
+            });
+            
+            output += 'Особенности nodeName:\n';
+            output += '- Для элементов: имя тега в верхнем регистре\n';
+            output += '- Для текстовых узлов: #text\n';
+            output += '- Для комментариев: #comment\n';
+            output += '- Для документа: #document';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        function showNodeNames() {
+            const container = document.getElementById('node-name-container');
+            const nodes = Array.from(container.childNodes);
+            
+            let output = 'Визуализация nodeName:\n\n';
+            
+            nodes.forEach((node, index) => {
+                let content = '';
+                if (node.nodeType === Node.TEXT_NODE) {
+                    content = node.textContent.trim() || '(пустой текст)';
+                } else if (node.nodeType === Node.COMMENT_NODE) {
+                    content = node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    content = `<${node.tagName.toLowerCase()}>`;
+                }
+                
+                output += `[${index}] ${node.nodeName}: ${content}\n`;
+            });
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Типы узлов
+        function runTask3() {
+            const container = document.getElementById('node-type-container');
+            
+            const NODE_TYPES = {
+                1: 'ELEMENT_NODE',
+                3: 'TEXT_NODE', 
+                8: 'COMMENT_NODE',
+                9: 'DOCUMENT_NODE',
+                10: 'DOCUMENT_TYPE_NODE',
+                11: 'DOCUMENT_FRAGMENT_NODE'
+            };
+
+            const nodesAnalysis = Array.from(container.childNodes).map(node => {
+                const typeName = NODE_TYPES[node.nodeType] || `Неизвестный (${node.nodeType})`;
+                
+                return {
+                    node: node,
+                    nodeType: node.nodeType,
+                    typeName: typeName,
+                    content: getNodeContent(node)
+                };
+            });
+
+            function getNodeContent(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    return node.textContent.trim() || '(пустой текст)';
+                } else if (node.nodeType === Node.COMMENT_NODE) {
+                    return node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    return `<${node.tagName.toLowerCase()}>`;
+                }
+                return '-';
+            }
+
+            let output = 'Анализ типов узлов:\n\n';
+            
+            nodesAnalysis.forEach((analysis, index) => {
+                output += `Узел ${index}:\n`;
+                output += `  Тип: ${analysis.nodeType} (${analysis.typeName})\n`;
+                output += `  Содержимое: ${analysis.content}\n\n`;
+            });
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function showNodeTypes() {
+            let output = 'Константы типов узлов:\n\n';
+            output += 'Node.ELEMENT_NODE = 1\n';
+            output += 'Node.TEXT_NODE = 3\n';
+            output += 'Node.COMMENT_NODE = 8\n';
+            output += 'Node.DOCUMENT_NODE = 9\n';
+            output += 'Node.DOCUMENT_TYPE_NODE = 10\n';
+            output += 'Node.DOCUMENT_FRAGMENT_NODE = 11\n\n';
+            
+            output += 'Использование в коде:\n';
+            output += 'if (node.nodeType === Node.ELEMENT_NODE) { ... }\n';
+            output += 'if (node.nodeType === 1) { ... } // тоже работает';
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        // Раздел 3: Работа с текстовыми узлами
+        function runTask5() {
+            const container = document.getElementById('text-node-container');
+            
+            const textInfo = Array.from(container.childNodes).map(node => {
+                return {
+                    node: node,
+                    nodeType: node.nodeType,
+                    nodeName: node.nodeName,
+                    nodeValue: node.nodeValue,
+                    textContent: node.textContent,
+                    innerText: node.innerText,
+                    innerHTML: node.innerHTML || 'N/A'
+                };
+            });
+
+            let output = 'Сравнение методов получения текста:\n\n';
+            
+            textInfo.forEach((info, index) => {
+                output += `Узел ${index} (${info.nodeName}):\n`;
+                
+                if (info.nodeType === Node.TEXT_NODE) {
+                    output += `  nodeValue: "${info.nodeValue}"\n`;
+                    output += `  textContent: "${info.textContent}"\n`;
+                    output += `  innerText: ${info.innerText}\n`;
+                } else if (info.nodeType === Node.ELEMENT_NODE) {
+                    output += `  textContent: "${info.textContent}"\n`;
+                    output += `  innerText: "${info.innerText}"\n`;
+                    output += `  innerHTML: ${info.innerHTML}\n`;
+                }
+                output += '\n';
+            });
+            
+            output += 'Разница между методами:\n';
+            output += '- nodeValue: только для текстовых узлов и комментариев\n';
+            output += '- textContent: весь текст, включая скрытый\n';
+            output += '- innerText: только видимый текст (учитывает CSS)\n';
+            output += '- innerHTML: HTML разметка (только для элементов)';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function compareTextMethods() {
+            const container = document.getElementById('text-node-container');
+            const element = container.querySelector('.demo-element');
+            
+            let output = 'Сравнение для элемента:\n\n';
+            output += `textContent: "${element.textContent}"\n`;
+            output += `innerText: "${element.innerText}"\n`;
+            output += `innerHTML: ${element.innerHTML}\n\n`;
+            
+            output += 'textContent vs innerText:\n';
+            output += '✅ textContent - получает ВЕСЬ текст\n';
+            output += '✅ innerText - только ВИДИМЫЙ текст\n';
+            output += '❌ innerText медленнее (учитывает стили)';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            const container = document.getElementById('text-manipulation-container');
+            
+            // Сохраняем исходное состояние
+            if (!window.originalState6) {
+                window.originalState6 = container.innerHTML;
+            }
+            
+            // Создание нового текстового узла
+            const newTextNode = document.createTextNode(' - НОВЫЙ ТЕКСТ - ');
+            container.appendChild(newTextNode);
+            
+            // Создание элемента с текстом
+            const newElement = document.createElement('div');
+            newElement.className = 'demo-element';
+            newElement.textContent = 'Динамически созданный элемент';
+            container.appendChild(newElement);
+            
+            // Изменение существующего текстового узла
+            const firstTextNode = container.childNodes[0];
+            if (firstTextNode.nodeType === Node.TEXT_NODE) {
+                firstTextNode.nodeValue = 'ИЗМЕНЕННЫЙ ТЕКСТ';
+            }
+            
+            // Удаление текстового узла
+            const textNodes = Array.from(container.childNodes)
+                .filter(node => node.nodeType === Node.TEXT_NODE);
+                
+            if (textNodes.length > 1) {
+                container.removeChild(textNodes[1]);
+            }
+            
+            let output = 'Операции с текстовыми узлами:\n\n';
+            output += '✅ Создан новый текстовый узел\n';
+            output += '✅ Создан новый элемент\n';
+            output += '✅ Изменен первый текстовый узел\n';
+            output += '✅ Удален один текстовый узел\n\n';
+            
+            output += 'Использованные методы:\n';
+            output += '- document.createTextNode()\n';
+            output += '- document.createElement()\n';
+            output += '- appendChild()\n';
+            output += '- nodeValue (для изменения)\n';
+            output += '- removeChild()';
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        function resetTask6() {
+            const container = document.getElementById('text-manipulation-container');
+            if (window.originalState6) {
+                container.innerHTML = window.originalState6;
+                document.getElementById('output6').innerHTML = 'Состояние сброшено!';
+            }
+        }
+
+        // Раздел 4: Практические примеры
+        function runTask7() {
+            const container = document.getElementById('dom-analysis-container');
+            const domAnalysis = analyzeDOMStructure(container);
+            
+            let output = 'Анализ DOM-структуры:\n\n';
+            output += domAnalysis;
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function showCompactAnalysis() {
+            const container = document.getElementById('dom-analysis-container');
+            
+            let output = 'Компактный анализ узлов:\n\n';
+            
+            function analyzeCompact(element, depth = 0) {
+                const indent = '  '.repeat(depth);
+                let analysis = '';
+                
+                // Текущий узел
+                analysis += `${indent}${getCompactNodeInfo(element)}\n`;
+                
+                // Дочерние узлы
+                Array.from(element.childNodes).forEach(child => {
+                    analysis += analyzeCompact(child, depth + 1);
+                });
+                
+                return analysis;
+            }
+            
+            function getCompactNodeInfo(node) {
+                switch(node.nodeType) {
+                    case Node.ELEMENT_NODE:
+                        return `<${node.tagName.toLowerCase()}>`;
+                    case Node.TEXT_NODE:
+                        const text = node.textContent.trim();
+                        return text ? `"${text}"` : '(текст)';
+                    case Node.COMMENT_NODE:
+                        return `<!-- -->`;
+                    default:
+                        return node.nodeName;
+                }
+            }
+            
+            output += analyzeCompact(container);
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        // Вспомогательные функции
+        function getNodeInfo(node) {
+            switch(node.nodeType) {
+                case Node.ELEMENT_NODE:
+                    return `Элемент <${node.tagName.toLowerCase()}>`;
+                case Node.TEXT_NODE:
+                    const text = node.textContent.trim();
+                    return `Текст: "${text || '(пусто)'}"`;
+                case Node.COMMENT_NODE:
+                    return `Комментарий: "${node.textContent}"`;
+                default:
+                    return `${node.nodeName} (тип ${node.nodeType})`;
+            }
+        }
+
+        function analyzeDOMStructure(element, depth = 0) {
+            const indent = '  '.repeat(depth);
+            let analysis = '';
+            
+            // Информация о текущем узле
+            analysis += `${indent}${getNodeInfo(element)}\n`;
+            
+            // Рекурсивный анализ дочерних узлов
+            Array.from(element.childNodes).forEach(child => {
+                analysis += analyzeDOMStructure(child, depth + 1);
+            });
+            
+            return analysis;
+        }
+    </script>
+</body>
+</html>

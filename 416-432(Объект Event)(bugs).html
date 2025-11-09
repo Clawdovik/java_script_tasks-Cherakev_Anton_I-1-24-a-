@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PUNK JAVASCRIPT - ОБЪЕКТ EVENT</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Демонстрационные области */
+        .demo-area {
+            background-color: #0a0a12;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .demo-box {
+            border: 1px solid #ff00ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: rgba(26, 26, 42, 0.7);
+        }
+
+        .demo-box h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        .coordinate-area {
+            position: relative;
+            height: 200px;
+            border: 1px solid #00ccff;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            cursor: crosshair;
+        }
+
+        .coordinate-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .keyboard-area {
+            border: 1px solid #00ffcc;
+            padding: 15px;
+            margin: 15px 0;
+            min-height: 100px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .event-flow {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .event-level {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid #ff00ff;
+            border-radius: 4px;
+            background: rgba(26, 26, 42, 0.7);
+            cursor: pointer;
+        }
+
+        .event-level.active {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .event-flow {
+                flex-direction: column;
+            }
+            
+            .event-level {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON JAVASCRIPT - ОБЪЕКТ EVENT</h1>
+        <p class="subtitle">Vita brevis, ars longa - Работа с событиями в JavaScript</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+            <p>Интерактивные демонстрации реагируют на ваши действия (клики, нажатия клавиш и т.д.)</p>
+        </div>
+
+        <!-- Раздел 1: Основы работы с объектом Event -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ОСНОВЫ РАБОТЫ С ОБЪЕКТОМ EVENT</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Основы работы с объектом Event</div>
+                <div class="code-block">// Получение информации о событии
+function handleEvent(event) {
+    console.log('Тип события:', event.type);
+    console.log('Целевой элемент:', event.target);
+    console.log('Текущий элемент:', event.currentTarget);
+    console.log('Фаза события:', event.eventPhase);
+    console.log('Время создания:', event.timeStamp);
+    
+    // Дополнительные свойства
+    console.log('Координаты мыши:');
+    console.log('  clientX:', event.clientX, 'clientY:', event.clientY);
+    console.log('  pageX:', event.pageX, 'pageY:', event.pageY);
+    console.log('  screenX:', event.screenX, 'screenY:', event.screenY);
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Кликните в этой области для демонстрации</h3>
+                        <p>Эта область прослушивает события клика. После клика проверьте консоль или нажмите "ВЫПОЛНИТЬ" для имитации.</p>
+                        <div id="demo1" style="padding: 20px; border: 1px dashed #00ffcc; margin: 10px 0; cursor: pointer;">
+                            Кликните здесь
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Координаты события</div>
+                <div class="code-block">// Различные системы координат в событиях мыши
+function handleMouseEvent(event) {
+    // Координаты относительно окна браузера
+    console.log('clientX/clientY (относительно окна):', event.clientX, event.clientY);
+    
+    // Координаты относительно документа
+    console.log('pageX/pageY (относительно документа):', event.pageX, event.pageY);
+    
+    // Координаты относительно экрана
+    console.log('screenX/screenY (относительно экрана):', event.screenX, event.screenY);
+    
+    // Координаты относительно целевого элемента
+    console.log('offsetX/offsetY (относительно элемента):', event.offsetX, event.offsetY);
+    
+    // Разница между clientX и pageX при наличии прокрутки
+    console.log('Разница pageX - clientX:', event.pageX - event.clientX);
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Область для отслеживания координат</h3>
+                        <p>Перемещайте курсор мыши или кликайте в этой области</p>
+                        <div class="coordinate-area" id="coordinateDemo">
+                            <div class="coordinate-info" id="coordInfo">
+                                Координаты: client(0, 0) page(0, 0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Тип события и элемент события</div>
+                <div class="code-block">// Определение типа события и элементов
+function handleAnyEvent(event) {
+    // Тип события
+    console.log('Тип события:', event.type);
+    
+    // Элементы события
+    console.log('target (источник события):', event.target);
+    console.log('currentTarget (текущий обработчик):', event.currentTarget);
+    
+    // Разница между target и currentTarget при всплытии
+    if (event.target !== event.currentTarget) {
+        console.log('Событие всплывает!');
+        console.log('target !== currentTarget');
+    }
+    
+    // Дополнительная информация о событии
+    console.log('isTrusted (вызвано ли пользователем):', event.isTrusted);
+    console.log('bubbles (всплывает ли событие):', event.bubbles);
+    console.log('cancelable (можно ли отменить):', event.cancelable);
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Вложенные элементы для демонстрации target/currentTarget</h3>
+                        <div id="nestedDemo" style="padding: 20px; border: 1px solid #ff00ff; background: rgba(255,0,255,0.1);">
+                            Родительский элемент
+                            <div style="padding: 15px; margin: 10px; border: 1px solid #00ccff; background: rgba(0,204,255,0.1);">
+                                Дочерний элемент 1
+                                <div style="padding: 10px; margin: 5px; border: 1px solid #00ffcc; background: rgba(0,255,204,0.1);">
+                                    Внучатый элемент (кликните здесь)
+                                </div>
+                            </div>
+                            <div style="padding: 15px; margin: 10px; border: 1px solid #ffcc00; background: rgba(255,204,0,0.1);">
+                                Дочерний элемент 2
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Работа с клавиатурой -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⌨️</div>
+                <h2>РАБОТА С КЛАВИАТУРОЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Получение нажатых клавиш</div>
+                <div class="code-block">// Обработка событий клавиатуры
+function handleKeyboardEvent(event) {
+    // Основные свойства клавиатурных событий
+    console.log('Код клавиши:', event.code);
+    console.log('Ключ клавиши:', event.key);
+    console.log('Код клавиши (устаревший):', event.keyCode);
+    console.log('Код символа:', event.charCode);
+    
+    // Модификаторы
+    console.log('Shift нажата:', event.shiftKey);
+    console.log('Ctrl нажата:', event.ctrlKey);
+    console.log('Alt нажата:', event.altKey);
+    console.log('Meta нажата:', event.metaKey);
+    
+    // Повторение
+    console.log('Повторение нажатия:', event.repeat);
+    
+    // Пример использования
+    if (event.ctrlKey && event.key === 's') {
+        console.log('Сочетание Ctrl+S - сохранение');
+        event.preventDefault(); // Отменяем действие по умолчанию
+    }
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Область для отслеживания клавиатуры</h3>
+                        <p>Нажмите любую клавишу в этой области</p>
+                        <div class="keyboard-area" id="keyboardDemo" tabindex="0">
+                            Нажмите здесь для фокуса, затем любую клавишу
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Отслеживание клавиш-модификаторов</div>
+                <div class="code-block">// Работа с клавишами-модификаторами
+function handleModifiers(event) {
+    // Основные модификаторы
+    const modifiers = [];
+    
+    if (event.shiftKey) modifiers.push('Shift');
+    if (event.ctrlKey) modifiers.push('Ctrl');
+    if (event.altKey) modifiers.push('Alt');
+    if (event.metaKey) modifiers.push('Meta');
+    
+    console.log('Активные модификаторы:', modifiers.join(' + '));
+    
+    // Комбинации клавиш
+    if (event.ctrlKey && event.shiftKey && event.key === 'S') {
+        console.log('Сочетание Ctrl+Shift+S');
+        event.preventDefault();
+    }
+    
+    if (event.altKey && event.key === 'F4') {
+        console.log('Alt+F4 - закрытие приложения');
+        // В реальном приложении здесь мог бы быть запрос на подтверждение
+    }
+    
+    // Проверка конкретных клавиш
+    console.log('Нажата ли клавиша Enter:', event.key === 'Enter');
+    console.log('Нажата ли клавиша Escape:', event.key === 'Escape');
+    console.log('Нажата ли клавиша Tab:', event.key === 'Tab');
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Проверка модификаторов</h3>
+                        <p>Попробуйте комбинации с Shift, Ctrl, Alt</p>
+                        <div class="keyboard-area" id="modifiersDemo" tabindex="0">
+                            Нажмите здесь для фокуса, затем клавиши с модификаторами
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Управление поведением событий -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🚦</div>
+                <h2>УПРАВЛЕНИЕ ПОВЕДЕНИЕМ СОБЫТИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Отмена действия по умолчанию</div>
+                <div class="code-block">// preventDefault() - отмена стандартного поведения
+function handleFormSubmit(event) {
+    console.log('Форма пытается отправиться');
+    
+    // Проверяем валидность данных
+    const input = document.getElementById('textInput');
+    if (input.value.length < 3) {
+        console.log('Ошибка: текст слишком короткий');
+        event.preventDefault(); // Отменяем отправку формы
+        console.log('Отправка формы отменена');
+    } else {
+        console.log('Форма будет отправлена');
+    }
+}
+
+// Отмена контекстного меню
+function handleContextMenu(event) {
+    console.log('Попытка открыть контекстное меню');
+    event.preventDefault();
+    console.log('Контекстное меню заблокировано');
+}
+
+// Отмена перехода по ссылке
+function handleLinkClick(event) {
+    console.log('Клик по ссылке');
+    event.preventDefault();
+    console.log('Переход по ссылке отменен');
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация preventDefault()</h3>
+                        <form id="demoForm" style="margin: 10px 0;">
+                            <input type="text" id="textInput" placeholder="Введите текст (минимум 3 символа)" 
+                                   style="width: 100%; padding: 8px; margin: 5px 0; background: #0a0a12; color: #00ffcc; border: 1px solid #00ccff;">
+                            <button type="submit" style="margin: 5px 0;">Отправить форму</button>
+                        </form>
+                        <div>
+                            <a href="https://example.com" id="demoLink" style="color: #ffcc00;">Эта ссылка не работает (кликните для демонстрации)</a>
+                        </div>
+                        <div style="margin: 10px 0; padding: 10px; border: 1px dashed #ff00ff;">
+                            Попробуйте открыть контекстное меню (правый клик) в этой области
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Всплытие событий и целевой элемент</div>
+                <div class="code-block">// Всплытие событий (Event Bubbling)
+function handleBubbling(event) {
+    console.log('--- Обработчик на:', event.currentTarget.tagName);
+    console.log('Целевой элемент:', event.target.tagName);
+    console.log('Фаза события:', getEventPhaseName(event.eventPhase));
+    
+    // Демонстрация всплытия
+    if (event.currentTarget.id === 'grandparent') {
+        console.log('Событие достигло корневого элемента');
+    }
+}
+
+function getEventPhaseName(phase) {
+    switch(phase) {
+        case 1: return 'CAPTURING_PHASE';
+        case 2: return 'AT_TARGET';
+        case 3: return 'BUBBLING_PHASE';
+        default: return 'UNKNOWN';
+    }
+}
+
+// Остановка всплытия
+function stopBubbling(event) {
+    console.log('Останавливаем всплытие на:', event.currentTarget.tagName);
+    event.stopPropagation();
+    console.log('Всплытие остановлено');
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация всплытия событий</h3>
+                        <p>Кликните на любом уровне и наблюдайте за всплытием</p>
+                        <div class="event-flow">
+                            <div class="event-level" id="level1">Уровень 1 (Внешний)</div>
+                            <div class="event-level" id="level2">Уровень 2</div>
+                            <div class="event-level" id="level3">Уровень 3 (Внутренний)</div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <label>
+                                <input type="checkbox" id="stopPropagationCheckbox">
+                                Останавливать всплытие на Уровне 2
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Продвинутые техники -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>ПРОДВИНУТЫЕ ТЕХНИКИ РАБОТЫ С СОБЫТИЯМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Несколько обработчиков на элементе</div>
+                <div class="code-block">// Множественные обработчики на одном элементе
+function firstClickHandler(event) {
+    console.log('Первый обработчик клика');
+    console.log('Целевой элемент:', event.target.id);
+}
+
+function secondClickHandler(event) {
+    console.log('Второй обработчик клика');
+    console.log('Время события:', event.timeStamp);
+}
+
+function thirdClickHandler(event) {
+    console.log('Третий обработчик клика');
+    
+    // Удаление обработчика после первого выполнения
+    event.target.removeEventListener('click', thirdClickHandler);
+    console.log('Третий обработчик удален');
+}
+
+// Добавление нескольких обработчиков
+const multiHandlerElement = document.getElementById('multiHandlerDemo');
+multiHandlerElement.addEventListener('click', firstClickHandler);
+multiHandlerElement.addEventListener('click', secondClickHandler);
+multiHandlerElement.addEventListener('click', thirdClickHandler);
+
+// Порядок выполнения: в порядке добавления</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Элемент с несколькими обработчиками</h3>
+                        <p>Кликните на кнопке несколько раз и наблюдайте за выполнением обработчиков</p>
+                        <button id="multiHandlerDemo">Кнопка с 3 обработчиками</button>
+                        <div style="margin-top: 10px; font-size: 0.9em; color: #ffcc00;">
+                            Третий обработчик удалит себя после первого выполнения
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Погружение событий и делегирование</div>
+                <div class="code-block">// Фаза погружения (Capture Phase)
+function handleCapturePhase(event) {
+    console.log('Обработчик на фазе погружения:', event.currentTarget.tagName);
+}
+
+// Делегирование событий
+function handleDelegation(event) {
+    // Проверяем, что клик был на кнопке
+    if (event.target.tagName === 'BUTTON') {
+        console.log('Делегирование: клик на кнопке', event.target.textContent);
+        console.log('Обработчик на родительском элементе');
+    }
+}
+
+// Универсальное делегирование
+function universalDelegation(event) {
+    const target = event.target;
+    
+    // Обработка разных типов элементов
+    if (target.classList.contains('action-btn')) {
+        console.log('Клик на action-кнопке:', target.textContent);
+    } else if (target.classList.contains('delete-btn')) {
+        console.log('Клик на delete-кнопке:', target.textContent);
+        event.preventDefault();
+    } else if (target.classList.contains('item')) {
+        console.log('Клик на элементе:', target.textContent);
+    }
+}
+
+// Добавление обработчиков с useCapture
+document.getElementById('captureDemo').addEventListener('click', handleCapturePhase, true);</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Делегирование событий</h3>
+                        <p>Кликните на любой кнопке внутри контейнера</p>
+                        <div id="delegationDemo" style="padding: 15px; border: 1px solid #00ffcc; background: rgba(0,255,204,0.1);">
+                            <button class="action-btn">Action 1</button>
+                            <button class="action-btn">Action 2</button>
+                            <button class="delete-btn">Delete</button>
+                            <div class="item">Элемент списка 1</div>
+                            <div class="item">Элемент списка 2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Обработчики на новые элементы</div>
+                <div class="code-block">// Динамическое добавление элементов с обработчиками
+function addNewElement() {
+    const container = document.getElementById('dynamicContainer');
+    const newElement = document.createElement('div');
+    newElement.className = 'dynamic-item';
+    newElement.textContent = `Новый элемент ${container.children.length + 1}`;
+    newElement.style.padding = '10px';
+    newElement.style.margin = '5px';
+    newElement.style.border = '1px solid #ff00ff';
+    newElement.style.cursor = 'pointer';
+    
+    // Добавляем обработчик напрямую
+    newElement.addEventListener('click', function(event) {
+        console.log('Клик на динамически созданном элементе:', this.textContent);
+    });
+    
+    container.appendChild(newElement);
+    console.log('Добавлен новый элемент с обработчиком');
+}
+
+// Делегирование для динамических элементов
+function handleDynamicDelegation(event) {
+    if (event.target.classList.contains('dynamic-item')) {
+        console.log('Делегирование: клик на динамическом элементе:', event.target.textContent);
+    }
+}
+
+// Универсальное делегирование с проверкой селектора
+function universalDynamicDelegation(event) {
+    const target = event.target;
+    
+    // Проверяем селекторы в порядке специфичности
+    if (target.matches('.dynamic-item.special')) {
+        console.log('Специальный динамический элемент:', target.textContent);
+    } else if (target.matches('.dynamic-item')) {
+        console.log('Обычный динамический элемент:', target.textContent);
+    } else if (target.matches('#dynamicContainer > *')) {
+        console.log('Любой дочерний элемент:', target.textContent);
+    }
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Динамические элементы и делегирование</h3>
+                        <p>Добавляйте новые элементы и кликайте на них</p>
+                        <button onclick="addNewElement()">Добавить новый элемент</button>
+                        <button onclick="addSpecialElement()">Добавить специальный элемент</button>
+                        <div id="dynamicContainer" style="margin-top: 15px; min-height: 50px; border: 1px dashed #ffcc00; padding: 10px;">
+                            <!-- Динамические элементы будут добавляться сюда -->
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Объект Event © 2025 | Создано в стиле ретро-футуризма</p>
+        <p>Все методы проверены в современных браузерах</p>
+    </footer>
+
+    <script>
+        // Инициализация демонстрационных областей
+        document.addEventListener('DOMContentLoaded', function() {
+            // Демо 1: Основы работы с объектом Event
+            document.getElementById('demo1').addEventListener('click', function(event) {
+                console.log('Демо 1 - Клик зарегистрирован:', event);
+            });
+            
+            // Демо 2: Координаты события
+            const coordinateDemo = document.getElementById('coordinateDemo');
+            const coordInfo = document.getElementById('coordInfo');
+            
+            coordinateDemo.addEventListener('mousemove', function(event) {
+                coordInfo.textContent = 
+                    `Координаты: client(${event.clientX}, ${event.clientY}) page(${event.pageX}, ${event.pageY})`;
+            });
+            
+            coordinateDemo.addEventListener('click', function(event) {
+                console.log('Клик в координатной области:', {
+                    clientX: event.clientX,
+                    clientY: event.clientY,
+                    pageX: event.pageX,
+                    pageY: event.pageY,
+                    offsetX: event.offsetX,
+                    offsetY: event.offsetY
+                });
+            });
+            
+            // Демо 3: Вложенные элементы
+            const nestedDemo = document.getElementById('nestedDemo');
+            nestedDemo.addEventListener('click', function(event) {
+                console.log('Клик в nestedDemo:', {
+                    target: event.target.tagName,
+                    currentTarget: event.currentTarget.tagName,
+                    targetVsCurrent: event.target === event.currentTarget
+                });
+            });
+            
+            // Демо 4: Клавиатура
+            const keyboardDemo = document.getElementById('keyboardDemo');
+            keyboardDemo.addEventListener('keydown', function(event) {
+                console.log('Событие клавиатуры:', {
+                    key: event.key,
+                    code: event.code,
+                    shiftKey: event.shiftKey,
+                    ctrlKey: event.ctrlKey,
+                    altKey: event.altKey
+                });
+            });
+            
+            // Демо 5: Модификаторы
+            const modifiersDemo = document.getElementById('modifiersDemo');
+            modifiersDemo.addEventListener('keydown', function(event) {
+                console.log('Модификаторы:', {
+                    key: event.key,
+                    shift: event.shiftKey,
+                    ctrl: event.ctrlKey,
+                    alt: event.altKey,
+                    meta: event.metaKey
+                });
+            });
+            
+            // Демо 6: preventDefault
+            document.getElementById('demoForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                console.log('Форма отправлена (предотвращено)');
+            });
+            
+            document.getElementById('demoLink').addEventListener('click', function(event) {
+                event.preventDefault();
+                console.log('Переход по ссылке предотвращен');
+            });
+            
+            const contextMenuArea = document.querySelector('.demo-box div:last-child');
+            contextMenuArea.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+                console.log('Контекстное меню предотвращено');
+            });
+            
+            // Демо 7: Всплытие событий
+            const levels = document.querySelectorAll('.event-level');
+            levels.forEach(level => {
+                level.addEventListener('click', function(event) {
+                    const stopPropagation = document.getElementById('stopPropagationCheckbox').checked;
+                    
+                    console.log(`Клик на ${this.textContent}`);
+                    console.log('Target:', event.target.textContent);
+                    
+                    if (stopPropagation && this.id === 'level2') {
+                        event.stopPropagation();
+                        console.log('Всплытие остановлено на уровне 2');
+                    }
+                });
+            });
+            
+            // Демо 8: Множественные обработчики уже инициализированы в коде
+            
+            // Демо 9: Делегирование событий
+            document.getElementById('delegationDemo').addEventListener('click', function(event) {
+                if (event.target.tagName === 'BUTTON') {
+                    console.log('Делегирование: клик на кнопке', event.target.textContent);
+                } else if (event.target.classList.contains('item')) {
+                    console.log('Делегирование: клик на элементе', event.target.textContent);
+                }
+            });
+            
+            // Демо 10: Динамические элементы
+            document.getElementById('dynamicContainer').addEventListener('click', function(event) {
+                if (event.target.classList.contains('dynamic-item')) {
+                    console.log('Делегирование: клик на динамическом элементе', event.target.textContent);
+                }
+            });
+        });
+        
+        // Функции для выполнения задач
+        
+        function runTask1() {
+            let output = document.getElementById('output1');
+            let result = 'Имитация события клика:\n\n';
+            
+            // Создаем искусственное событие для демонстрации
+            const event = {
+                type: 'click',
+                target: document.getElementById('demo1'),
+                currentTarget: document.getElementById('demo1'),
+                eventPhase: 2, // AT_TARGET
+                timeStamp: Date.now(),
+                clientX: 100,
+                clientY: 100,
+                pageX: 100,
+                pageY: 100,
+                screenX: 200,
+                screenY: 200
+            };
+            
+            result += 'Тип события: ' + event.type + '\n';
+            result += 'Целевой элемент: ' + event.target + '\n';
+            result += 'Текущий элемент: ' + event.currentTarget + '\n';
+            result += 'Фаза события: ' + event.eventPhase + '\n';
+            result += 'Время создания: ' + event.timeStamp + '\n\n';
+            
+            result += 'Координаты мыши:\n';
+            result += '  clientX: ' + event.clientX + ' clientY: ' + event.clientY + '\n';
+            result += '  pageX: ' + event.pageX + ' pageY: ' + event.pageY + '\n';
+            result += '  screenX: ' + event.screenX + ' screenY: ' + event.screenY + '\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask2() {
+            let output = document.getElementById('output2');
+            let result = 'Информация о координатах событий:\n\n';
+            
+            result += 'clientX/clientY - относительно видимой области окна браузера\n';
+            result += 'pageX/pageY - относительно всего документа (учитывает прокрутку)\n';
+            result += 'screenX/screenY - относительно всего экрана\n';
+            result += 'offsetX/offsetY - относительно целевого элемента\n\n';
+            
+            result += 'Пример различия clientX и pageX при прокрутке:\n';
+            result += '  pageX = clientX + window.scrollX\n';
+            result += '  pageY = clientY + window.scrollY\n\n';
+            
+            result += 'Текущая прокрутка: scrollX=' + window.scrollX + ', scrollY=' + window.scrollY + '\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask3() {
+            let output = document.getElementById('output3');
+            let result = 'Разница между target и currentTarget:\n\n';
+            
+            result += 'target - элемент, который инициировал событие\n';
+            result += 'currentTarget - элемент, на котором в данный момент выполняется обработчик\n\n';
+            
+            result += 'При всплытии событий:\n';
+            result += '- target остается неизменным\n';
+            result += '- currentTarget меняется на каждом уровне всплытия\n\n';
+            
+            result += 'Пример:\n';
+            result += '  <div> (родитель) - currentTarget при всплытии\n';
+            result += '    <button> (потомок) - target события\n';
+            result += '  </div>\n\n';
+            
+            result += 'При клике на кнопке:\n';
+            result += '- target всегда будет <button>\n';
+            result += '- currentTarget будет сначала <button>, затем <div> при всплытии\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask4() {
+            let output = document.getElementById('output4');
+            let result = 'Свойства событий клавиатуры:\n\n';
+            
+            result += 'event.key - символ клавиши (учитывает раскладку)\n';
+            result += 'event.code - физическое расположение клавиши\n';
+            result += 'event.keyCode - устаревшее, но все еще используется\n';
+            result += 'event.charCode - устаревшее, код символа\n\n';
+            
+            result += 'Примеры:\n';
+            result += '  Клавиша "A": key="a", code="KeyA"\n';
+            result += '  Клавиша "Shift": key="Shift", code="ShiftLeft/ShiftRight"\n';
+            result += '  Клавиша "Enter": key="Enter", code="Enter"\n\n';
+            
+            result += 'Модификаторы:\n';
+            result += '  event.shiftKey - нажат ли Shift\n';
+            result += '  event.ctrlKey - нажат ли Ctrl\n';
+            result += '  event.altKey - нажат ли Alt\n';
+            result += '  event.metaKey - нажат ли Meta (Cmd на Mac, Win на Windows)\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask5() {
+            let output = document.getElementById('output5');
+            let result = 'Клавиши-модификаторы и их комбинации:\n\n';
+            
+            result += 'Основные модификаторы:\n';
+            result += '- Shift (⇧)\n';
+            result += '- Control (Ctrl)\n';
+            result += '- Alt (Option на Mac)\n';
+            result += '- Meta (Cmd на Mac, Win на Windows)\n\n';
+            
+            result += 'Популярные комбинации:\n';
+            result += 'Ctrl+C / Cmd+C - копирование\n';
+            result += 'Ctrl+V / Cmd+V - вставка\n';
+            result += 'Ctrl+Z / Cmd+Z - отмена\n';
+            result += 'Ctrl+S / Cmd+S - сохранение\n';
+            result += 'Ctrl+Shift+S - сохранение как\n';
+            result += 'Alt+F4 - закрытие приложения (Windows)\n\n';
+            
+            result += 'Определение комбинаций в коде:\n';
+            result += 'if (event.ctrlKey && event.key === "s") {\n';
+            result += '  event.preventDefault(); // Отменить сохранение страницы\n';
+            result += '  // Ваш код для сохранения\n';
+            result += '}\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask6() {
+            let output = document.getElementById('output6');
+            let result = 'preventDefault() - отмена стандартного поведения:\n\n';
+            
+            result += 'Метод preventDefault() отменяет стандартное действие браузера.\n\n';
+            
+            result += 'Примеры использования:\n';
+            result += '1. Формы - отмена отправки при невалидных данных\n';
+            result += '2. Ссылки - отмена перехода по URL\n';
+            result += '3. Контекстное меню - блокировка правой кнопки мыши\n';
+            result += '4. Клавиатурные события - блокировка комбинаций\n\n';
+            
+            result += 'Важно: не все события можно отменить.\n';
+            result += 'Проверить: event.cancelable\n\n';
+            
+            result += 'Пример кода:\n';
+            result += 'element.addEventListener("click", function(event) {\n';
+            result += '  if (условие) {\n';
+            result += '    event.preventDefault();\n';
+            result += '    console.log("Действие отменено");\n';
+            result += '  }\n';
+            result += '});\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask7() {
+            let output = document.getElementById('output7');
+            let result = 'Всплытие событий (Event Bubbling):\n\n';
+            
+            result += 'Всплытие - это процесс, когда событие поднимается от целевого\n';
+            result += 'элемента вверх по DOM дереву к корневому элементу.\n\n';
+            
+            result += 'Фазы события:\n';
+            result += '1. CAPTURING_PHASE - погружение (сверху вниз)\n';
+            result += '2. AT_TARGET - на целевом элементе\n';
+            result += '3. BUBBLING_PHASE - всплытие (снизу вверх)\n\n';
+            
+            result += 'Остановка всплытия:\n';
+            result += 'event.stopPropagation() - останавливает всплытие\n';
+            result += 'event.stopImmediatePropagation() - останавливает всплытие и выполнение других обработчиков\n\n';
+            
+            result += 'Пример остановки всплытия:\n';
+            result += 'element.addEventListener("click", function(event) {\n';
+            result += '  // Ваш код\n';
+            result += '  event.stopPropagation();\n';
+            result += '  // Событие не пойдет выше\n';
+            result += '});\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask8() {
+            let output = document.getElementById('output8');
+            let result = 'Несколько обработчиков на одном элементе:\n\n';
+            
+            result += 'На один элемент можно добавить несколько обработчиков события.\n\n';
+            
+            result += 'Порядок выполнения:\n';
+            result += '- Обработчики выполняются в порядке их добавления\n';
+            result += '- Использование stopImmediatePropagation() останавливает выполнение последующих обработчиков\n\n';
+            
+            result += 'Удаление обработчиков:\n';
+            result += 'element.removeEventListener("click", handlerFunction)\n\n';
+            
+            result += 'Пример добавления нескольких обработчиков:\n';
+            result += 'element.addEventListener("click", handler1);\n';
+            result += 'element.addEventListener("click", handler2);\n';
+            result += 'element.addEventListener("click", handler3);\n\n';
+            
+            result += 'При клике выполнятся: handler1 → handler2 → handler3\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask9() {
+            let output = document.getElementById('output9');
+            let result = 'Делегирование событий и фаза погружения:\n\n';
+            
+            result += 'Делегирование событий - техника, когда один обработчик\n';
+            result += 'на родительском элементе обрабатывает события потомков.\n\n';
+            
+            result += 'Преимущества:\n';
+            result += '- Экономит память (меньше обработчиков)\n';
+            result += '- Работает с динамически добавляемыми элементами\n';
+            result += '- Упрощает код\n\n';
+            
+            result += 'Фаза погружения (Capture Phase):\n';
+            result += '- Событие идет сверху вниз к целевому элементу\n';
+            result += '- Используется реже, чем всплытие\n';
+            result += '- Включается третьим параметром addEventListener: true\n\n';
+            
+            result += 'Пример делегирования:\n';
+            result += 'parent.addEventListener("click", function(event) {\n';
+            result += '  if (event.target.classList.contains("child")) {\n';
+            result += '    // Обработка клика на дочернем элементе\n';
+            result += '  }\n';
+            result += '});\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask10() {
+            let output = document.getElementById('output10');
+            let result = 'Обработчики на новые элементы и универсальное делегирование:\n\n';
+            
+            result += 'Проблема: динамически созданные элементы не имеют обработчиков.\n\n';
+            
+            result += 'Решение 1: Добавлять обработчики при создании\n';
+            result += 'Решение 2: Использовать делегирование событий\n\n';
+            
+            result += 'Универсальное делегирование:\n';
+            result += 'document.addEventListener("click", function(event) {\n';
+            result += '  if (event.target.matches(".selector")) {\n';
+            result += '    // Обработка события\n';
+            result += '  }\n';
+            result += '});\n\n';
+            
+            result += 'Метод matches() проверяет, подходит ли элемент под CSS селектор.\n\n';
+            
+            result += 'Преимущества универсального делегирования:\n';
+            result += '- Один обработчик на весь документ\n';
+            result += '- Работает с любыми динамическими элементами\n';
+            result += '- Легко поддерживать и изменять\n';
+            
+            output.textContent = result;
+        }
+        
+        // Функция для добавления специального элемента
+        function addSpecialElement() {
+            const container = document.getElementById('dynamicContainer');
+            const newElement = document.createElement('div');
+            newElement.className = 'dynamic-item special';
+            newElement.textContent = `Специальный элемент ${container.children.length + 1}`;
+            newElement.style.padding = '10px';
+            newElement.style.margin = '5px';
+            newElement.style.border = '2px solid #ffcc00';
+            newElement.style.background = 'rgba(255,204,0,0.1)';
+            newElement.style.cursor = 'pointer';
+            
+            container.appendChild(newElement);
+            console.log('Добавлен специальный элемент');
+        }
+        
+        // Функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).textContent = '';
+        }
+    </script>
+</body>
+</html>

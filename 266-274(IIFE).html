@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - IIFE</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - IIFE</h1>
+        <p class="subtitle">Immediately Invoked Function Expressions - Функции, вызываемые немедленно</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>IIFE (Immediately Invoked Function Expression) - функция, которая выполняется сразу после своего определения.</p>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Вызов функции на месте -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2>ВЫЗОВ ФУНКЦИИ НА МЕСТЕ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Базовая IIFE</div>
+                <div class="code-block">// Обычное объявление функции
+function sayHello() {
+    console.log("Привет, мир!");
+}
+sayHello(); // Нужно вызывать отдельно
+
+// IIFE - выполняется сразу
+(function() {
+    console.log("IIFE: Привет, мир!");
+})();</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Различные синтаксисы IIFE</div>
+                <div class="code-block">// Классический синтаксис
+(function() {
+    console.log("Классическая IIFE");
+})();
+
+// С оператором !
+!function() {
+    console.log("IIFE с !");
+}();
+
+// С оператором +
++function() {
+    console.log("IIFE с +");
+}();
+
+// С оператором void
+void function() {
+    console.log("IIFE с void");
+}();</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Присваивание функции в переменную -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">💾</div>
+                <h2>ПРИСВАИВАНИЕ ФУНКЦИИ В ПЕРЕМЕННУЮ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> IIFE с возвратом значения</div>
+                <div class="code-block">// IIFE возвращает значение, которое присваивается переменной
+let result = (function() {
+    let secret = "секретные данные";
+    return "Результат: " + secret;
+})();
+
+console.log(result);
+// console.log(secret); // Ошибка! secret не доступна вне IIFE</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Создание модуля через IIFE</div>
+                <div class="code-block">// Паттерн модуль через IIFE
+let calculator = (function() {
+    let memory = 0;
+    
+    return {
+        add: function(a, b) {
+            return a + b;
+        },
+        subtract: function(a, b) {
+            return a - b;
+        },
+        store: function(value) {
+            memory = value;
+        },
+        recall: function() {
+            return memory;
+        }
+    };
+})();
+
+console.log("5 + 3 =", calculator.add(5, 3));
+console.log("10 - 4 =", calculator.subtract(10, 4));
+calculator.store(42);
+console.log("В памяти:", calculator.recall());</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Применение вызова функции на месте -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ПРИМЕНЕНИЕ ВЫЗОВА ФУНКЦИИ НА МЕСТЕ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Изоляция области видимости</div>
+                <div class="code-block">// Без IIFE - переменные в глобальной области
+var globalVar = "глобальная";
+
+// С IIFE - изоляция области видимости
+(function() {
+    var localVar = "локальная";
+    console.log("Внутри IIFE:", localVar);
+    console.log("Доступ к глобальной:", globalVar);
+})();
+
+// console.log(localVar); // Ошибка! localVar не доступна</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Инициализация кода</div>
+                <div class="code-block">// IIFE для инициализации
+(function init() {
+    console.log("Инициализация приложения...");
+    
+    // Настройка конфигурации
+    let config = {
+        theme: "dark",
+        language: "ru",
+        debug: true
+    };
+    
+    console.log("Конфигурация:", config);
+    console.log("Инициализация завершена!");
+})();</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Круглые скобки и параметры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>КРУГЛЫЕ СКОБКИ И ПАРАМЕТРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Роль круглых скобок</div>
+                <div class="code-block">// Без скобок - синтаксическая ошибка
+// function() { console.log("Ошибка!"); }();
+
+// Со скобками - работает
+(function() {
+    console.log("Функция в скобках работает!");
+})();
+
+// Альтернативный синтаксис
+(function() {
+    console.log("Альтернативный синтаксис тоже работает!");
+}());</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Передача параметров в IIFE</div>
+                <div class="code-block">// Передача параметров при вызове
+(function(name, age) {
+    console.log(`Привет, ${name}! Тебе ${age} лет.`);
+})("Анна", 25);
+
+// Передача глобальных объектов
+(function(window, document) {
+    console.log("Window:", typeof window);
+    console.log("Document:", typeof document);
+})(window, document);
+
+// Минификация с параметрами
+(function(w, d) {
+    console.log("Минифицированные параметры работают!");
+})(window, document);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Множественные вызовы и подводные камни -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚠️</div>
+                <h2>МНОЖЕСТВЕННЫЕ ВЫЗОВЫ И ПОДВОДНЫЕ КАМНИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Множественные IIFE</div>
+                <div class="code-block">// Несколько IIFE подряд
+(function() {
+    console.log("Первая IIFE");
+})();
+
+(function() {
+    console.log("Вторая IIFE");
+})();
+
+(function() {
+    console.log("Третья IIFE");
+})();
+
+// IIFE в цикле (с правильным замыканием)
+for (var i = 0; i < 3; i++) {
+    (function(index) {
+        setTimeout(function() {
+            console.log("Индекс:", index);
+        }, 100 * index);
+    })(i);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Точка с запятой для безопасности</div>
+                <div class="code-block">// Без точки с запятой - может быть ошибка
+var x = 5 // Нет точки с запятой
+
+// Без защиты - может интерпретироваться как вызов функции
+// (function() {
+//     console.log("Проблемная IIFE");
+// })()
+
+// С защитной точкой с запятой
+var y = 10; // Точка с запятой
+
+(function() {
+    console.log("Защищенная IIFE");
+})();
+
+// Еще один способ защиты
+void function() {
+    console.log("IIFE с void всегда безопасна");
+}();</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Замыкания и IIFE -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2>ЗАМЫКАНИЯ И IIFE</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Создание приватных переменных</div>
+                <div class="code-block">// IIFE для создания приватного состояния
+let counterModule = (function() {
+    let count = 0; // Приватная переменная
+    
+    return {
+        increment: function() {
+            count++;
+            return count;
+        },
+        decrement: function() {
+            count--;
+            return count;
+        },
+        getCount: function() {
+            return count;
+        },
+        reset: function() {
+            count = 0;
+            return count;
+        }
+    };
+})();
+
+console.log("Начальное значение:", counterModule.getCount());
+console.log("После increment:", counterModule.increment());
+console.log("После increment:", counterModule.increment());
+console.log("После decrement:", counterModule.decrement());
+// console.log(count); // Ошибка! count приватная</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Замыкания в циклах с IIFE</div>
+                <div class="code-block">// Проблема без IIFE
+console.log("Без IIFE (проблема):");
+for (var i = 0; i < 3; i++) {
+    setTimeout(function() {
+        console.log("i =", i); // Всегда 3
+    }, 100);
+}
+
+// Решение с IIFE
+setTimeout(function() {
+    console.log("С IIFE (решение):");
+    for (var j = 0; j < 3; j++) {
+        (function(index) {
+            setTimeout(function() {
+                console.log("j =", index); // 0, 1, 2
+            }, 100 * index);
+        })(j);
+    }
+}, 500);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Конфигурируемые IIFE</div>
+                <div class="code-block">// IIFE с конфигурацией
+let app = (function(config) {
+    let settings = {
+        theme: config.theme || "light",
+        debug: config.debug || false,
+        version: "1.0.0"
+    };
+    
+    return {
+        getSetting: function(key) {
+            return settings[key];
+        },
+        setSetting: function(key, value) {
+            if (key in settings) {
+                settings[key] = value;
+                return true;
+            }
+            return false;
+        },
+        getAllSettings: function() {
+            return {...settings};
+        }
+    };
+})({
+    theme: "dark",
+    debug: true
+});
+
+console.log("Тема:", app.getSetting("theme"));
+console.log("Версия:", app.getSetting("version"));
+console.log("Все настройки:", app.getAllSettings());</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Практические примеры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ПРИМЕРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Кэширующая функция с IIFE</div>
+                <div class="code-block">// Мемоизация через IIFE
+let fibonacci = (function() {
+    let cache = {};
+    
+    function fib(n) {
+        if (n <= 1) return n;
+        if (cache[n]) {
+            console.log("Из кэша:", n);
+            return cache[n];
+        }
+        console.log("Вычисляем:", n);
+        cache[n] = fib(n - 1) + fib(n - 2);
+        return cache[n];
+    }
+    
+    return fib;
+})();
+
+console.log("fibonacci(5):", fibonacci(5));
+console.log("---");
+console.log("fibonacci(6):", fibonacci(6));</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Event Manager через IIFE</div>
+                <div class="code-block">// Event Manager модуль
+let eventManager = (function() {
+    let events = {};
+    
+    return {
+        on: function(eventName, callback) {
+            if (!events[eventName]) {
+                events[eventName] = [];
+            }
+            events[eventName].push(callback);
+        },
+        
+        off: function(eventName, callback) {
+            if (events[eventName]) {
+                events[eventName] = events[eventName].filter(cb => cb !== callback);
+            }
+        },
+        
+        emit: function(eventName, data) {
+            if (events[eventName]) {
+                events[eventName].forEach(callback => {
+                    callback(data);
+                });
+            }
+        },
+        
+        getEventCount: function(eventName) {
+            return events[eventName] ? events[eventName].length : 0;
+        }
+    };
+})();
+
+// Использование
+eventManager.on('userLogin', function(user) {
+    console.log("Пользователь вошел:", user);
+});
+
+eventManager.on('userLogin', function(user) {
+    console.log("Отправляем уведомление для:", user);
+});
+
+console.log("Обработчиков userLogin:", eventManager.getEventCount('userLogin'));
+eventManager.emit('userLogin', {name: "Иван", id: 123});</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - IIFE &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Вызов функции на месте
+        function runTask1() {
+            let output = "";
+            
+            function sayHello() {
+                output += "Привет, мир!\n";
+            }
+            sayHello();
+            
+            (function() {
+                output += "IIFE: Привет, мир!\n";
+            })();
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = "";
+            
+            (function() {
+                output += "Классическая IIFE\n";
+            })();
+            
+            !function() {
+                output += "IIFE с !\n";
+            }();
+            
+            +function() {
+                output += "IIFE с +\n";
+            }();
+            
+            void function() {
+                output += "IIFE с void\n";
+            }();
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Присваивание функции в переменную
+        function runTask3() {
+            let output = "";
+            
+            let result = (function() {
+                let secret = "секретные данные";
+                return "Результат: " + secret;
+            })();
+            
+            output += result + "\n";
+            output += "// secret не доступна вне IIFE\n";
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = "";
+            
+            let calculator = (function() {
+                let memory = 0;
+                
+                return {
+                    add: function(a, b) {
+                        return a + b;
+                    },
+                    subtract: function(a, b) {
+                        return a - b;
+                    },
+                    store: function(value) {
+                        memory = value;
+                    },
+                    recall: function() {
+                        return memory;
+                    }
+                };
+            })();
+            
+            output += "5 + 3 = " + calculator.add(5, 3) + "\n";
+            output += "10 - 4 = " + calculator.subtract(10, 4) + "\n";
+            calculator.store(42);
+            output += "В памяти: " + calculator.recall() + "\n";
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Применение вызова функции на месте
+        function runTask5() {
+            let output = "";
+            
+            var globalVar = "глобальная";
+            
+            (function() {
+                var localVar = "локальная";
+                output += "Внутри IIFE: " + localVar + "\n";
+                output += "Доступ к глобальной: " + globalVar + "\n";
+            })();
+            
+            output += "// localVar не доступна вне IIFE\n";
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = "";
+            
+            (function init() {
+                output += "Инициализация приложения...\n";
+                
+                let config = {
+                    theme: "dark",
+                    language: "ru",
+                    debug: true
+                };
+                
+                output += "Конфигурация: " + JSON.stringify(config) + "\n";
+                output += "Инициализация завершена!\n";
+            })();
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Круглые скобки и параметры
+        function runTask7() {
+            let output = "";
+            
+            (function() {
+                output += "Функция в скобках работает!\n";
+            })();
+            
+            (function() {
+                output += "Альтернативный синтаксис тоже работает!\n";
+            }());
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = "";
+            
+            (function(name, age) {
+                output += `Привет, ${name}! Тебе ${age} лет.\n`;
+            })("Анна", 25);
+            
+            (function(window, document) {
+                output += "Window: " + typeof window + "\n";
+                output += "Document: " + typeof document + "\n";
+            })(window, document);
+            
+            (function(w, d) {
+                output += "Минифицированные параметры работают!\n";
+            })(window, document);
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Множественные вызовы и подводные камни
+        function runTask9() {
+            let output = "";
+            
+            (function() {
+                output += "Первая IIFE\n";
+            })();
+            
+            (function() {
+                output += "Вторая IIFE\n";
+            })();
+            
+            (function() {
+                output += "Третья IIFE\n";
+            })();
+            
+            for (var i = 0; i < 3; i++) {
+                (function(index) {
+                    setTimeout(function() {
+                        output += "Индекс: " + index + "\n";
+                        if (index === 2) {
+                            document.getElementById('output9').innerHTML = output;
+                        }
+                    }, 100 * index);
+                })(i);
+            }
+            
+            // Если все индексы уже обработаны, обновляем вывод
+            if (output.split('\n').filter(line => line.includes('Индекс')).length === 3) {
+                document.getElementById('output9').innerHTML = output;
+            }
+        }
+
+        function runTask10() {
+            let output = "";
+            
+            var x = 5;
+            var y = 10;
+            
+            (function() {
+                output += "Защищенная IIFE\n";
+            })();
+            
+            void function() {
+                output += "IIFE с void всегда безопасна\n";
+            }();
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 6: Замыкания и IIFE
+        function runTask11() {
+            let output = "";
+            
+            let counterModule = (function() {
+                let count = 0;
+                
+                return {
+                    increment: function() {
+                        count++;
+                        return count;
+                    },
+                    decrement: function() {
+                        count--;
+                        return count;
+                    },
+                    getCount: function() {
+                        return count;
+                    },
+                    reset: function() {
+                        count = 0;
+                        return count;
+                    }
+                };
+            })();
+            
+            output += "Начальное значение: " + counterModule.getCount() + "\n";
+            output += "После increment: " + counterModule.increment() + "\n";
+            output += "После increment: " + counterModule.increment() + "\n";
+            output += "После decrement: " + counterModule.decrement() + "\n";
+            
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let output = "";
+            
+            output += "Без IIFE (проблема):\n";
+            for (var i = 0; i < 3; i++) {
+                setTimeout(function() {
+                    output += "i = 3\n";
+                }, 100);
+            }
+            
+            setTimeout(function() {
+                output += "С IIFE (решение):\n";
+                for (var j = 0; j < 3; j++) {
+                    (function(index) {
+                        setTimeout(function() {
+                            output += "j = " + index + "\n";
+                            if (index === 2) {
+                                document.getElementById('output12').innerHTML = output;
+                            }
+                        }, 100 * index);
+                    })(j);
+                }
+            }, 500);
+            
+            // Обновляем вывод после всех таймаутов
+            setTimeout(function() {
+                document.getElementById('output12').innerHTML = output;
+            }, 1000);
+        }
+
+        function runTask13() {
+            let output = "";
+            
+            let app = (function(config) {
+                let settings = {
+                    theme: config.theme || "light",
+                    debug: config.debug || false,
+                    version: "1.0.0"
+                };
+                
+                return {
+                    getSetting: function(key) {
+                        return settings[key];
+                    },
+                    setSetting: function(key, value) {
+                        if (key in settings) {
+                            settings[key] = value;
+                            return true;
+                        }
+                        return false;
+                    },
+                    getAllSettings: function() {
+                        return {...settings};
+                    }
+                };
+            })({
+                theme: "dark",
+                debug: true
+            });
+            
+            output += "Тема: " + app.getSetting("theme") + "\n";
+            output += "Версия: " + app.getSetting("version") + "\n";
+            output += "Все настройки: " + JSON.stringify(app.getAllSettings()) + "\n";
+            
+            document.getElementById('output13').innerHTML = output;
+        }
+
+        // Раздел 7: Практические примеры
+        function runTask14() {
+            let output = "";
+            
+            let fibonacci = (function() {
+                let cache = {};
+                
+                function fib(n) {
+                    if (n <= 1) return n;
+                    if (cache[n]) {
+                        output += "Из кэша: " + n + "\n";
+                        return cache[n];
+                    }
+                    output += "Вычисляем: " + n + "\n";
+                    cache[n] = fib(n - 1) + fib(n - 2);
+                    return cache[n];
+                }
+                
+                return fib;
+            })();
+            
+            output += "fibonacci(5): " + fibonacci(5) + "\n";
+            output += "---\n";
+            output += "fibonacci(6): " + fibonacci(6) + "\n";
+            
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let output = "";
+            
+            let eventManager = (function() {
+                let events = {};
+                
+                return {
+                    on: function(eventName, callback) {
+                        if (!events[eventName]) {
+                            events[eventName] = [];
+                        }
+                        events[eventName].push(callback);
+                    },
+                    
+                    off: function(eventName, callback) {
+                        if (events[eventName]) {
+                            events[eventName] = events[eventName].filter(cb => cb !== callback);
+                        }
+                    },
+                    
+                    emit: function(eventName, data) {
+                        if (events[eventName]) {
+                            events[eventName].forEach(callback => {
+                                callback(data);
+                            });
+                        }
+                    },
+                    
+                    getEventCount: function(eventName) {
+                        return events[eventName] ? events[eventName].length : 0;
+                    }
+                };
+            })();
+            
+            eventManager.on('userLogin', function(user) {
+                output += "Пользователь вошел: " + JSON.stringify(user) + "\n";
+            });
+            
+            eventManager.on('userLogin', function(user) {
+                output += "Отправляем уведомление для: " + user.name + "\n";
+            });
+            
+            output += "Обработчиков userLogin: " + eventManager.getEventCount('userLogin') + "\n";
+            eventManager.emit('userLogin', {name: "Иван", id: 123});
+            
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

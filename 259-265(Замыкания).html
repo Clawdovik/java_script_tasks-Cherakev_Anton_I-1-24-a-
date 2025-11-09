@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Замыкания</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ЗАМЫКАНИЯ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с замыканиями</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Доступ к внешним переменным -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔓</div>
+                <h2>ДОСТУП К ВНЕШНИМ ПЕРЕМЕННЫМ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Доступ к внешней переменной</div>
+                <div class="code-block">let outerVar = "Внешняя переменная";
+
+function showOuterVar() {
+    console.log(outerVar); // Функция имеет доступ к внешней переменной
+}
+
+showOuterVar();</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Изменение внешней переменной</div>
+                <div class="code-block">let counter = 0;
+
+function increment() {
+    counter++; // Функция изменяет внешнюю переменную
+    console.log(`Счетчик: ${counter}`);
+}
+
+increment();
+increment();</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Лексическое окружение функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🌐</div>
+                <h2>ЛЕКСИЧЕСКОЕ ОКРУЖЕНИЕ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Цепочка лексических окружений</div>
+                <div class="code-block">let globalVar = "Глобальная переменная";
+
+function outerFunction() {
+    let outerVar = "Переменная внешней функции";
+    
+    function innerFunction() {
+        let innerVar = "Переменная внутренней функции";
+        console.log(innerVar); // Собственная переменная
+        console.log(outerVar); // Переменная из внешней функции
+        console.log(globalVar); // Глобальная переменная
+    }
+    
+    innerFunction();
+}
+
+outerFunction();</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Время создания лексического окружения</div>
+                <div class="code-block">let name = "Иван";
+
+function sayHi() {
+    console.log(`Привет, ${name}`);
+}
+
+name = "Петр"; // Изменяем значение переменной
+
+sayHi(); // Что выведет функция?</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Применение лексического окружения -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>ПРИМЕНЕНИЕ ЛЕКСИЧЕСКОГО ОКРУЖЕНИЯ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Сохранение состояния между вызовами</div>
+                <div class="code-block">function createCounter() {
+    let count = 0;
+    
+    return function() {
+        count++;
+        return count;
+    };
+}
+
+let counter1 = createCounter();
+console.log(counter1()); // 1
+console.log(counter1()); // 2
+console.log(counter1()); // 3</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Независимые счетчики</div>
+                <div class="code-block">function createCounter() {
+    let count = 0;
+    
+    return function() {
+        count++;
+        return count;
+    };
+}
+
+let counterA = createCounter();
+let counterB = createCounter();
+
+console.log("Counter A:", counterA()); // 1
+console.log("Counter A:", counterA()); // 2
+console.log("Counter B:", counterB()); // 1
+console.log("Counter A:", counterA()); // 3
+console.log("Counter B:", counterB()); // 2</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Введение в замыкания -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2>ВВЕДЕНИЕ В ЗАМЫКАНИЯ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Простое замыкание</div>
+                <div class="code-block">function outer() {
+    let message = "Привет из внешней функции!";
+    
+    function inner() {
+        console.log(message); // Внутренняя функция "замыкает" переменную message
+    }
+    
+    return inner;
+}
+
+let closureFunc = outer();
+closureFunc(); // Вызываем внутреннюю функцию, которая помнит message</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Замыкание с параметрами</div>
+                <div class="code-block">function createGreeting(greeting) {
+    return function(name) {
+        console.log(`${greeting}, ${name}!`);
+    };
+}
+
+let sayHello = createGreeting("Привет");
+let sayGoodbye = createGreeting("Пока");
+
+sayHello("Иван"); // Привет, Иван!
+sayGoodbye("Петр"); // Пока, Петр!</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Счетчик на замыканиях -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>СЧЕТЧИК НА ЗАМЫКАНИЯХ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Базовый счетчик</div>
+                <div class="code-block">function createCounter() {
+    let count = 0;
+    
+    return function() {
+        return ++count;
+    };
+}
+
+let counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Счетчик с методами</div>
+                <div class="code-block">function createAdvancedCounter() {
+    let count = 0;
+    
+    return {
+        increment: function() {
+            return ++count;
+        },
+        decrement: function() {
+            return --count;
+        },
+        getValue: function() {
+            return count;
+        },
+        reset: function() {
+            count = 0;
+            return count;
+        }
+    };
+}
+
+let advancedCounter = createAdvancedCounter();
+console.log(advancedCounter.increment()); // 1
+console.log(advancedCounter.increment()); // 2
+console.log(advancedCounter.decrement()); // 1
+console.log(advancedCounter.getValue());  // 1
+console.log(advancedCounter.reset());     // 0</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Нюансы замыканий -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚠️</div>
+                <h2>НЮАНСЫ ЗАМЫКАНИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Нюанс: локальная переменная</div>
+                <div class="code-block">function testLocal() {
+    let value = "локальная";
+    
+    setTimeout(function() {
+        console.log(value); // Что выведет?
+    }, 1000);
+    
+    value = "измененная локальная";
+}
+
+testLocal();</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Нюанс: глобальная переменная</div>
+                <div class="code-block">let globalValue = "глобальная";
+
+function testGlobal() {
+    setTimeout(function() {
+        console.log(globalValue); // Что выведет?
+    }, 1000);
+    
+    globalValue = "измененная глобальная";
+}
+
+testGlobal();</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Цикл и замыкания</div>
+                <div class="code-block">// Проблема: все функции ссылаются на одну переменную i
+for (var i = 0; i < 5; i++) {
+    setTimeout(function() {
+        console.log(i); // Всегда выводит 5
+    }, 100);
+}
+
+// Решение: создаем новое лексическое окружение для каждой итерации
+for (var i = 0; i < 5; i++) {
+    (function(j) {
+        setTimeout(function() {
+            console.log(j); // Выводит 0, 1, 2, 3, 4
+        }, 100);
+    })(i);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Кэширующая функция</div>
+                <div class="code-block">function createCachedFunction(fn) {
+    let cache = {};
+    
+    return function(arg) {
+        if (arg in cache) {
+            console.log("Из кэша:", cache[arg]);
+            return cache[arg];
+        } else {
+            let result = fn(arg);
+            cache[arg] = result;
+            console.log("Вычислено:", result);
+            return result;
+        }
+    };
+}
+
+// Пример использования
+function slowSquare(x) {
+    // Имитация медленной операции
+    return x * x;
+}
+
+let cachedSquare = createCachedFunction(slowSquare);
+cachedSquare(5); // Вычислено: 25
+cachedSquare(5); // Из кэша: 25
+cachedSquare(3); // Вычислено: 9
+cachedSquare(5); // Из кэша: 25</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Генератор уникальных ID</div>
+                <div class="code-block">function createIdGenerator(prefix = "") {
+    let id = 0;
+    
+    return function() {
+        id++;
+        return prefix + id;
+    };
+}
+
+// Создаем генераторы с разными префиксами
+let userGenerator = createIdGenerator("user_");
+let orderGenerator = createIdGenerator("order_");
+
+console.log(userGenerator()); // user_1
+console.log(userGenerator()); // user_2
+console.log(orderGenerator()); // order_1
+console.log(userGenerator()); // user_3
+console.log(orderGenerator()); // order_2</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Замыкания &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Доступ к внешним переменным
+        function runTask1() {
+            let output = "";
+            let outerVar = "Внешняя переменная";
+
+            function showOuterVar() {
+                output += outerVar + "\n";
+            }
+
+            showOuterVar();
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = "";
+            let counter = 0;
+
+            function increment() {
+                counter++;
+                output += `Счетчик: ${counter}\n`;
+            }
+
+            increment();
+            increment();
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Лексическое окружение функций
+        function runTask3() {
+            let output = "";
+            let globalVar = "Глобальная переменная";
+
+            function outerFunction() {
+                let outerVar = "Переменная внешней функции";
+                
+                function innerFunction() {
+                    let innerVar = "Переменная внутренней функции";
+                    output += innerVar + "\n";
+                    output += outerVar + "\n";
+                    output += globalVar + "\n";
+                }
+                
+                innerFunction();
+            }
+
+            outerFunction();
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = "";
+            let name = "Иван";
+
+            function sayHi() {
+                output += `Привет, ${name}\n`;
+            }
+
+            name = "Петр";
+            sayHi();
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Применение лексического окружения
+        function runTask5() {
+            let output = "";
+            function createCounter() {
+                let count = 0;
+                
+                return function() {
+                    count++;
+                    return count;
+                };
+            }
+
+            let counter1 = createCounter();
+            output += counter1() + "\n";
+            output += counter1() + "\n";
+            output += counter1() + "\n";
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = "";
+            function createCounter() {
+                let count = 0;
+                
+                return function() {
+                    count++;
+                    return count;
+                };
+            }
+
+            let counterA = createCounter();
+            let counterB = createCounter();
+
+            output += "Counter A: " + counterA() + "\n";
+            output += "Counter A: " + counterA() + "\n";
+            output += "Counter B: " + counterB() + "\n";
+            output += "Counter A: " + counterA() + "\n";
+            output += "Counter B: " + counterB() + "\n";
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Введение в замыкания
+        function runTask7() {
+            let output = "";
+            function outer() {
+                let message = "Привет из внешней функции!";
+                
+                function inner() {
+                    output += message + "\n";
+                }
+                
+                return inner;
+            }
+
+            let closureFunc = outer();
+            closureFunc();
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = "";
+            function createGreeting(greeting) {
+                return function(name) {
+                    output += `${greeting}, ${name}!\n`;
+                };
+            }
+
+            let sayHello = createGreeting("Привет");
+            let sayGoodbye = createGreeting("Пока");
+
+            sayHello("Иван");
+            sayGoodbye("Петр");
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Счетчик на замыканиях
+        function runTask9() {
+            let output = "";
+            function createCounter() {
+                let count = 0;
+                
+                return function() {
+                    return ++count;
+                };
+            }
+
+            let counter = createCounter();
+            output += counter() + "\n";
+            output += counter() + "\n";
+            output += counter() + "\n";
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            let output = "";
+            function createAdvancedCounter() {
+                let count = 0;
+                
+                return {
+                    increment: function() {
+                        return ++count;
+                    },
+                    decrement: function() {
+                        return --count;
+                    },
+                    getValue: function() {
+                        return count;
+                    },
+                    reset: function() {
+                        count = 0;
+                        return count;
+                    }
+                };
+            }
+
+            let advancedCounter = createAdvancedCounter();
+            output += advancedCounter.increment() + "\n";
+            output += advancedCounter.increment() + "\n";
+            output += advancedCounter.decrement() + "\n";
+            output += advancedCounter.getValue() + "\n";
+            output += advancedCounter.reset() + "\n";
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 6: Нюансы замыканий
+        function runTask11() {
+            let output = "";
+            function testLocal() {
+                let value = "локальная";
+                
+                setTimeout(function() {
+                    output += value + "\n";
+                }, 100);
+                
+                value = "измененная локальная";
+            }
+
+            testLocal();
+            // Ждем завершения setTimeout
+            setTimeout(function() {
+                document.getElementById('output11').innerHTML = output;
+            }, 200);
+        }
+
+        function runTask12() {
+            let output = "";
+            let globalValue = "глобальная";
+
+            function testGlobal() {
+                setTimeout(function() {
+                    output += globalValue + "\n";
+                }, 100);
+                
+                globalValue = "измененная глобальная";
+            }
+
+            testGlobal();
+            // Ждем завершения setTimeout
+            setTimeout(function() {
+                document.getElementById('output12').innerHTML = output;
+            }, 200);
+        }
+
+        function runTask13() {
+            let output = "";
+            // Проблема
+            output += "Проблема (var):\n";
+            for (var i = 0; i < 5; i++) {
+                setTimeout(function() {
+                    output += i + " ";
+                }, 10 * i);
+            }
+            
+            // Решение
+            setTimeout(function() {
+                output += "\n\nРешение (замыкание):\n";
+                for (var i = 0; i < 5; i++) {
+                    (function(j) {
+                        setTimeout(function() {
+                            output += j + " ";
+                            if (j === 4) {
+                                document.getElementById('output13').innerHTML = output;
+                            }
+                        }, 10 * j);
+                    })(i);
+                }
+            }, 100);
+        }
+
+        // Раздел 7: Практические задачи
+        function runTask14() {
+            let output = "";
+            function createCachedFunction(fn) {
+                let cache = {};
+                
+                return function(arg) {
+                    if (arg in cache) {
+                        output += "Из кэша: " + cache[arg] + "\n";
+                        return cache[arg];
+                    } else {
+                        let result = fn(arg);
+                        cache[arg] = result;
+                        output += "Вычислено: " + result + "\n";
+                        return result;
+                    }
+                };
+            }
+
+            function slowSquare(x) {
+                return x * x;
+            }
+
+            let cachedSquare = createCachedFunction(slowSquare);
+            cachedSquare(5);
+            cachedSquare(5);
+            cachedSquare(3);
+            cachedSquare(5);
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let output = "";
+            function createIdGenerator(prefix = "") {
+                let id = 0;
+                
+                return function() {
+                    id++;
+                    return prefix + id;
+                };
+            }
+
+            let userGenerator = createIdGenerator("user_");
+            let orderGenerator = createIdGenerator("order_");
+
+            output += userGenerator() + "\n";
+            output += userGenerator() + "\n";
+            output += orderGenerator() + "\n";
+            output += userGenerator() + "\n";
+            output += orderGenerator() + "\n";
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

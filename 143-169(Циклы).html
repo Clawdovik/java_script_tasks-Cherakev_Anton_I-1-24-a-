@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Циклы</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ЦИКЛЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с циклами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Базовые циклы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>БАЗОВЫЕ ЦИКЛЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Цикл for</div>
+                <div class="code-block">// Вывод чисел от 1 до 5
+for (let i = 1; i <= 5; i++) {
+    console.log(i);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Цикл while</div>
+                <div class="code-block">// Вывод чисел от 1 до 5 через while
+let i = 1;
+while (i <= 5) {
+    console.log(i);
+    i++;
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Циклы без заданного количества итераций</div>
+                <div class="code-block">// Генерация случайных чисел пока не выпадет больше 0.8
+let attempts = 0;
+let randomNum;
+do {
+    randomNum = Math.random();
+    attempts++;
+    console.log(`Попытка ${attempts}: ${randomNum}`);
+} while (randomNum <= 0.8);
+
+console.log(`Успех! Потребовалось попыток: ${attempts}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Работа с массивами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>РАБОТА С МАССИВАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Цикл for для массивов</div>
+                <div class="code-block">// Перебор массива и вывод элементов
+let fruits = ['яблоко', 'банан', 'апельсин', 'виноград'];
+for (let i = 0; i < fruits.length; i++) {
+    console.log(`Фрукт ${i + 1}: ${fruits[i]}`);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Перебор массива for of</div>
+                <div class="code-block">// Современный способ перебора массивов
+let colors = ['красный', 'зеленый', 'синий', 'желтый'];
+for (let color of colors) {
+    console.log(`Цвет: ${color}`);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Заполнение массива методом push</div>
+                <div class="code-block">// Создание массива четных чисел
+let evenNumbers = [];
+for (let i = 2; i <= 10; i += 2) {
+    evenNumbers.push(i);
+}
+console.log('Массив четных чисел:', evenNumbers);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Подсчет количества элементов в массиве</div>
+                <div class="code-block">// Подсчет количества чисел больше 5
+let numbers = [3, 7, 2, 9, 1, 8, 4];
+let count = 0;
+for (let num of numbers) {
+    if (num > 5) {
+        count++;
+    }
+}
+console.log('Массив:', numbers);
+console.log('Количество чисел больше 5:', count);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Работа с объектами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>РАБОТА С ОБЪЕКТАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Перебор объекта</div>
+                <div class="code-block">// Перебор свойств объекта
+let person = {
+    name: 'Cherakaev',
+    age: 23,
+    city: 'Simferopol',
+    profession: 'Developer'
+};
+
+for (let key in person) {
+    console.log(`${key}: ${person[key]}`);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Заполнение объектов через цикл</div>
+                <div class="code-block">// Создание объекта с квадратами чисел
+let squares = {};
+for (let i = 1; i <= 5; i++) {
+    squares[i] = i * i;
+}
+console.log('Квадраты чисел:', squares);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Сложные алгоритмы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>СЛОЖНЫЕ АЛГОРИТМЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Вложенные циклы</div>
+                <div class="code-block">// Создание таблицы умножения
+for (let i = 1; i <= 3; i++) {
+    let row = '';
+    for (let j = 1; j <= 3; j++) {
+        row += `${i * j}\t`;
+    }
+    console.log(row);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Вывод пирамидок</div>
+                <div class="code-block">// Вывод числовой пирамиды
+let pyramid = '';
+for (let i = 1; i <= 5; i++) {
+    for (let j = 1; j <= i; j++) {
+        pyramid += j + ' ';
+    }
+    pyramid += '\n';
+}
+console.log('Числовая пирамида:');
+console.log(pyramid);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Получение чисел Фибоначчи</div>
+                <div class="code-block">// Генерация первых 10 чисел Фибоначчи
+let fibonacci = [0, 1];
+for (let i = 2; i < 10; i++) {
+    fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+}
+console.log('Числа Фибоначчи:', fibonacci);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Нахождение простых чисел</div>
+                <div class="code-block">// Поиск простых чисел до 20
+let primes = [];
+for (let num = 2; num <= 20; num++) {
+    let isPrime = true;
+    for (let i = 2; i < num; i++) {
+        if (num % i === 0) {
+            isPrime = false;
+            break;
+        }
+    }
+    if (isPrime) {
+        primes.push(num);
+    }
+}
+console.log('Простые числа до 20:', primes);</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Управление циклами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎮</div>
+                <h2>УПРАВЛЕНИЕ ЦИКЛАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Инструкция continue</div>
+                <div class="code-block">// Пропуск четных чисел
+let result = '';
+for (let i = 1; i <= 10; i++) {
+    if (i % 2 === 0) {
+        continue; // Пропускаем четные числа
+    }
+    result += i + ' ';
+}
+console.log('Нечетные числа от 1 до 10:', result);</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Работа с флагами</div>
+                <div class="code-block">// Поиск первого отрицательного числа
+let numbers = [3, 7, -2, 9, 1];
+let found = false;
+let firstNegative = null;
+
+for (let num of numbers) {
+    if (num < 0) {
+        firstNegative = num;
+        found = true;
+        break;
+    }
+}
+
+if (found) {
+    console.log('Первое отрицательное число:', firstNegative);
+} else {
+    console.log('Отрицательных чисел нет');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">16</span> Накопление результата в цикле</div>
+                <div class="code-block">// Вычисление факториала числа
+let number = 5;
+let factorial = 1;
+for (let i = 1; i <= number; i++) {
+    factorial *= i;
+}
+console.log(`Факториал ${number} = ${factorial}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask16()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output16')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output16"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">17</span> Формирование строк через циклы</div>
+                <div class="code-block">// Создание строки с обратным порядком букв
+let word = 'JavaScript';
+let reversed = '';
+for (let i = word.length - 1; i >= 0; i--) {
+    reversed += word[i];
+}
+console.log(`Исходная строка: ${word}`);
+console.log(`Перевернутая строка: ${reversed}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask17()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output17')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output17"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">18</span> Получение соседей элементов в массиве</div>
+                <div class="code-block">// Вывод каждого элемента с его соседями
+let array = [10, 20, 30, 40, 50];
+console.log('Массив:', array);
+for (let i = 0; i < array.length; i++) {
+    let neighbors = '';
+    if (i > 0) neighbors += `левый: ${array[i-1]} `;
+    neighbors += `текущий: ${array[i]} `;
+    if (i < array.length - 1) neighbors += `правый: ${array[i+1]}`;
+    console.log(neighbors);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask18()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output18')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output18"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">19</span> Изменение массива в цикле</div>
+                <div class="code-block">// Удвоение всех элементов массива
+let numbers = [1, 2, 3, 4, 5];
+console.log('Исходный массив:', numbers);
+for (let i = 0; i < numbers.length; i++) {
+    numbers[i] = numbers[i] * 2;
+}
+console.log('Удвоенный массив:', numbers);</div>
+                <div class="btn-group">
+                    <button onclick="runTask19()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output19')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output19"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Циклы &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Базовые циклы
+        function runTask1() {
+            let output = '';
+            for (let i = 1; i <= 5; i++) {
+                output += i + '\n';
+            }
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = '';
+            let i = 1;
+            while (i <= 5) {
+                output += i + '\n';
+                i++;
+            }
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        function runTask3() {
+            let output = '';
+            let attempts = 0;
+            let randomNum;
+            do {
+                randomNum = Math.random();
+                attempts++;
+                output += `Попытка ${attempts}: ${randomNum.toFixed(4)}\n`;
+            } while (randomNum <= 0.8);
+            output += `\nУспех! Потребовалось попыток: ${attempts}`;
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        // Раздел 2: Работа с массивами
+        function runTask4() {
+            let output = '';
+            let fruits = ['яблоко', 'банан', 'апельсин', 'виноград'];
+            for (let i = 0; i < fruits.length; i++) {
+                output += `Фрукт ${i + 1}: ${fruits[i]}\n`;
+            }
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        function runTask5() {
+            let output = '';
+            let colors = ['красный', 'зеленый', 'синий', 'желтый'];
+            for (let color of colors) {
+                output += `Цвет: ${color}\n`;
+            }
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let evenNumbers = [];
+            for (let i = 2; i <= 10; i += 2) {
+                evenNumbers.push(i);
+            }
+            document.getElementById('output6').innerHTML = 'Массив четных чисел: ' + evenNumbers.join(', ');
+        }
+
+        function runTask7() {
+            let numbers = [3, 7, 2, 9, 1, 8, 4];
+            let count = 0;
+            for (let num of numbers) {
+                if (num > 5) {
+                    count++;
+                }
+            }
+            let output = `Массив: [${numbers.join(', ')}]\n`;
+            output += `Количество чисел больше 5: ${count}`;
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        // Раздел 3: Работа с объектами
+        function runTask8() {
+            let output = '';
+            let person = {
+                name: 'Cherakaev',
+                age: 23,
+                city: 'Simferopol',
+                profession: 'Developer'
+            };
+            for (let key in person) {
+                output += `${key}: ${person[key]}\n`;
+            }
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        function runTask9() {
+            let squares = {};
+            for (let i = 1; i <= 5; i++) {
+                squares[i] = i * i;
+            }
+            document.getElementById('output9').innerHTML = 'Квадраты чисел: ' + JSON.stringify(squares, null, 2);
+        }
+
+        // Раздел 4: Сложные алгоритмы
+        function runTask10() {
+            let output = 'Таблица умножения 3x3:\n\n';
+            for (let i = 1; i <= 3; i++) {
+                let row = '';
+                for (let j = 1; j <= 3; j++) {
+                    row += `${i * j}\t`;
+                }
+                output += row + '\n';
+            }
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        function runTask11() {
+            let output = 'Числовая пирамида:\n\n';
+            for (let i = 1; i <= 5; i++) {
+                for (let j = 1; j <= i; j++) {
+                    output += j + ' ';
+                }
+                output += '\n';
+            }
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let fibonacci = [0, 1];
+            for (let i = 2; i < 10; i++) {
+                fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+            }
+            document.getElementById('output12').innerHTML = 'Первые 10 чисел Фибоначчи: ' + fibonacci.join(', ');
+        }
+
+        function runTask13() {
+            let primes = [];
+            for (let num = 2; num <= 20; num++) {
+                let isPrime = true;
+                for (let i = 2; i < num; i++) {
+                    if (num % i === 0) {
+                        isPrime = false;
+                        break;
+                    }
+                }
+                if (isPrime) {
+                    primes.push(num);
+                }
+            }
+            document.getElementById('output13').innerHTML = 'Простые числа до 20: ' + primes.join(', ');
+        }
+
+        // Раздел 5: Управление циклами
+        function runTask14() {
+            let result = '';
+            for (let i = 1; i <= 10; i++) {
+                if (i % 2 === 0) {
+                    continue;
+                }
+                result += i + ' ';
+            }
+            document.getElementById('output14').innerHTML = 'Нечетные числа от 1 до 10: ' + result;
+        }
+
+        function runTask15() {
+            let numbers = [3, 7, -2, 9, 1];
+            let found = false;
+            let firstNegative = null;
+            for (let num of numbers) {
+                if (num < 0) {
+                    firstNegative = num;
+                    found = true;
+                    break;
+                }
+            }
+            let output = `Массив: [${numbers.join(', ')}]\n`;
+            if (found) {
+                output += `Первое отрицательное число: ${firstNegative}`;
+            } else {
+                output += 'Отрицательных чисел нет';
+            }
+            document.getElementById('output15').innerHTML = output;
+        }
+
+        function runTask16() {
+            let number = 5;
+            let factorial = 1;
+            for (let i = 1; i <= number; i++) {
+                factorial *= i;
+            }
+            document.getElementById('output16').innerHTML = `Факториал ${number} = ${factorial}`;
+        }
+
+        // Раздел 6: Практические задачи
+        function runTask17() {
+            let word = 'JavaScript';
+            let reversed = '';
+            for (let i = word.length - 1; i >= 0; i--) {
+                reversed += word[i];
+            }
+            let output = `Исходная строка: ${word}\n`;
+            output += `Перевернутая строка: ${reversed}`;
+            document.getElementById('output17').innerHTML = output;
+        }
+
+        function runTask18() {
+            let output = '';
+            let array = [10, 20, 30, 40, 50];
+            output += `Массив: [${array.join(', ')}]\n\n`;
+            for (let i = 0; i < array.length; i++) {
+                let neighbors = `Элемент ${i}: `;
+                if (i > 0) neighbors += `левый: ${array[i-1]} `;
+                neighbors += `текущий: ${array[i]} `;
+                if (i < array.length - 1) neighbors += `правый: ${array[i+1]}`;
+                output += neighbors + '\n';
+            }
+            document.getElementById('output18').innerHTML = output;
+        }
+
+        function runTask19() {
+            let numbers = [1, 2, 3, 4, 5];
+            let output = `Исходный массив: [${numbers.join(', ')}]\n`;
+            for (let i = 0; i < numbers.length; i++) {
+                numbers[i] = numbers[i] * 2;
+            }
+            output += `Удвоенный массив: [${numbers.join(', ')}]`;
+            document.getElementById('output19').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

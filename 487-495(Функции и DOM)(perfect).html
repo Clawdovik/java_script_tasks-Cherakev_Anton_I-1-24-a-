@@ -1,0 +1,3805 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PUNK JAVASCRIPT - ФУНКЦИИ И DOM</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        button.danger {
+            background: linear-gradient(45deg, #ff3300, #ff6600);
+            box-shadow: 0 0 10px #ff3300;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Демонстрационные области */
+        .demo-area {
+            background-color: #0a0a12;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .demo-box {
+            border: 1px solid #ff00ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: rgba(26, 26, 42, 0.7);
+        }
+
+        .demo-box h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        /* Элементы для демонстрации */
+        .element-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .demo-element {
+            padding: 15px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .demo-element:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .highlighted {
+            background: rgba(0, 255, 0, 0.3) !important;
+            border-color: #00ff00 !important;
+            box-shadow: 0 0 15px #00ff00 !important;
+        }
+
+        .active-element {
+            background: rgba(0, 204, 255, 0.3) !important;
+            border-color: #00ccff !important;
+            box-shadow: 0 0 15px #00ccff !important;
+        }
+
+        .table-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #00ccff;
+        }
+
+        th {
+            background: rgba(0, 204, 255, 0.3);
+            color: #00ffcc;
+        }
+
+        td {
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .element-group {
+                flex-direction: column;
+            }
+            
+            .demo-element {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON JAVASCRIPT - ФУНКЦИИ И DOM</h1>
+        <p class="subtitle">Создание и использование функций для работы с DOM элементами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+            <p>Функции позволяют создавать переиспользуемый код для работы с DOM элементами.</p>
+        </div>
+
+        <!-- Раздел 1: Функции для работы с DOM -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ФУНКЦИИ ДЛЯ РАБОТЫ С DOM ЭЛЕМЕНТОМ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Функции для работы с DOM элементом</div>
+                <div class="code-block">// Создание функций для манипуляции отдельными элементами
+
+/**
+ * Изменяет стиль элемента
+ * @param {HTMLElement} element - DOM элемент
+ * @param {Object} styles - Объект со стилями
+ */
+function applyStyles(element, styles) {
+    Object.assign(element.style, styles);
+}
+
+/**
+ * Добавляет класс к элементу
+ * @param {HTMLElement} element - DOM элемент
+ * @param {string} className - Название класса
+ */
+function addClass(element, className) {
+    element.classList.add(className);
+}
+
+/**
+ * Удаляет класс из элемента
+ * @param {HTMLElement} element - DOM элемент
+ * @param {string} className - Название класса
+ */
+function removeClass(element, className) {
+    element.classList.remove(className);
+}
+
+/**
+ * Переключает класс элемента
+ * @param {HTMLElement} element - DOM элемент
+ * @param {string} className - Название класса
+ */
+function toggleClass(element, className) {
+    element.classList.toggle(className);
+}
+
+/**
+ * Устанавливает текст элемента
+ * @param {HTMLElement} element - DOM элемент
+ * @param {string} text - Текст для установки
+ */
+function setText(element, text) {
+    element.textContent = text;
+}
+
+/**
+ * Устанавливает HTML содержимое элемента
+ * @param {HTMLElement} element - DOM элемент
+ * @param {string} html - HTML для установки
+ */
+function setHTML(element, html) {
+    element.innerHTML = html;
+}
+
+// Использование функций
+const demoElement = document.getElementById('demoElement');
+
+// Применяем стили
+applyStyles(demoElement, {
+    color: '#ff00ff',
+    backgroundColor: '#1a1a2a',
+    padding: '20px',
+    borderRadius: '8px',
+    border: '2px solid #00ffcc'
+});
+
+// Добавляем класс
+addClass(demoElement, 'neon-element');
+
+// Устанавливаем текст
+setText(demoElement, 'Это элемент с примененными стилями!');</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с элементами</h3>
+                        <div class="btn-group">
+                            <button onclick="demoApplyStyles()">Применить стили</button>
+                            <button onclick="demoAddClass()">Добавить класс</button>
+                            <button onclick="demoRemoveClass()">Удалить класс</button>
+                            <button onclick="demoToggleClass()">Переключить класс</button>
+                            <button onclick="demoSetText()">Установить текст</button>
+                            <button class="secondary" onclick="demoResetElement()">Сбросить</button>
+                        </div>
+                        <div class="demo-element" id="singleElementDemo">
+                            Демонстрационный элемент
+                        </div>
+                        <div class="output" id="elementOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Функции для работы с группой элементов</div>
+                <div class="code-block">// Функции для работы с коллекциями элементов
+
+/**
+ * Применяет функцию ко всем элементам коллекции
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} callback - Функция для применения к каждому элементу
+ */
+function forEachElement(elements, callback) {
+    elements.forEach((element, index) => {
+        callback(element, index, elements);
+    });
+}
+
+/**
+ * Применяет стили ко всем элементам коллекции
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Object} styles - Объект со стилями
+ */
+function applyStylesToAll(elements, styles) {
+    forEachElement(elements, element => {
+        Object.assign(element.style, styles);
+    });
+}
+
+/**
+ * Добавляет класс всем элементам коллекции
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {string} className - Название класса
+ */
+function addClassToAll(elements, className) {
+    forEachElement(elements, element => {
+        element.classList.add(className);
+    });
+}
+
+/**
+ * Удаляет класс у всех элементов коллекции
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {string} className - Название класса
+ */
+function removeClassFromAll(elements, className) {
+    forEachElement(elements, element => {
+        element.classList.remove(className);
+    });
+}
+
+/**
+ * Устанавливает текст всем элементам коллекции
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {string} text - Текст для установки
+ */
+function setTextToAll(elements, text) {
+    forEachElement(elements, element => {
+        element.textContent = text;
+    });
+}
+
+/**
+ * Устанавливает текст с номером для каждого элемента
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {string} prefix - Префикс текста
+ */
+function setNumberedText(elements, prefix = 'Элемент') {
+    forEachElement(elements, (element, index) => {
+        element.textContent = `${prefix} ${index + 1}`;
+    });
+}
+
+// Использование
+const elements = document.querySelectorAll('.group-element');
+
+// Применяем стили ко всем элементам
+applyStylesToAll(elements, {
+    padding: '15px',
+    margin: '5px',
+    border: '1px solid #ff00ff',
+    borderRadius: '5px'
+});
+
+// Добавляем класс всем элементам
+addClassToAll(elements, 'group-item');
+
+// Устанавливаем нумерованный текст
+setNumberedText(elements, 'Неоновый элемент');</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с группой элементов</h3>
+                        <div class="btn-group">
+                            <button onclick="demoApplyToAll()">Применить стили ко всем</button>
+                            <button onclick="demoAddClassToAll()">Добавить класс всем</button>
+                            <button onclick="demoRemoveClassFromAll()">Удалить класс у всех</button>
+                            <button onclick="demoSetNumberedText()">Установить нумерованный текст</button>
+                            <button onclick="demoHighlightEven()">Подсветить четные</button>
+                            <button class="secondary" onclick="demoResetGroup()">Сбросить группу</button>
+                        </div>
+                        <div class="element-group">
+                            <div class="demo-element group-element">Элемент 1</div>
+                            <div class="demo-element group-element">Элемент 2</div>
+                            <div class="demo-element group-element">Элемент 3</div>
+                            <div class="demo-element group-element">Элемент 4</div>
+                            <div class="demo-element group-element">Элемент 5</div>
+                            <div class="demo-element group-element">Элемент 6</div>
+                        </div>
+                        <div class="output" id="groupOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Передача коллбэка для работы с DOM</div>
+                <div class="code-block">// Использование callback функций для гибкой работы с элементами
+
+/**
+ * Универсальная функция для обработки элементов с callback
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} callback - Функция обратного вызова
+ */
+function processElements(elements, callback) {
+    if (typeof callback !== 'function') {
+        console.error('Callback должен быть функцией');
+        return;
+    }
+    
+    forEachElement(elements, (element, index) => {
+        callback(element, index);
+    });
+}
+
+/**
+ * Функция для фильтрации элементов с callback
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} filterCallback - Функция-фильтр
+ * @returns {Array} Отфильтрованные элементы
+ */
+function filterElements(elements, filterCallback) {
+    const filtered = [];
+    
+    forEachElement(elements, (element, index) => {
+        if (filterCallback(element, index)) {
+            filtered.push(element);
+        }
+    });
+    
+    return filtered;
+}
+
+/**
+ * Функция для трансформации элементов с callback
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} transformCallback - Функция трансформации
+ * @returns {Array} Результаты трансформации
+ */
+function mapElements(elements, transformCallback) {
+    const results = [];
+    
+    forEachElement(elements, (element, index) => {
+        results.push(transformCallback(element, index));
+    });
+    
+    return results;
+}
+
+// Примеры callback функций
+
+// Callback для применения стилей
+function styleCallback(element, index) {
+    const hue = (index * 60) % 360;
+    element.style.backgroundColor = `hsl(${hue}, 70%, 20%)`;
+    element.style.borderColor = `hsl(${hue}, 100%, 50%)`;
+    element.style.color = `hsl(${hue}, 100%, 80%)`;
+}
+
+// Callback для установки текста
+function textCallback(element, index) {
+    element.textContent = `Обработанный элемент ${index + 1}`;
+}
+
+// Callback для добавления атрибутов
+function attributeCallback(element, index) {
+    element.setAttribute('data-index', index);
+    element.setAttribute('data-processed', 'true');
+}
+
+// Использование с callback
+const callbackElements = document.querySelectorAll('.callback-element');
+
+// Применяем различные callback функции
+processElements(callbackElements, styleCallback);
+processElements(callbackElements, textCallback);
+processElements(callbackElements, attributeCallback);
+
+// Фильтрация элементов
+const evenElements = filterElements(callbackElements, (element, index) => {
+    return index % 2 === 0;
+});
+
+// Трансформация элементов
+const elementTexts = mapElements(callbackElements, (element, index) => {
+    return {
+        index: index,
+        text: element.textContent,
+        tag: element.tagName
+    };
+});</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с callback функциями</h3>
+                        <div class="btn-group">
+                            <button onclick="demoProcessWithCallback()">Обработать с callback</button>
+                            <button onclick="demoFilterElements()">Фильтровать элементы</button>
+                            <button onclick="demoMapElements()">Трансформировать элементы</button>
+                            <button onclick="demoCustomCallback()">Пользовательский callback</button>
+                            <button class="secondary" onclick="demoResetCallback()">Сбросить</button>
+                        </div>
+                        <div class="element-group">
+                            <div class="demo-element callback-element">Элемент A</div>
+                            <div class="demo-element callback-element">Элемент B</div>
+                            <div class="demo-element callback-element">Элемент C</div>
+                            <div class="demo-element callback-element">Элемент D</div>
+                            <div class="demo-element callback-element">Элемент E</div>
+                        </div>
+                        <div class="output" id="callbackOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Продвинутые техники работы с функциями -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПЕРЕДАЧА ПАРАМЕТРОВ В КОЛЛБЭКИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Передача порядкового номера в коллбэк</div>
+                <div class="code-block">// Использование порядкового номера в callback функциях
+
+/**
+ * Обрабатывает элементы с передачей порядкового номера
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} callback - Функция с параметром номера
+ */
+function processWithIndex(elements, callback) {
+    forEachElement(elements, (element, index) => {
+        callback(element, index);
+    });
+}
+
+/**
+ * Создает последовательную анимацию с задержкой
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} animationCallback - Функция анимации
+ * @param {number} delay - Задержка между элементами (мс)
+ */
+function sequentialAnimation(elements, animationCallback, delay = 200) {
+    forEachElement(elements, (element, index) => {
+        setTimeout(() => {
+            animationCallback(element, index);
+        }, index * delay);
+    });
+}
+
+/**
+ * Применяет стили на основе порядкового номера
+ * @param {NodeList|Array} elements - Коллекция элементов
+ * @param {Function} styleCallback - Функция для генерации стилей
+ */
+function applyIndexedStyles(elements, styleCallback) {
+    processWithIndex(elements, (element, index) => {
+        const styles = styleCallback(index);
+        Object.assign(element.style, styles);
+    });
+}
+
+// Примеры callback функций с использованием индекса
+
+// Callback для цветовой последовательности
+function colorSequenceCallback(element, index) {
+    const colors = ['#ff0066', '#ff6600', '#ffcc00', '#00ff66', '#0066ff', '#cc00ff'];
+    const color = colors[index % colors.length];
+    
+    element.style.backgroundColor = color + '20';
+    element.style.borderColor = color;
+    element.style.color = color;
+    element.textContent = `Цвет ${index + 1}: ${color}`;
+}
+
+// Callback для размерной последовательности
+function sizeSequenceCallback(element, index) {
+    const size = 80 + (index * 10);
+    element.style.width = `${size}px`;
+    element.style.height = `${size}px`;
+    element.style.fontSize = `${12 + index * 2}px`;
+    element.textContent = `Размер ${index + 1}`;
+}
+
+// Callback для анимации появления
+function fadeInCallback(element, index) {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+        element.style.transition = 'all 0.5s ease';
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+    }, 10);
+}
+
+// Callback для генерации стилей на основе индекса
+function generateStylesFromIndex(index) {
+    const rotation = index * 15;
+    const scale = 1 + (index * 0.1);
+    
+    return {
+        transform: `rotate(${rotation}deg) scale(${scale})`,
+        backgroundColor: `hsl(${index * 40}, 70%, 30%)`,
+        borderColor: `hsl(${index * 40}, 100%, 50%)`,
+        transition: 'all 0.3s ease'
+    };
+}
+
+// Использование
+const indexedElements = document.querySelectorAll('.indexed-element');
+
+// Применяем цветовую последовательность
+processWithIndex(indexedElements, colorSequenceCallback);
+
+// Создаем последовательную анимацию
+sequentialAnimation(indexedElements, fadeInCallback, 300);
+
+// Применяем стили на основе индекса
+applyIndexedStyles(indexedElements, generateStylesFromIndex);</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с порядковыми номерами</h3>
+                        <div class="btn-group">
+                            <button onclick="demoColorSequence()">Цветовая последовательность</button>
+                            <button onclick="demoSizeSequence()">Размерная последовательность</button>
+                            <button onclick="demoSequentialAnimation()">Последовательная анимация</button>
+                            <button onclick="demoIndexedStyles()">Стили по индексу</button>
+                            <button class="secondary" onclick="demoResetIndexed()">Сбросить</button>
+                        </div>
+                        <div class="element-group">
+                            <div class="demo-element indexed-element">Элемент 1</div>
+                            <div class="demo-element indexed-element">Элемент 2</div>
+                            <div class="demo-element indexed-element">Элемент 3</div>
+                            <div class="demo-element indexed-element">Элемент 4</div>
+                            <div class="demo-element indexed-element">Элемент 5</div>
+                        </div>
+                        <div class="output" id="indexedOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Передача элемента параметром функции</div>
+                <div class="code-block">// Функции, принимающие DOM элементы в качестве параметров
+
+/**
+ * Создает элемент с заданными параметрами
+ * @param {string} tagName - Название тега
+ * @param {Object} options - Опции элемента
+ * @returns {HTMLElement} Созданный элемент
+ */
+function createElement(tagName, options = {}) {
+    const element = document.createElement(tagName);
+    
+    // Применяем опции
+    if (options.text) element.textContent = options.text;
+    if (options.html) element.innerHTML = options.html;
+    if (options.className) element.className = options.className;
+    if (options.id) element.id = options.id;
+    if (options.attributes) {
+        Object.keys(options.attributes).forEach(attr => {
+            element.setAttribute(attr, options.attributes[attr]);
+        });
+    }
+    if (options.styles) {
+        Object.assign(element.style, options.styles);
+    }
+    if (options.events) {
+        Object.keys(options.events).forEach(event => {
+            element.addEventListener(event, options.events[event]);
+        });
+    }
+    
+    return element;
+}
+
+/**
+ * Вставляет элемент в контейнер
+ * @param {HTMLElement} element - Элемент для вставки
+ * @param {HTMLElement|string} container - Контейнер или селектор
+ * @param {string} position - Позиция вставки ('append', 'prepend', 'before', 'after')
+ */
+function insertElement(element, container, position = 'append') {
+    const target = typeof container === 'string' 
+        ? document.querySelector(container) 
+        : container;
+    
+    if (!target) {
+        console.error('Контейнер не найден');
+        return;
+    }
+    
+    switch (position) {
+        case 'append':
+            target.appendChild(element);
+            break;
+        case 'prepend':
+            target.prepend(element);
+            break;
+        case 'before':
+            target.parentNode.insertBefore(element, target);
+            break;
+        case 'after':
+            target.parentNode.insertBefore(element, target.nextSibling);
+            break;
+        default:
+            target.appendChild(element);
+    }
+}
+
+/**
+ * Удаляет элемент из DOM
+ * @param {HTMLElement} element - Элемент для удаления
+ */
+function removeElement(element) {
+    if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+    }
+}
+
+/**
+ * Клонирует элемент с опциями
+ * @param {HTMLElement} element - Элемент для клонирования
+ * @param {boolean} deep - Глубокое клонирование
+ * @param {Object} modifications - Модификации для клона
+ * @returns {HTMLElement} Клонированный элемент
+ */
+function cloneElement(element, deep = true, modifications = {}) {
+    const clone = element.cloneNode(deep);
+    
+    // Применяем модификации
+    if (modifications.text) clone.textContent = modifications.text;
+    if (modifications.html) clone.innerHTML = modifications.html;
+    if (modifications.className) clone.className = modifications.className;
+    if (modifications.styles) {
+        Object.assign(clone.style, modifications.styles);
+    }
+    
+    return clone;
+}
+
+/**
+ * Заменяет элемент новым элементом
+ * @param {HTMLElement} oldElement - Старый элемент
+ * @param {HTMLElement} newElement - Новый элемент
+ */
+function replaceElement(oldElement, newElement) {
+    if (oldElement && oldElement.parentNode) {
+        oldElement.parentNode.replaceChild(newElement, oldElement);
+    }
+}
+
+// Использование функций
+
+// Создаем новый элемент
+const newDiv = createElement('div', {
+    text: 'Динамически созданный элемент',
+    className: 'custom-element',
+    styles: {
+        padding: '20px',
+        backgroundColor: '#ff00ff20',
+        border: '2px solid #ff00ff',
+        borderRadius: '8px',
+        color: '#ff00ff',
+        margin: '10px 0'
+    },
+    attributes: {
+        'data-created': 'true',
+        'data-timestamp': Date.now()
+    },
+    events: {
+        click: function() {
+            this.style.backgroundColor = '#00ffcc20';
+            this.style.borderColor = '#00ffcc';
+        }
+    }
+});
+
+// Вставляем элемент в контейнер
+insertElement(newDiv, '#elementContainer');
+
+// Клонируем элемент с модификациями
+const clonedDiv = cloneElement(newDiv, true, {
+    text: 'Клонированный элемент',
+    styles: {
+        backgroundColor: '#00ffcc20',
+        borderColor: '#00ffcc'
+    }
+});
+
+insertElement(clonedDiv, '#elementContainer');
+
+// Создаем кнопку для демонстрации удаления
+const deleteButton = createElement('button', {
+    text: 'Удалить последний элемент',
+    styles: {
+        padding: '10px 20px',
+        backgroundColor: '#ff3300',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        margin: '10px 0'
+    },
+    events: {
+        click: function() {
+            const container = document.getElementById('elementContainer');
+            const lastChild = container.lastElementChild;
+            if (lastChild) {
+                removeElement(lastChild);
+            }
+        }
+    }
+});
+
+insertElement(deleteButton, '#elementContainer');</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с элементами как параметрами</h3>
+                        <div class="btn-group">
+                            <button onclick="demoCreateElement()">Создать элемент</button>
+                            <button onclick="demoCloneElement()">Клонировать элемент</button>
+                            <button onclick="demoReplaceElement()">Заменить элемент</button>
+                            <button class="danger" onclick="demoClearContainer()">Очистить контейнер</button>
+                        </div>
+                        <div id="elementContainer" style="min-height: 100px; padding: 15px; border: 1px dashed #00ccff; border-radius: 5px; margin: 15px 0;">
+                            <p style="color: #ffcc00; text-align: center;">Контейнер для демонстрации</p>
+                        </div>
+                        <div class="output" id="paramOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Передача группы элементов параметрами</div>
+                <div class="code-block">// Функции для работы с группами элементов как параметрами
+
+/**
+ * Создает группу элементов
+ * @param {Array} elementsData - Данные для создания элементов
+ * @param {Function} elementCreator - Функция создания элемента
+ * @returns {Array} Массив созданных элементов
+ */
+function createElementGroup(elementsData, elementCreator) {
+    return elementsData.map((data, index) => {
+        return elementCreator(data, index);
+    });
+}
+
+/**
+ * Вставляет группу элементов в контейнер
+ * @param {Array} elements - Массив элементов
+ * @param {HTMLElement|string} container - Контейнер или селектор
+ * @param {string} position - Позиция вставки
+ */
+function insertElementGroup(elements, container, position = 'append') {
+    const target = typeof container === 'string' 
+        ? document.querySelector(container) 
+        : container;
+    
+    if (!target) {
+        console.error('Контейнер не найден');
+        return;
+    }
+    
+    elements.forEach(element => {
+        insertElement(element, target, position);
+    });
+}
+
+/**
+ * Фильтрует группу элементов по условию
+ * @param {Array} elements - Массив элементов
+ * @param {Function} condition - Функция-условие
+ * @returns {Array} Отфильтрованные элементы
+ */
+function filterElementGroup(elements, condition) {
+    return elements.filter(condition);
+}
+
+/**
+ * Сортирует группу элементов
+ * @param {Array} elements - Массив элементов
+ * @param {Function} comparator - Функция сравнения
+ * @returns {Array} Отсортированные элементы
+ */
+function sortElementGroup(elements, comparator) {
+    return [...elements].sort(comparator);
+}
+
+/**
+ * Применяет функцию к группе элементов
+ * @param {Array} elements - Массив элементов
+ * @param {Function} action - Функция для применения
+ */
+function applyToElementGroup(elements, action) {
+    elements.forEach((element, index) => {
+        action(element, index);
+    });
+}
+
+// Примеры использования
+
+// Данные для создания элементов
+const usersData = [
+    { name: 'Алексей', role: 'admin', active: true },
+    { name: 'Мария', role: 'user', active: true },
+    { name: 'Иван', role: 'moderator', active: false },
+    { name: 'Ольга', role: 'user', active: true },
+    { name: 'Дмитрий', role: 'admin', active: false }
+];
+
+// Функция для создания элемента пользователя
+function createUserElement(user, index) {
+    return createElement('div', {
+        className: `user-element ${user.active ? 'active' : 'inactive'}`,
+        text: `${user.name} (${user.role})`,
+        styles: {
+            padding: '15px',
+            margin: '5px',
+            borderRadius: '5px',
+            border: '2px solid',
+            backgroundColor: user.active ? '#00ff0020' : '#ff000020',
+            borderColor: user.active ? '#00ff00' : '#ff0000',
+            color: user.active ? '#00ff00' : '#ff0000',
+            cursor: 'pointer'
+        },
+        attributes: {
+            'data-role': user.role,
+            'data-active': user.active,
+            'data-index': index
+        },
+        events: {
+            click: function() {
+                this.classList.toggle('highlighted');
+            }
+        }
+    });
+}
+
+// Функция для создания элемента продукта
+function createProductElement(product, index) {
+    return createElement('div', {
+        className: 'product-element',
+        html: `
+            <strong>${product.name}</strong>
+            <br>
+            <span>Цена: $${product.price}</span>
+            <br>
+            <small>Категория: ${product.category}</small>
+        `,
+        styles: {
+            padding: '15px',
+            margin: '5px',
+            borderRadius: '5px',
+            border: '2px solid #ffcc00',
+            backgroundColor: '#ffcc0020',
+            color: '#ffcc00'
+        }
+    });
+}
+
+// Данные продуктов
+const productsData = [
+    { name: 'Ноутбук', price: 999, category: 'Электроника' },
+    { name: 'Смартфон', price: 699, category: 'Электроника' },
+    { name: 'Наушники', price: 199, category: 'Аксессуары' },
+    { name: 'Клавиатура', price: 89, category: 'Аксессуары' }
+];
+
+// Создаем группы элементов
+const userElements = createElementGroup(usersData, createUserElement);
+const productElements = createElementGroup(productsData, createProductElement);
+
+// Вставляем группы в контейнеры
+insertElementGroup(userElements, '#userGroupContainer');
+insertElementGroup(productElements, '#productGroupContainer');
+
+// Фильтруем активных пользователей
+const activeUsers = filterElementGroup(userElements, user => {
+    return user.getAttribute('data-active') === 'true';
+});
+
+// Сортируем продукты по цене
+const sortedProducts = sortElementGroup(productElements, (a, b) => {
+    const priceA = parseInt(a.textContent.match(/\$(\d+)/)[1]);
+    const priceB = parseInt(b.textContent.match(/\$(\d+)/)[1]);
+    return priceA - priceB;
+});
+
+// Применяем стили к активным пользователям
+applyToElementGroup(activeUsers, user => {
+    user.style.fontWeight = 'bold';
+    user.style.boxShadow = '0 0 10px #00ff00';
+});</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация работы с группами элементов</h3>
+                        <div class="btn-group">
+                            <button onclick="demoCreateUserGroup()">Создать группу пользователей</button>
+                            <button onclick="demoCreateProductGroup()">Создать группу продуктов</button>
+                            <button onclick="demoFilterActiveUsers()">Фильтровать активных</button>
+                            <button onclick="demoSortProducts()">Сортировать продукты</button>
+                            <button class="secondary" onclick="demoClearGroups()">Очистить группы</button>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #00ffcc;">Группа пользователей:</h4>
+                            <div id="userGroupContainer" style="min-height: 80px; padding: 10px; border: 1px dashed #ff00ff; border-radius: 5px; margin: 10px 0;"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ffcc00;">Группа продуктов:</h4>
+                            <div id="productGroupContainer" style="min-height: 80px; padding: 10px; border: 1px dashed #ffcc00; border-radius: 5px; margin: 10px 0;"></div>
+                        </div>
+                        
+                        <div class="output" id="groupParamOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Создание таблиц функциями -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>СОЗДАНИЕ ТАБЛИЦ ФУНКЦИЯМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Функция для создания HTML таблиц</div>
+                <div class="code-block">// Создание универсальной функции для генерации таблиц
+
+/**
+ * Создает HTML таблицу с заданными параметрами
+ * @param {Array} data - Данные для таблицы
+ * @param {Array} headers - Заголовки столбцов
+ * @param {Object} options - Дополнительные опции
+ * @returns {HTMLElement} Созданная таблица
+ */
+function createTable(data, headers = [], options = {}) {
+    // Создаем элемент таблицы
+    const table = document.createElement('table');
+    
+    // Применяем базовые стили
+    Object.assign(table.style, {
+        width: '100%',
+        borderCollapse: 'collapse',
+        margin: '10px 0',
+        fontFamily: 'Courier New, monospace',
+        ...options.tableStyles
+    });
+    
+    // Создаем заголовок таблицы (thead)
+    if (headers && headers.length > 0) {
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.textContent = header;
+            Object.assign(th.style, {
+                padding: '12px',
+                textAlign: 'left',
+                backgroundColor: '#1a1a2a',
+                color: '#00ffcc',
+                border: '1px solid #00ccff',
+                fontWeight: 'bold',
+                ...options.headerStyles
+            });
+            headerRow.appendChild(th);
+        });
+        
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+    }
+    
+    // Создаем тело таблицы (tbody)
+    const tbody = document.createElement('tbody');
+    
+    data.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+        
+        // Определяем данные для строки
+        const rowData = Array.isArray(row) ? row : Object.values(row);
+        
+        rowData.forEach((cell, cellIndex) => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            
+            // Базовые стили для ячеек
+            Object.assign(td.style, {
+                padding: '10px',
+                border: '1px solid #00ccff',
+                backgroundColor: rowIndex % 2 === 0 ? '#0a0a1220' : '#1a1a2a20',
+                color: '#ffcc00',
+                ...options.cellStyles
+            });
+            
+            // Применяем кастомные стили для ячеек если предоставлены
+            if (options.cellStyler) {
+                const customStyles = options.cellStyler(cell, rowIndex, cellIndex);
+                Object.assign(td.style, customStyles);
+            }
+            
+            tr.appendChild(td);
+        });
+        
+        tbody.appendChild(tr);
+    });
+    
+    table.appendChild(tbody);
+    
+    // Добавляем класс если указан
+    if (options.className) {
+        table.className = options.className;
+    }
+    
+    // Добавляем атрибуты если указаны
+    if (options.attributes) {
+        Object.keys(options.attributes).forEach(attr => {
+            table.setAttribute(attr, options.attributes[attr]);
+        });
+    }
+    
+    return table;
+}
+
+/**
+ * Создает таблицу с дополнительными функциями
+ * @param {Array} data - Данные для таблицы
+ * @param {Object} config - Конфигурация таблицы
+ * @returns {HTMLElement} Созданная таблица
+ */
+function createAdvancedTable(data, config = {}) {
+    const {
+        headers = [],
+        sortable = false,
+        filterable = false,
+        pagination = false,
+        pageSize = 10,
+        editable = false,
+        ...options
+    } = config;
+    
+    const table = createTable(data, headers, options);
+    
+    // Добавляем функциональность сортировки
+    if (sortable) {
+        makeTableSortable(table, headers);
+    }
+    
+    // Добавляем функциональность фильтрации
+    if (filterable) {
+        addTableFilter(table, headers);
+    }
+    
+    return table;
+}
+
+/**
+ * Делает таблицу сортируемой
+ * @param {HTMLElement} table - Таблица
+ * @param {Array} headers - Заголовки
+ */
+function makeTableSortable(table, headers) {
+    const headerCells = table.querySelectorAll('th');
+    
+    headerCells.forEach((th, index) => {
+        th.style.cursor = 'pointer';
+        th.title = 'Нажмите для сортировки';
+        
+        th.addEventListener('click', () => {
+            sortTableByColumn(table, index);
+        });
+    });
+}
+
+/**
+ * Сортирует таблицу по столбцу
+ * @param {HTMLElement} table - Таблица
+ * @param {number} columnIndex - Индекс столбца
+ */
+function sortTableByColumn(table, columnIndex) {
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    
+    rows.sort((a, b) => {
+        const aValue = a.cells[columnIndex].textContent;
+        const bValue = b.cells[columnIndex].textContent;
+        
+        // Пытаемся сравнить как числа
+        const aNum = parseFloat(aValue);
+        const bNum = parseFloat(bValue);
+        
+        if (!isNaN(aNum) && !isNaN(bNum)) {
+            return aNum - bNum;
+        }
+        
+        // Иначе сравниваем как строки
+        return aValue.localeCompare(bValue);
+    });
+    
+    // Удаляем существующие строки
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
+    
+    // Добавляем отсортированные строки
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+// Примеры использования
+
+// Данные для таблицы
+const simpleData = [
+    ['Иван', '25', 'Москва', 'Разработчик'],
+    ['Мария', '30', 'Санкт-Петербург', 'Дизайнер'],
+    ['Алексей', '28', 'Казань', 'Менеджер'],
+    ['Ольга', '32', 'Новосибирск', 'Аналитик']
+];
+
+const simpleHeaders = ['Имя', 'Возраст', 'Город', 'Должность'];
+
+// Создаем простую таблицу
+const simpleTable = createTable(simpleData, simpleHeaders, {
+    tableStyles: {
+        boxShadow: '0 0 10px #00ccff'
+    },
+    headerStyles: {
+        backgroundColor: '#ff00ff20',
+        color: '#ff00ff'
+    }
+});
+
+// Данные в виде объектов
+const objectData = [
+    { name: 'Ноутбук', price: 999, category: 'Электроника', stock: 15 },
+    { name: 'Смартфон', price: 699, category: 'Электроника', stock: 30 },
+    { name: 'Наушники', price: 199, category: 'Аксессуары', stock: 50 },
+    { name: 'Клавиатура', price: 89, category: 'Аксессуары', stock: 25 }
+];
+
+const objectHeaders = ['Название', 'Цена', 'Категория', 'В наличии'];
+
+// Создаем расширенную таблицу
+const advancedTable = createAdvancedTable(objectData, {
+    headers: objectHeaders,
+    sortable: true,
+    tableStyles: {
+        boxShadow: '0 0 15px #ff00ff'
+    },
+    cellStyler: (cell, rowIndex, cellIndex) => {
+        const styles = {};
+        
+        // Подсвечиваем цены
+        if (cellIndex === 1) {
+            styles.color = '#ffcc00';
+            styles.fontWeight = 'bold';
+        }
+        
+        // Подсвечиваем количество на складе
+        if (cellIndex === 3) {
+            const stock = parseInt(cell);
+            if (stock < 20) {
+                styles.color = '#ff3300';
+                styles.fontWeight = 'bold';
+            } else if (stock < 40) {
+                styles.color = '#ffcc00';
+            } else {
+                styles.color = '#00ff00';
+            }
+        }
+        
+        return styles;
+    }
+});</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация создания таблиц</h3>
+                        <div class="btn-group">
+                            <button onclick="demoCreateSimpleTable()">Создать простую таблицу</button>
+                            <button onclick="demoCreateAdvancedTable()">Создать расширенную таблицу</button>
+                            <button onclick="demoCreateCustomTable()">Создать кастомную таблицу</button>
+                            <button class="secondary" onclick="demoClearTables()">Очистить таблицы</button>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #00ffcc;">Простая таблица:</h4>
+                            <div id="simpleTableContainer"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ff00ff;">Расширенная таблица:</h4>
+                            <div id="advancedTableContainer"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ffcc00;">Кастомная таблица:</h4>
+                            <div id="customTableContainer"></div>
+                        </div>
+                        
+                        <div class="output" id="tableOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Возврат таблицы из функции</div>
+                <div class="code-block">// Функции, которые возвращают готовые таблицы
+
+/**
+ * Создает и возвращает таблицу сотрудников
+ * @param {Array} employees - Данные сотрудников
+ * @returns {HTMLElement} Таблица сотрудников
+ */
+function createEmployeeTable(employees) {
+    const headers = ['ID', 'Имя', 'Должность', 'Отдел', 'Зарплата', 'Статус'];
+    
+    const data = employees.map(emp => [
+        emp.id,
+        emp.name,
+        emp.position,
+        emp.department,
+        `$${emp.salary}`,
+        emp.active ? 'Активен' : 'Неактивен'
+    ]);
+    
+    return createTable(data, headers, {
+        tableStyles: {
+            boxShadow: '0 0 10px #00ffcc'
+        },
+        cellStyler: (cell, rowIndex, cellIndex) => {
+            const styles = {};
+            const employee = employees[rowIndex];
+            
+            // Подсвечиваем зарплату
+            if (cellIndex === 4) {
+                styles.color = '#ffcc00';
+                styles.fontWeight = 'bold';
+            }
+            
+            // Подсвечиваем статус
+            if (cellIndex === 5) {
+                styles.color = employee.active ? '#00ff00' : '#ff3300';
+                styles.fontWeight = 'bold';
+            }
+            
+            // Подсвечиваем отделы разными цветами
+            if (cellIndex === 3) {
+                const departmentColors = {
+                    'IT': '#00ccff',
+                    'Продажи': '#ff00ff',
+                    'Маркетинг': '#ffcc00',
+                    'Финансы': '#00ff00',
+                    'HR': '#cc00ff'
+                };
+                styles.color = departmentColors[cell] || '#ffcc00';
+            }
+            
+            return styles;
+        }
+    });
+}
+
+/**
+ * Создает и возвращает таблицу задач
+ * @param {Array} tasks - Данные задач
+ * @returns {HTMLElement} Таблица задач
+ */
+function createTaskTable(tasks) {
+    const headers = ['Задача', 'Исполнитель', 'Приоритет', 'Срок', 'Статус'];
+    
+    const data = tasks.map(task => [
+        task.name,
+        task.assignee,
+        task.priority,
+        task.deadline,
+        task.status
+    ]);
+    
+    return createTable(data, headers, {
+        tableStyles: {
+            boxShadow: '0 0 10px #ff00ff'
+        },
+        cellStyler: (cell, rowIndex, cellIndex) => {
+            const styles = {};
+            const task = tasks[rowIndex];
+            
+            // Подсвечиваем приоритет
+            if (cellIndex === 2) {
+                const priorityColors = {
+                    'Высокий': '#ff3300',
+                    'Средний': '#ffcc00',
+                    'Низкий': '#00ff00'
+                };
+                styles.color = priorityColors[cell] || '#ffcc00';
+                styles.fontWeight = 'bold';
+            }
+            
+            // Подсвечиваем статус
+            if (cellIndex === 4) {
+                const statusColors = {
+                    'Выполнено': '#00ff00',
+                    'В процессе': '#ffcc00',
+                    'Не начато': '#ff3300',
+                    'Отложено': '#cc00ff'
+                };
+                styles.color = statusColors[cell] || '#ffcc00';
+                styles.fontWeight = 'bold';
+            }
+            
+            // Подсвечиваем просроченные задачи
+            if (cellIndex === 3) {
+                const deadline = new Date(cell);
+                const today = new Date();
+                if (deadline < today && task.status !== 'Выполнено') {
+                    styles.color = '#ff3300';
+                    styles.fontWeight = 'bold';
+                    styles.backgroundColor = '#ff330020';
+                }
+            }
+            
+            return styles;
+        }
+    });
+}
+
+/**
+ * Создает и возвращает таблицу продуктов с действиями
+ * @param {Array} products - Данные продуктов
+ * @returns {HTMLElement} Таблица продуктов
+ */
+function createProductTableWithActions(products) {
+    const headers = ['ID', 'Название', 'Цена', 'Категория', 'В наличии', 'Действия'];
+    
+    const data = products.map(product => [
+        product.id,
+        product.name,
+        `$${product.price}`,
+        product.category,
+        product.stock,
+        '🔧 🗑️' // Иконки действий
+    ]);
+    
+    const table = createTable(data, headers, {
+        tableStyles: {
+            boxShadow: '0 0 10px #ffcc00'
+        },
+        cellStyler: (cell, rowIndex, cellIndex) => {
+            const styles = {};
+            const product = products[rowIndex];
+            
+            if (cellIndex === 2) {
+                styles.color = '#ffcc00';
+                styles.fontWeight = 'bold';
+            }
+            
+            if (cellIndex === 4) {
+                if (product.stock < 10) {
+                    styles.color = '#ff3300';
+                    styles.fontWeight = 'bold';
+                } else if (product.stock < 20) {
+                    styles.color = '#ffcc00';
+                } else {
+                    styles.color = '#00ff00';
+                }
+            }
+            
+            if (cellIndex === 5) {
+                styles.textAlign = 'center';
+                styles.cursor = 'pointer';
+            }
+            
+            return styles;
+        }
+    });
+    
+    // Добавляем обработчики событий для действий
+    const actionCells = table.querySelectorAll('td:nth-child(6)');
+    actionCells.forEach((cell, index) => {
+        cell.addEventListener('click', (e) => {
+            const product = products[index];
+            if (e.target.textContent.includes('🔧')) {
+                alert(`Редактирование продукта: ${product.name}`);
+            } else if (e.target.textContent.includes('🗑️')) {
+                if (confirm(`Удалить продукт: ${product.name}?`)) {
+                    cell.parentElement.remove();
+                }
+            }
+        });
+    });
+    
+    return table;
+}
+
+// Данные для демонстрации
+const employees = [
+    { id: 1, name: 'Алексей Иванов', position: 'Разработчик', department: 'IT', salary: 5000, active: true },
+    { id: 2, name: 'Мария Петрова', position: 'Дизайнер', department: 'Дизайн', salary: 4500, active: true },
+    { id: 3, name: 'Иван Сидоров', position: 'Менеджер', department: 'Продажи', salary: 4000, active: false },
+    { id: 4, name: 'Ольга Козлова', position: 'Аналитик', department: 'Финансы', salary: 4800, active: true }
+];
+
+const tasks = [
+    { name: 'Разработка API', assignee: 'Алексей', priority: 'Высокий', deadline: '2024-12-01', status: 'В процессе' },
+    { name: 'Дизайн макетов', assignee: 'Мария', priority: 'Средний', deadline: '2024-11-20', status: 'Выполнено' },
+    { name: 'Анализ рынка', assignee: 'Ольга', priority: 'Низкий', deadline: '2024-11-15', status: 'Отложено' },
+    { name: 'Встреча с клиентом', assignee: 'Иван', priority: 'Высокий', deadline: '2024-11-10', status: 'Не начато' }
+];
+
+const products = [
+    { id: 1, name: 'Ноутбук', price: 999, category: 'Электроника', stock: 15 },
+    { id: 2, name: 'Смартфон', price: 699, category: 'Электроника', stock: 30 },
+    { id: 3, name: 'Наушники', price: 199, category: 'Аксессуары', stock: 5 },
+    { id: 4, name: 'Клавиатура', price: 89, category: 'Аксессуары', stock: 25 }
+];
+
+// Создаем таблицы используя функции
+const employeeTable = createEmployeeTable(employees);
+const taskTable = createTaskTable(tasks);
+const productTable = createProductTableWithActions(products);
+
+// Вставляем таблицы в DOM
+document.getElementById('employeeTableContainer').appendChild(employeeTable);
+document.getElementById('taskTableContainer').appendChild(taskTable);
+document.getElementById('productTableContainer').appendChild(productTable);</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация возврата таблиц из функций</h3>
+                        <div class="btn-group">
+                            <button onclick="demoEmployeeTable()">Таблица сотрудников</button>
+                            <button onclick="demoTaskTable()">Таблица задач</button>
+                            <button onclick="demoProductTable()">Таблица продуктов</button>
+                            <button class="secondary" onclick="demoClearReturnTables()">Очистить таблицы</button>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #00ffcc;">Таблица сотрудников:</h4>
+                            <div id="employeeTableContainer"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ff00ff;">Таблица задач:</h4>
+                            <div id="taskTableContainer"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ffcc00;">Таблица продуктов:</h4>
+                            <div id="productTableContainer"></div>
+                        </div>
+                        
+                        <div class="output" id="returnTableOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Функция для создания таблицы из массива</div>
+                <div class="code-block">// Универсальные функции для создания таблиц из массивов
+
+/**
+ * Создает таблицу из массива данных
+ * @param {Array} data - Массив данных
+ * @param {Object} options - Опции таблицы
+ * @returns {HTMLElement} Созданная таблица
+ */
+function createTableFromArray(data, options = {}) {
+    // Проверяем входные данные
+    if (!Array.isArray(data) || data.length === 0) {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.textContent = 'Нет данных для отображения';
+        emptyMsg.style.color = '#ff3300';
+        emptyMsg.style.padding = '20px';
+        emptyMsg.style.textAlign = 'center';
+        return emptyMsg;
+    }
+    
+    // Определяем заголовки
+    let headers = options.headers || [];
+    
+    // Если заголовки не предоставлены, пытаемся извлечь их из данных
+    if (headers.length === 0) {
+        const firstItem = data[0];
+        if (typeof firstItem === 'object' && firstItem !== null) {
+            headers = Object.keys(firstItem);
+        } else if (Array.isArray(firstItem)) {
+            headers = firstItem.map((_, index) => `Колонка ${index + 1}`);
+        }
+    }
+    
+    // Преобразуем данные в двумерный массив
+    const tableData = data.map(item => {
+        if (Array.isArray(item)) {
+            return item;
+        } else if (typeof item === 'object' && item !== null) {
+            return headers.map(header => item[header]);
+        } else {
+            return [item];
+        }
+    });
+    
+    return createTable(tableData, headers, options);
+}
+
+/**
+ * Создает таблицу с автоматическим определением типов данных
+ * @param {Array} data - Массив данных
+ * @param {Object} options - Опции таблицы
+ * @returns {HTMLElement} Созданная таблица
+ */
+function createSmartTable(data, options = {}) {
+    const table = createTableFromArray(data, options);
+    
+    // Добавляем автоматическое форматирование на основе типов данных
+    const cells = table.querySelectorAll('td');
+    
+    cells.forEach(cell => {
+        const content = cell.textContent;
+        
+        // Форматируем числа
+        if (!isNaN(content) && content.trim() !== '') {
+            const num = parseFloat(content);
+            if (!isNaN(num)) {
+                // Для денежных значений
+                if (options.currency && Math.abs(num) >= 1) {
+                    cell.textContent = new Intl.NumberFormat('ru-RU', {
+                        style: 'currency',
+                        currency: options.currency
+                    }).format(num);
+                    cell.style.color = '#ffcc00';
+                    cell.style.fontWeight = 'bold';
+                } 
+                // Для процентов
+                else if (content.includes('%')) {
+                    cell.style.color = num > 0 ? '#00ff00' : '#ff3300';
+                }
+                // Для обычных чисел
+                else {
+                    cell.textContent = new Intl.NumberFormat('ru-RU').format(num);
+                }
+            }
+        }
+        
+        // Форматируем даты
+        const date = new Date(content);
+        if (!isNaN(date.getTime())) {
+            cell.textContent = date.toLocaleDateString('ru-RU');
+            cell.style.color = '#00ccff';
+        }
+        
+        // Форматируем булевы значения
+        if (content.toLowerCase() === 'true' || content.toLowerCase() === 'false') {
+            cell.textContent = content.toLowerCase() === 'true' ? '✅ Да' : '❌ Нет';
+            cell.style.textAlign = 'center';
+        }
+    });
+    
+    return table;
+}
+
+/**
+ * Создает таблицу с пагинацией
+ * @param {Array} data - Массив данных
+ * @param {Object} options - Опции таблицы
+ * @returns {Object} Объект с таблицей и элементами управления
+ */
+function createPaginatedTable(data, options = {}) {
+    const pageSize = options.pageSize || 10;
+    let currentPage = 1;
+    const totalPages = Math.ceil(data.length / pageSize);
+    
+    // Создаем контейнер для таблицы и пагинации
+    const container = document.createElement('div');
+    
+    // Функция для обновления отображаемых данных
+    function updateTable() {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const pageData = data.slice(startIndex, endIndex);
+        
+        // Удаляем старую таблицу
+        const oldTable = container.querySelector('table');
+        if (oldTable) oldTable.remove();
+        
+        // Создаем новую таблицу
+        const table = createTableFromArray(pageData, options);
+        container.insertBefore(table, container.firstChild);
+        
+        // Обновляем информацию о странице
+        updatePaginationInfo();
+    }
+    
+    // Функция для обновления информации о пагинации
+    function updatePaginationInfo() {
+        let paginationInfo = container.querySelector('.pagination-info');
+        if (!paginationInfo) {
+            paginationInfo = document.createElement('div');
+            paginationInfo.className = 'pagination-info';
+            paginationInfo.style.cssText = `
+                margin: 10px 0;
+                padding: 10px;
+                background: rgba(255, 0, 255, 0.1);
+                border-radius: 5px;
+                text-align: center;
+                color: #ff00ff;
+            `;
+            container.appendChild(paginationInfo);
+        }
+        
+        const startItem = (currentPage - 1) * pageSize + 1;
+        const endItem = Math.min(currentPage * pageSize, data.length);
+        
+        paginationInfo.innerHTML = `
+            Страница ${currentPage} из ${totalPages} 
+            (элементы ${startItem}-${endItem} из ${data.length})
+        `;
+    }
+    
+    // Создаем элементы управления пагинацией
+    function createPaginationControls() {
+        const controls = document.createElement('div');
+        controls.style.cssText = `
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        `;
+        
+        // Кнопка "Назад"
+        const prevButton = document.createElement('button');
+        prevButton.textContent = '← Назад';
+        prevButton.disabled = currentPage === 1;
+        prevButton.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTable();
+            }
+        });
+        
+        // Кнопка "Вперед"
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Вперед →';
+        nextButton.disabled = currentPage === totalPages;
+        nextButton.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTable();
+            }
+        });
+        
+        // Селектор страниц
+        const pageSelect = document.createElement('select');
+        for (let i = 1; i <= totalPages; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            if (i === currentPage) option.selected = true;
+            pageSelect.appendChild(option);
+        }
+        
+        pageSelect.addEventListener('change', (e) => {
+            currentPage = parseInt(e.target.value);
+            updateTable();
+        });
+        
+        controls.appendChild(prevButton);
+        controls.appendChild(pageSelect);
+        controls.appendChild(nextButton);
+        container.appendChild(controls);
+    }
+    
+    // Инициализация
+    updateTable();
+    createPaginationControls();
+    
+    return {
+        container: container,
+        updateTable: updateTable,
+        setPage: (page) => {
+            currentPage = Math.max(1, Math.min(page, totalPages));
+            updateTable();
+        }
+    };
+}
+
+// Примеры использования
+
+// Различные типы данных
+const mixedData = [
+    { name: 'Проект А', budget: 50000, progress: 0.75, completed: true, deadline: '2024-12-31' },
+    { name: 'Проект Б', budget: 75000, progress: 0.25, completed: false, deadline: '2024-06-30' },
+    { name: 'Проект В', budget: 30000, progress: 1.0, completed: true, deadline: '2024-03-15' },
+    { name: 'Проект Г', budget: 100000, progress: 0.5, completed: false, deadline: '2024-09-20' }
+];
+
+// Большой набор данных для пагинации
+const largeDataSet = Array.from({ length: 45 }, (_, i) => ({
+    id: i + 1,
+    product: `Товар ${i + 1}`,
+    category: ['Электроника', 'Одежда', 'Книги', 'Спорт'][i % 4],
+    price: Math.floor(Math.random() * 1000) + 10,
+    rating: (Math.random() * 5).toFixed(1)
+}));
+
+// Создаем различные таблицы
+const mixedTable = createSmartTable(mixedData, {
+    headers: ['Название', 'Бюджет', 'Прогресс', 'Завершен', 'Срок'],
+    currency: 'USD'
+});
+
+const paginatedTable = createPaginatedTable(largeDataSet, {
+    pageSize: 5,
+    headers: ['ID', 'Товар', 'Категория', 'Цена', 'Рейтинг'],
+    currency: 'RUB'
+});
+
+// Вставляем таблицы в DOM
+document.getElementById('mixedTableContainer').appendChild(mixedTable);
+document.getElementById('paginatedTableContainer').appendChild(paginatedTable.container);</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация создания таблиц из массивов</h3>
+                        <div class="btn-group">
+                            <button onclick="demoMixedTable()">Умная таблица</button>
+                            <button onclick="demoPaginatedTable()">Таблица с пагинацией</button>
+                            <button onclick="demoEmptyTable()">Пустая таблица</button>
+                            <button class="secondary" onclick="demoClearArrayTables()">Очистить таблицы</button>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #00ffcc;">Умная таблица (автоформатирование):</h4>
+                            <div id="mixedTableContainer"></div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <h4 style="color: #ff00ff;">Таблица с пагинацией:</h4>
+                            <div id="paginatedTableContainer"></div>
+                        </div>
+                        
+                        <div class="output" id="arrayTableOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Функции и DOM © 2025 | Создано в стиле ретро-футуризма</p>
+        <p>Все методы проверены в современных браузерах</p>
+    </footer>
+
+    <script>
+        // Глобальные переменные для демонстраций
+        let currentPaginatedTable = null;
+
+        // Функции для выполнения задач
+        
+        function runTask1() {
+            let output = document.getElementById('output1');
+            let result = '=== ФУНКЦИИ ДЛЯ РАБОТЫ С DOM ЭЛЕМЕНТОМ ===\n\n';
+            
+            result += 'Основные функции для работы с отдельными элементами:\n\n';
+            
+            result += '// Применение стилей к элементу\n';
+            result += 'function applyStyles(element, styles) {\n';
+            result += '  Object.assign(element.style, styles);\n';
+            result += '}\n\n';
+            
+            result += '// Добавление класса\n';
+            result += 'function addClass(element, className) {\n';
+            result += '  element.classList.add(className);\n';
+            result += '}\n\n';
+            
+            result += '// Установка текста\n';
+            result += 'function setText(element, text) {\n';
+            result += '  element.textContent = text;\n';
+            result += '}\n\n';
+            
+            result += 'Преимущества:\n';
+            result += '✅ Переиспользуемость кода\n';
+            result += '✅ Читаемость и поддерживаемость\n';
+            result += '✅ Единообразие стилей\n';
+            result += '✅ Легкость тестирования\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask2() {
+            let output = document.getElementById('output2');
+            let result = '=== ФУНКЦИИ ДЛЯ РАБОТЫ С ГРУППОЙ ЭЛЕМЕНТОВ ===\n\n';
+            
+            result += 'Функции для работы с коллекциями элементов:\n\n';
+            
+            result += '// Универсальная функция для обработки коллекции\n';
+            result += 'function forEachElement(elements, callback) {\n';
+            result += '  elements.forEach((element, index) => {\n';
+            result += '    callback(element, index, elements);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Применение стилей ко всем элементам\n';
+            result += 'function applyStylesToAll(elements, styles) {\n';
+            result += '  forEachElement(elements, element => {\n';
+            result += '    Object.assign(element.style, styles);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Установка нумерованного текста\n';
+            result += 'function setNumberedText(elements, prefix) {\n';
+            result += '  forEachElement(elements, (element, index) => {\n';
+            result += '    element.textContent = `${prefix} ${index + 1}`;\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += 'Эффективность групповых операций:\n';
+            result += '🚀 Снижение дублирования кода\n';
+            result += '🚀 Единообразное поведение\n';
+            result += '🚀 Упрощение массовых изменений\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask3() {
+            let output = document.getElementById('output3');
+            let result = '=== ПЕРЕДАЧА КОЛЛБЭКА ДЛЯ РАБОТЫ С DOM ===\n\n';
+            
+            result += 'Использование callback функций для гибкости:\n\n';
+            
+            result += '// Универсальная функция с callback\n';
+            result += 'function processElements(elements, callback) {\n';
+            result += '  elements.forEach((element, index) => {\n';
+            result += '    callback(element, index);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Фильтрация элементов\n';
+            result += 'function filterElements(elements, filterCallback) {\n';
+            result += '  return elements.filter((element, index) => {\n';
+            result += '    return filterCallback(element, index);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Пример callback функции\n';
+            result += 'function styleCallback(element, index) {\n';
+            result += '  const hue = (index * 60) % 360;\n';
+            result += '  element.style.color = `hsl(${hue}, 100%, 80%)`;\n';
+            result += '}\n\n';
+            
+            result += 'Преимущества callback подходов:\n';
+            result += '🎯 Гибкость и настраиваемость\n';
+            result += '🎯 Разделение ответственности\n';
+            result += '🎯 Легкость расширения функциональности\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask4() {
+            let output = document.getElementById('output4');
+            let result = '=== ПЕРЕДАЧА ПОРЯДКОВОГО НОМЕРА В КОЛЛБЭК ===\n\n';
+            
+            result += 'Использование индекса в callback функциях:\n\n';
+            
+            result += '// Функция с передачей индекса\n';
+            result += 'function processWithIndex(elements, callback) {\n';
+            result += '  elements.forEach((element, index) => {\n';
+            result += '    callback(element, index);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Последовательная анимация\n';
+            result += 'function sequentialAnimation(elements, callback, delay) {\n';
+            result += '  elements.forEach((element, index) => {\n';
+            result += '    setTimeout(() => {\n';
+            result += '      callback(element, index);\n';
+            result += '    }, index * delay);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Генерация стилей на основе индекса\n';
+            result += 'function colorSequenceCallback(element, index) {\n';
+            result += '  const colors = ["#ff0066", "#ff6600", "#ffcc00"];\n';
+            result += '  const color = colors[index % colors.length];\n';
+            result += '  element.style.backgroundColor = color;\n';
+            result += '}\n\n';
+            
+            result += 'Применение порядковых номеров:\n';
+            result += '🌈 Создание последовательностей\n';
+            result += '🌈 Циклические паттерны\n';
+            result += '🌈 Визуальные градиенты\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask5() {
+            let output = document.getElementById('output5');
+            let result = '=== ПЕРЕДАЧА ЭЛЕМЕНТА ПАРАМЕТРОМ ФУНКЦИИ ===\n\n';
+            
+            result += 'Функции, принимающие DOM элементы как параметры:\n\n';
+            
+            result += '// Создание элемента с опциями\n';
+            result += 'function createElement(tagName, options) {\n';
+            result += '  const element = document.createElement(tagName);\n';
+            result += '  if (options.text) element.textContent = options.text;\n';
+            result += '  if (options.styles) Object.assign(element.style, options.styles);\n';
+            result += '  return element;\n';
+            result += '}\n\n';
+            
+            result += '// Вставка элемента\n';
+            result += 'function insertElement(element, container, position) {\n';
+            result += '  switch (position) {\n';
+            result += '    case "append": container.appendChild(element); break;\n';
+            result += '    case "prepend": container.prepend(element); break;\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += '// Клонирование элемента\n';
+            result += 'function cloneElement(element, deep, modifications) {\n';
+            result += '  const clone = element.cloneNode(deep);\n';
+            result += '  if (modifications.text) clone.textContent = modifications.text;\n';
+            result += '  return clone;\n';
+            result += '}\n\n';
+            
+            result += 'Преимущества параметризованных функций:\n';
+            result += '🔧 Универсальность использования\n';
+            result += '🔧 Четкие контракты функций\n';
+            result += '🔧 Легкость композиции\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask6() {
+            let output = document.getElementById('output6');
+            let result = '=== ПЕРЕДАЧА ГРУППЫ ЭЛЕМЕНТОВ ПАРАМЕТРАМИ ===\n\n';
+            
+            result += 'Работа с группами элементов как параметрами:\n\n';
+            
+            result += '// Создание группы элементов\n';
+            result += 'function createElementGroup(elementsData, elementCreator) {\n';
+            result += '  return elementsData.map((data, index) => {\n';
+            result += '    return elementCreator(data, index);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Вставка группы элементов\n';
+            result += 'function insertElementGroup(elements, container) {\n';
+            result += '  elements.forEach(element => {\n';
+            result += '    container.appendChild(element);\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += '// Фильтрация группы\n';
+            result += 'function filterElementGroup(elements, condition) {\n';
+            result += '  return elements.filter(condition);\n';
+            result += '}\n\n';
+            
+            result += '// Пример создания элемента\n';
+            result += 'function createUserElement(user, index) {\n';
+            result += '  return createElement("div", {\n';
+            result += '    text: `${user.name} (${user.role})`,\n';
+            result += '    styles: { /* стили */ }\n';
+            result += '  });\n';
+            result += '}\n\n';
+            
+            result += 'Эффективность групповых операций:\n';
+            result += '👥 Обработка связанных данных\n';
+            result += '👥 Согласованное поведение\n';
+            result += '👥 Упрощение сложных операций\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask7() {
+            let output = document.getElementById('output7');
+            let result = '=== ФУНКЦИЯ ДЛЯ СОЗДАНИЯ HTML ТАБЛИЦ ===\n\n';
+            
+            result += 'Универсальная функция создания таблиц:\n\n';
+            
+            result += 'function createTable(data, headers, options) {\n';
+            result += '  const table = document.createElement("table");\n\n';
+            result += '  // Создание заголовков\n';
+            result += '  if (headers.length > 0) {\n';
+            result += '    const thead = document.createElement("thead");\n';
+            result += '    headers.forEach(header => {\n';
+            result += '      const th = document.createElement("th");\n';
+            result += '      th.textContent = header;\n';
+            result += '      thead.appendChild(th);\n';
+            result += '    });\n';
+            result += '    table.appendChild(thead);\n';
+            result += '  }\n\n';
+            result += '  // Создание тела таблицы\n';
+            result += '  const tbody = document.createElement("tbody");\n';
+            result += '  data.forEach(row => {\n';
+            result += '    const tr = document.createElement("tr");\n';
+            result += '    row.forEach(cell => {\n';
+            result += '      const td = document.createElement("td");\n';
+            result += '      td.textContent = cell;\n';
+            result += '      tr.appendChild(td);\n';
+            result += '    });\n';
+            result += '    tbody.appendChild(tr);\n';
+            result += '  });\n\n';
+            result += '  return table;\n';
+            result += '}\n\n';
+            
+            result += 'Расширенная версия с опциями:\n';
+            result += '🎨 Кастомные стили таблицы\n';
+            result += '🎨 Стили заголовков и ячеек\n';
+            result += '🎨 Функции для кастомного форматирования\n';
+            result += '🎨 Поддержка сортировки и фильтрации\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask8() {
+            let output = document.getElementById('output8');
+            let result = '=== ВОЗВРАТ ТАБЛИЦЫ ИЗ ФУНКЦИИ ===\n\n';
+            
+            result += 'Специализированные функции возвращающие таблицы:\n\n';
+            
+            result += '// Таблица сотрудников\n';
+            result += 'function createEmployeeTable(employees) {\n';
+            result += '  const headers = ["Имя", "Должность", "Отдел"];\n';
+            result += '  const data = employees.map(emp => [emp.name, emp.position, emp.department]);\n';
+            result += '  return createTable(data, headers);\n';
+            result += '}\n\n';
+            
+            result += '// Таблица задач\n';
+            result += 'function createTaskTable(tasks) {\n';
+            result += '  const headers = ["Задача", "Исполнитель", "Статус"];\n';
+            result += '  const data = tasks.map(task => [task.name, task.assignee, task.status]);\n';
+            result += '  return createTable(data, headers);\n';
+            result += '}\n\n';
+            
+            result += '// Таблица с действиями\n';
+            result += 'function createTableWithActions(data, actions) {\n';
+            result += '  const table = createTable(data);\n';
+            result += '  // Добавление обработчиков событий\n';
+            result += '  return table;\n';
+            result += '}\n\n';
+            
+            result += 'Преимущества специализированных функций:\n';
+            result += '📊 Готовые решения для конкретных задач\n';
+            result += '📊 Единообразие представления данных\n';
+            result += '📊 Быстрое прототипирование\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask9() {
+            let output = document.getElementById('output9');
+            let result = '=== ФУНКЦИЯ ДЛЯ СОЗДАНИЯ ТАБЛИЦЫ ИЗ МАССИВА ===\n\n';
+            
+            result += 'Универсальные функции для массивов:\n\n';
+            
+            result += '// Базовая функция\n';
+            result += 'function createTableFromArray(data, options) {\n';
+            result += '  // Автоматическое определение заголовков\n';
+            result += '  // Поддержка массивов и объектов\n';
+            result += '  // Обработка ошибок\n';
+            result += '}\n\n';
+            
+            result += '// Умная таблица с автоформатированием\n';
+            result += 'function createSmartTable(data, options) {\n';
+            result += '  // Автоопределение типов данных\n';
+            result += '  // Форматирование чисел, дат, булевых значений\n';
+            result += '  // Валютное форматирование\n';
+            result += '}\n\n';
+            
+            result += '// Таблица с пагинацией\n';
+            result += 'function createPaginatedTable(data, options) {\n';
+            result += '  // Разбивка на страницы\n';
+            result += '  // Элементы управления\n';
+            result += '  // Динамическое обновление\n';
+            result += '}\n\n';
+            
+            result += 'Возможности умных таблиц:\n';
+            result += '🤖 Автоматическое форматирование данных\n';
+            result += '🤖 Поддержка различных типов данных\n';
+            result += '🤖 Пагинация для больших наборов\n';
+            result += '🤖 Гибкая настройка отображения\n';
+            
+            output.textContent = result;
+        }
+
+        // Демонстрационные функции
+        
+        // Задача 1: Функции для работы с DOM элементом
+        function demoApplyStyles() {
+            const element = document.getElementById('singleElementDemo');
+            applyStyles(element, {
+                color: '#ff00ff',
+                backgroundColor: '#1a1a2a',
+                padding: '20px',
+                borderRadius: '8px',
+                border: '2px solid #00ffcc',
+                boxShadow: '0 0 15px #ff00ff'
+            });
+            logToElementOutput('Применены стили к элементу');
+        }
+        
+        function demoAddClass() {
+            const element = document.getElementById('singleElementDemo');
+            addClass(element, 'highlighted');
+            logToElementOutput('Добавлен класс "highlighted"');
+        }
+        
+        function demoRemoveClass() {
+            const element = document.getElementById('singleElementDemo');
+            removeClass(element, 'highlighted');
+            logToElementOutput('Удален класс "highlighted"');
+        }
+        
+        function demoToggleClass() {
+            const element = document.getElementById('singleElementDemo');
+            toggleClass(element, 'active-element');
+            logToElementOutput('Переключен класс "active-element"');
+        }
+        
+        function demoSetText() {
+            const element = document.getElementById('singleElementDemo');
+            setText(element, 'Текст изменен через функцию! ' + new Date().toLocaleTimeString());
+            logToElementOutput('Установлен новый текст');
+        }
+        
+        function demoResetElement() {
+            const element = document.getElementById('singleElementDemo');
+            element.removeAttribute('style');
+            element.className = 'demo-element';
+            setText(element, 'Демонстрационный элемент');
+            logToElementOutput('Элемент сброшен к исходному состоянию');
+        }
+        
+        function logToElementOutput(message) {
+            const output = document.getElementById('elementOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 2: Функции для работы с группой элементов
+        function demoApplyToAll() {
+            const elements = document.querySelectorAll('.group-element');
+            applyStylesToAll(elements, {
+                backgroundColor: '#ff00ff20',
+                border: '2px solid #ff00ff',
+                color: '#ff00ff',
+                fontWeight: 'bold'
+            });
+            logToGroupOutput('Стили применены ко всем элементам группы');
+        }
+        
+        function demoAddClassToAll() {
+            const elements = document.querySelectorAll('.group-element');
+            addClassToAll(elements, 'highlighted');
+            logToGroupOutput('Класс "highlighted" добавлен всем элементам');
+        }
+        
+        function demoRemoveClassFromAll() {
+            const elements = document.querySelectorAll('.group-element');
+            removeClassFromAll(elements, 'highlighted');
+            logToGroupOutput('Класс "highlighted" удален у всех элементов');
+        }
+        
+        function demoSetNumberedText() {
+            const elements = document.querySelectorAll('.group-element');
+            setNumberedText(elements, 'Неоновый элемент');
+            logToGroupOutput('Установлен нумерованный текст');
+        }
+        
+        function demoHighlightEven() {
+            const elements = document.querySelectorAll('.group-element');
+            forEachElement(elements, (element, index) => {
+                if (index % 2 === 0) {
+                    addClass(element, 'highlighted');
+                } else {
+                    removeClass(element, 'highlighted');
+                }
+            });
+            logToGroupOutput('Подсвечены четные элементы');
+        }
+        
+        function demoResetGroup() {
+            const elements = document.querySelectorAll('.group-element');
+            applyStylesToAll(elements, {
+                backgroundColor: '',
+                border: '',
+                color: '',
+                fontWeight: ''
+            });
+            removeClassFromAll(elements, 'highlighted');
+            setTextToAll(elements, '');
+            forEachElement(elements, (element, index) => {
+                element.textContent = `Элемент ${index + 1}`;
+            });
+            logToGroupOutput('Группа элементов сброшена');
+        }
+        
+        function logToGroupOutput(message) {
+            const output = document.getElementById('groupOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 3: Callback функции
+        function demoProcessWithCallback() {
+            const elements = document.querySelectorAll('.callback-element');
+            processElements(elements, (element, index) => {
+                const hue = (index * 60) % 360;
+                element.style.backgroundColor = `hsl(${hue}, 70%, 20%)`;
+                element.style.borderColor = `hsl(${hue}, 100%, 50%)`;
+                element.style.color = `hsl(${hue}, 100%, 80%)`;
+                element.textContent = `Обработанный элемент ${index + 1}`;
+                element.setAttribute('data-index', index);
+            });
+            logToCallbackOutput('Элементы обработаны с callback функциями');
+        }
+        
+        function demoFilterElements() {
+            const elements = document.querySelectorAll('.callback-element');
+            const evenElements = filterElements(elements, (element, index) => {
+                return index % 2 === 0;
+            });
+            
+            // Сбрасываем все элементы
+            processElements(elements, element => {
+                element.style.backgroundColor = '';
+                element.style.borderColor = '';
+            });
+            
+            // Подсвечиваем отфильтрованные
+            processElements(evenElements, element => {
+                element.style.backgroundColor = '#00ff0020';
+                element.style.borderColor = '#00ff00';
+            });
+            
+            logToCallbackOutput(`Отфильтровано ${evenElements.length} четных элементов`);
+        }
+        
+        function demoMapElements() {
+            const elements = document.querySelectorAll('.callback-element');
+            const elementInfo = mapElements(elements, (element, index) => {
+                return {
+                    index: index,
+                    text: element.textContent,
+                    tag: element.tagName
+                };
+            });
+            
+            let infoText = 'Информация об элементах:\n';
+            elementInfo.forEach(info => {
+                infoText += `[${info.index}] ${info.text} (${info.tag})\n`;
+            });
+            
+            logToCallbackOutput(infoText);
+        }
+        
+        function demoCustomCallback() {
+            const elements = document.querySelectorAll('.callback-element');
+            
+            // Пользовательский callback
+            const customCallback = (element, index) => {
+                const sizes = ['12px', '14px', '16px', '18px', '20px'];
+                const rotations = ['0deg', '5deg', '0deg', '-5deg', '0deg'];
+                
+                element.style.fontSize = sizes[index % sizes.length];
+                element.style.transform = `rotate(${rotations[index % rotations.length]})`;
+                element.style.transition = 'all 0.3s ease';
+            };
+            
+            processElements(elements, customCallback);
+            logToCallbackOutput('Применен пользовательский callback');
+        }
+        
+        function demoResetCallback() {
+            const elements = document.querySelectorAll('.callback-element');
+            processElements(elements, element => {
+                element.removeAttribute('style');
+                element.removeAttribute('data-index');
+                element.textContent = element.textContent.replace('Обработанный ', '');
+            });
+            logToCallbackOutput('Callback элементы сброшены');
+        }
+        
+        function logToCallbackOutput(message) {
+            const output = document.getElementById('callbackOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 4: Порядковые номера в callback
+        function demoColorSequence() {
+            const elements = document.querySelectorAll('.indexed-element');
+            processWithIndex(elements, colorSequenceCallback);
+            logToIndexedOutput('Применена цветовая последовательность');
+        }
+        
+        function demoSizeSequence() {
+            const elements = document.querySelectorAll('.indexed-element');
+            processWithIndex(elements, sizeSequenceCallback);
+            logToIndexedOutput('Применена размерная последовательность');
+        }
+        
+        function demoSequentialAnimation() {
+            const elements = document.querySelectorAll('.indexed-element');
+            sequentialAnimation(elements, fadeInCallback, 200);
+            logToIndexedOutput('Запущена последовательная анимация');
+        }
+        
+        function demoIndexedStyles() {
+            const elements = document.querySelectorAll('.indexed-element');
+            applyIndexedStyles(elements, generateStylesFromIndex);
+            logToIndexedOutput('Применены стили на основе индекса');
+        }
+        
+        function demoResetIndexed() {
+            const elements = document.querySelectorAll('.indexed-element');
+            processWithIndex(elements, (element, index) => {
+                element.removeAttribute('style');
+                element.textContent = `Элемент ${index + 1}`;
+            });
+            logToIndexedOutput('Индексированные элементы сброшены');
+        }
+        
+        function colorSequenceCallback(element, index) {
+            const colors = ['#ff0066', '#ff6600', '#ffcc00', '#00ff66', '#0066ff'];
+            const color = colors[index % colors.length];
+            
+            element.style.backgroundColor = color + '20';
+            element.style.borderColor = color;
+            element.style.color = color;
+            element.textContent = `Цвет ${index + 1}: ${color}`;
+        }
+        
+        function sizeSequenceCallback(element, index) {
+            const size = 80 + (index * 10);
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            element.style.fontSize = `${12 + index * 2}px`;
+            element.textContent = `Размер ${index + 1}`;
+        }
+        
+        function fadeInCallback(element, index) {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                element.style.transition = 'all 0.5s ease';
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 10);
+        }
+        
+        function generateStylesFromIndex(index) {
+            const rotation = index * 15;
+            const scale = 1 + (index * 0.1);
+            
+            return {
+                transform: `rotate(${rotation}deg) scale(${scale})`,
+                backgroundColor: `hsl(${index * 40}, 70%, 20%)`,
+                borderColor: `hsl(${index * 40}, 100%, 50%)`,
+                color: `hsl(${index * 40}, 100%, 80%)`,
+                transition: 'all 0.3s ease'
+            };
+        }
+        
+        function logToIndexedOutput(message) {
+            const output = document.getElementById('indexedOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 5: Элементы как параметры
+        function demoCreateElement() {
+            const container = document.getElementById('elementContainer');
+            const newElement = createElement('div', {
+                text: 'Новый созданный элемент ' + new Date().toLocaleTimeString(),
+                className: 'custom-element',
+                styles: {
+                    padding: '15px',
+                    backgroundColor: '#ff00ff20',
+                    border: '2px solid #ff00ff',
+                    borderRadius: '8px',
+                    color: '#ff00ff',
+                    margin: '10px 0',
+                    cursor: 'pointer'
+                },
+                events: {
+                    click: function() {
+                        this.style.backgroundColor = '#00ffcc20';
+                        this.style.borderColor = '#00ffcc';
+                    }
+                }
+            });
+            
+            insertElement(newElement, container, 'append');
+            logToParamOutput('Создан и добавлен новый элемент');
+        }
+        
+        function demoCloneElement() {
+            const container = document.getElementById('elementContainer');
+            const lastElement = container.lastElementChild;
+            
+            if (lastElement && lastElement.classList.contains('custom-element')) {
+                const clonedElement = cloneElement(lastElement, true, {
+                    text: 'Клонированный: ' + lastElement.textContent,
+                    styles: {
+                        backgroundColor: '#00ffcc20',
+                        borderColor: '#00ffcc'
+                    }
+                });
+                
+                insertElement(clonedElement, container, 'append');
+                logToParamOutput('Элемент клонирован и модифицирован');
+            } else {
+                logToParamOutput('Нет элемента для клонирования');
+            }
+        }
+        
+        function demoReplaceElement() {
+            const container = document.getElementById('elementContainer');
+            const lastElement = container.lastElementChild;
+            
+            if (lastElement && lastElement.classList.contains('custom-element')) {
+                const newElement = createElement('div', {
+                    text: 'ЗАМЕНЕННЫЙ элемент ' + new Date().toLocaleTimeString(),
+                    styles: {
+                        padding: '15px',
+                        backgroundColor: '#ff330020',
+                        border: '2px solid #ff3300',
+                        borderRadius: '8px',
+                        color: '#ff3300',
+                        margin: '10px 0',
+                        fontWeight: 'bold'
+                    }
+                });
+                
+                replaceElement(lastElement, newElement);
+                logToParamOutput('Последний элемент заменен');
+            } else {
+                logToParamOutput('Нет элемента для замены');
+            }
+        }
+        
+        function demoClearContainer() {
+            const container = document.getElementById('elementContainer');
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+            
+            // Добавляем обратно начальный текст
+            const initialText = createElement('p', {
+                text: 'Контейнер для демонстрации',
+                styles: {
+                    color: '#ffcc00',
+                    textAlign: 'center'
+                }
+            });
+            
+            container.appendChild(initialText);
+            logToParamOutput('Контейнер очищен');
+        }
+        
+        function logToParamOutput(message) {
+            const output = document.getElementById('paramOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 6: Группы элементов как параметры
+        function demoCreateUserGroup() {
+            const usersData = [
+                { name: 'Алексей', role: 'admin', active: true },
+                { name: 'Мария', role: 'user', active: true },
+                { name: 'Иван', role: 'moderator', active: false },
+                { name: 'Ольга', role: 'user', active: true }
+            ];
+            
+            const userElements = createElementGroup(usersData, createUserElement);
+            insertElementGroup(userElements, '#userGroupContainer');
+            logToGroupParamOutput(`Создана группа из ${userElements.length} пользователей`);
+        }
+        
+        function demoCreateProductGroup() {
+            const productsData = [
+                { name: 'Ноутбук', price: 999, category: 'Электроника' },
+                { name: 'Смартфон', price: 699, category: 'Электроника' },
+                { name: 'Наушники', price: 199, category: 'Аксессуары' }
+            ];
+            
+            const productElements = createElementGroup(productsData, createProductElement);
+            insertElementGroup(productElements, '#productGroupContainer');
+            logToGroupParamOutput(`Создана группа из ${productElements.length} продуктов`);
+        }
+        
+        function demoFilterActiveUsers() {
+            const userElements = Array.from(document.querySelectorAll('#userGroupContainer .user-element'));
+            const activeUsers = filterElementGroup(userElements, user => {
+                return user.getAttribute('data-active') === 'true';
+            });
+            
+            // Сбрасываем стили
+            applyToElementGroup(userElements, user => {
+                user.style.fontWeight = '';
+                user.style.boxShadow = '';
+            });
+            
+            // Подсвечиваем активных
+            applyToElementGroup(activeUsers, user => {
+                user.style.fontWeight = 'bold';
+                user.style.boxShadow = '0 0 10px #00ff00';
+            });
+            
+            logToGroupParamOutput(`Найдено ${activeUsers.length} активных пользователей`);
+        }
+        
+        function demoSortProducts() {
+            const productElements = Array.from(document.querySelectorAll('#productGroupContainer .product-element'));
+            const sortedProducts = sortElementGroup(productElements, (a, b) => {
+                const priceA = parseInt(a.textContent.match(/\$(\d+)/)[1]);
+                const priceB = parseInt(b.textContent.match(/\$(\d+)/)[1]);
+                return priceB - priceB; // По убыванию цены
+            });
+            
+            const container = document.getElementById('productGroupContainer');
+            container.innerHTML = '';
+            insertElementGroup(sortedProducts, container);
+            
+            logToGroupParamOutput('Продукты отсортированы по цене');
+        }
+        
+        function demoClearGroups() {
+            document.getElementById('userGroupContainer').innerHTML = '';
+            document.getElementById('productGroupContainer').innerHTML = '';
+            logToGroupParamOutput('Группы элементов очищены');
+        }
+        
+        function createUserElement(user, index) {
+            return createElement('div', {
+                className: `user-element ${user.active ? 'active' : 'inactive'}`,
+                text: `${user.name} (${user.role})`,
+                styles: {
+                    padding: '12px',
+                    margin: '5px',
+                    borderRadius: '5px',
+                    border: '2px solid',
+                    backgroundColor: user.active ? '#00ff0020' : '#ff000020',
+                    borderColor: user.active ? '#00ff00' : '#ff0000',
+                    color: user.active ? '#00ff00' : '#ff0000',
+                    cursor: 'pointer'
+                },
+                attributes: {
+                    'data-role': user.role,
+                    'data-active': user.active,
+                    'data-index': index
+                },
+                events: {
+                    click: function() {
+                        this.classList.toggle('highlighted');
+                    }
+                }
+            });
+        }
+        
+        function createProductElement(product, index) {
+            return createElement('div', {
+                className: 'product-element',
+                html: `
+                    <strong>${product.name}</strong>
+                    <br>
+                    <span>Цена: $${product.price}</span>
+                    <br>
+                    <small>Категория: ${product.category}</small>
+                `,
+                styles: {
+                    padding: '12px',
+                    margin: '5px',
+                    borderRadius: '5px',
+                    border: '2px solid #ffcc00',
+                    backgroundColor: '#ffcc0020',
+                    color: '#ffcc00'
+                }
+            });
+        }
+        
+        function logToGroupParamOutput(message) {
+            const output = document.getElementById('groupParamOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 7: Создание таблиц
+        function demoCreateSimpleTable() {
+            const simpleData = [
+                ['Иван', '25', 'Москва', 'Разработчик'],
+                ['Мария', '30', 'Санкт-Петербург', 'Дизайнер'],
+                ['Алексей', '28', 'Казань', 'Менеджер']
+            ];
+            
+            const simpleHeaders = ['Имя', 'Возраст', 'Город', 'Должность'];
+            
+            const table = createTable(simpleData, simpleHeaders, {
+                tableStyles: {
+                    boxShadow: '0 0 10px #00ccff'
+                },
+                headerStyles: {
+                    backgroundColor: '#ff00ff20',
+                    color: '#ff00ff'
+                }
+            });
+            
+            const container = document.getElementById('simpleTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToTableOutput('Создана простая таблица');
+        }
+        
+        function demoCreateAdvancedTable() {
+            const objectData = [
+                { name: 'Ноутбук', price: 999, category: 'Электроника', stock: 15 },
+                { name: 'Смартфон', price: 699, category: 'Электроника', stock: 30 },
+                { name: 'Наушники', price: 199, category: 'Аксессуары', stock: 5 }
+            ];
+            
+            const table = createAdvancedTable(objectData, {
+                headers: ['Название', 'Цена', 'Категория', 'В наличии'],
+                sortable: true,
+                tableStyles: {
+                    boxShadow: '0 0 15px #ff00ff'
+                },
+                cellStyler: (cell, rowIndex, cellIndex) => {
+                    const styles = {};
+                    
+                    if (cellIndex === 1) {
+                        styles.color = '#ffcc00';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    if (cellIndex === 3) {
+                        const stock = parseInt(cell);
+                        if (stock < 10) {
+                            styles.color = '#ff3300';
+                            styles.fontWeight = 'bold';
+                        } else if (stock < 20) {
+                            styles.color = '#ffcc00';
+                        } else {
+                            styles.color = '#00ff00';
+                        }
+                    }
+                    
+                    return styles;
+                }
+            });
+            
+            const container = document.getElementById('advancedTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToTableOutput('Создана расширенная таблица с сортировкой');
+        }
+        
+        function demoCreateCustomTable() {
+            const customData = [
+                ['JavaScript', '1995', 'Брендан Эйх'],
+                ['Python', '1991', 'Гвидо ван Россум'],
+                ['Java', '1995', 'Джеймс Гослинг']
+            ];
+            
+            const table = createTable(customData, ['Язык', 'Год', 'Создатель'], {
+                tableStyles: {
+                    backgroundColor: '#1a1a2a',
+                    border: '2px solid #ffcc00'
+                },
+                headerStyles: {
+                    backgroundColor: '#ffcc0020',
+                    color: '#ffcc00',
+                    fontSize: '16px'
+                },
+                cellStyles: {
+                    fontSize: '14px',
+                    padding: '15px'
+                }
+            });
+            
+            const container = document.getElementById('customTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToTableOutput('Создана кастомная таблица');
+        }
+        
+        function demoClearTables() {
+            document.getElementById('simpleTableContainer').innerHTML = '';
+            document.getElementById('advancedTableContainer').innerHTML = '';
+            document.getElementById('customTableContainer').innerHTML = '';
+            logToTableOutput('Все таблицы очищены');
+        }
+        
+        function logToTableOutput(message) {
+            const output = document.getElementById('tableOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 8: Возврат таблиц из функций
+        function demoEmployeeTable() {
+            const employees = [
+                { id: 1, name: 'Алексей Иванов', position: 'Разработчик', department: 'IT', salary: 5000, active: true },
+                { id: 2, name: 'Мария Петрова', position: 'Дизайнер', department: 'Дизайн', salary: 4500, active: true },
+                { id: 3, name: 'Иван Сидоров', position: 'Менеджер', department: 'Продажи', salary: 4000, active: false }
+            ];
+            
+            const table = createEmployeeTable(employees);
+            const container = document.getElementById('employeeTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToReturnTableOutput('Создана таблица сотрудников');
+        }
+        
+        function demoTaskTable() {
+            const tasks = [
+                { name: 'Разработка API', assignee: 'Алексей', priority: 'Высокий', deadline: '2024-12-01', status: 'В процессе' },
+                { name: 'Дизайн макетов', assignee: 'Мария', priority: 'Средний', deadline: '2024-11-20', status: 'Выполнено' },
+                { name: 'Анализ рынка', assignee: 'Ольга', priority: 'Низкий', deadline: '2024-11-15', status: 'Отложено' }
+            ];
+            
+            const table = createTaskTable(tasks);
+            const container = document.getElementById('taskTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToReturnTableOutput('Создана таблица задач');
+        }
+        
+        function demoProductTable() {
+            const products = [
+                { id: 1, name: 'Ноутбук', price: 999, category: 'Электроника', stock: 15 },
+                { id: 2, name: 'Смартфон', price: 699, category: 'Электроника', stock: 30 },
+                { id: 3, name: 'Наушники', price: 199, category: 'Аксессуары', stock: 5 }
+            ];
+            
+            const table = createProductTableWithActions(products);
+            const container = document.getElementById('productTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToReturnTableOutput('Создана таблица продуктов с действиями');
+        }
+        
+        function demoClearReturnTables() {
+            document.getElementById('employeeTableContainer').innerHTML = '';
+            document.getElementById('taskTableContainer').innerHTML = '';
+            document.getElementById('productTableContainer').innerHTML = '';
+            logToReturnTableOutput('Все таблицы очищены');
+        }
+        
+        function createEmployeeTable(employees) {
+            const headers = ['ID', 'Имя', 'Должность', 'Отдел', 'Зарплата', 'Статус'];
+            
+            const data = employees.map(emp => [
+                emp.id,
+                emp.name,
+                emp.position,
+                emp.department,
+                `$${emp.salary}`,
+                emp.active ? 'Активен' : 'Неактивен'
+            ]);
+            
+            return createTable(data, headers, {
+                tableStyles: {
+                    boxShadow: '0 0 10px #00ffcc'
+                },
+                cellStyler: (cell, rowIndex, cellIndex) => {
+                    const styles = {};
+                    const employee = employees[rowIndex];
+                    
+                    if (cellIndex === 4) {
+                        styles.color = '#ffcc00';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    if (cellIndex === 5) {
+                        styles.color = employee.active ? '#00ff00' : '#ff3300';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    return styles;
+                }
+            });
+        }
+        
+        function createTaskTable(tasks) {
+            const headers = ['Задача', 'Исполнитель', 'Приоритет', 'Срок', 'Статус'];
+            
+            const data = tasks.map(task => [
+                task.name,
+                task.assignee,
+                task.priority,
+                task.deadline,
+                task.status
+            ]);
+            
+            return createTable(data, headers, {
+                tableStyles: {
+                    boxShadow: '0 0 10px #ff00ff'
+                },
+                cellStyler: (cell, rowIndex, cellIndex) => {
+                    const styles = {};
+                    const task = tasks[rowIndex];
+                    
+                    if (cellIndex === 2) {
+                        const priorityColors = {
+                            'Высокий': '#ff3300',
+                            'Средний': '#ffcc00',
+                            'Низкий': '#00ff00'
+                        };
+                        styles.color = priorityColors[cell] || '#ffcc00';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    if (cellIndex === 4) {
+                        const statusColors = {
+                            'Выполнено': '#00ff00',
+                            'В процессе': '#ffcc00',
+                            'Не начато': '#ff3300'
+                        };
+                        styles.color = statusColors[cell] || '#ffcc00';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    return styles;
+                }
+            });
+        }
+        
+        function createProductTableWithActions(products) {
+            const headers = ['ID', 'Название', 'Цена', 'Категория', 'В наличии'];
+            
+            const data = products.map(product => [
+                product.id,
+                product.name,
+                `$${product.price}`,
+                product.category,
+                product.stock
+            ]);
+            
+            return createTable(data, headers, {
+                tableStyles: {
+                    boxShadow: '0 0 10px #ffcc00'
+                },
+                cellStyler: (cell, rowIndex, cellIndex) => {
+                    const styles = {};
+                    const product = products[rowIndex];
+                    
+                    if (cellIndex === 2) {
+                        styles.color = '#ffcc00';
+                        styles.fontWeight = 'bold';
+                    }
+                    
+                    if (cellIndex === 4) {
+                        if (product.stock < 10) {
+                            styles.color = '#ff3300';
+                            styles.fontWeight = 'bold';
+                        } else if (product.stock < 20) {
+                            styles.color = '#ffcc00';
+                        } else {
+                            styles.color = '#00ff00';
+                        }
+                    }
+                    
+                    return styles;
+                }
+            });
+        }
+        
+        function logToReturnTableOutput(message) {
+            const output = document.getElementById('returnTableOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Задача 9: Таблицы из массивов
+        function demoMixedTable() {
+            const mixedData = [
+                { name: 'Проект А', budget: 50000, progress: 0.75, completed: true, deadline: '2024-12-31' },
+                { name: 'Проект Б', budget: 75000, progress: 0.25, completed: false, deadline: '2024-06-30' },
+                { name: 'Проект В', budget: 30000, progress: 1.0, completed: true, deadline: '2024-03-15' }
+            ];
+            
+            const table = createSmartTable(mixedData, {
+                headers: ['Название', 'Бюджет', 'Прогресс', 'Завершен', 'Срок'],
+                currency: 'USD'
+            });
+            
+            const container = document.getElementById('mixedTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToArrayTableOutput('Создана умная таблица с автоформатированием');
+        }
+        
+        function demoPaginatedTable() {
+            const largeDataSet = Array.from({ length: 25 }, (_, i) => ({
+                id: i + 1,
+                product: `Товар ${i + 1}`,
+                category: ['Электроника', 'Одежда', 'Книги', 'Спорт'][i % 4],
+                price: Math.floor(Math.random() * 1000) + 10,
+                rating: (Math.random() * 5).toFixed(1)
+            }));
+            
+            currentPaginatedTable = createPaginatedTable(largeDataSet, {
+                pageSize: 5,
+                headers: ['ID', 'Товар', 'Категория', 'Цена', 'Рейтинг'],
+                currency: 'RUB'
+            });
+            
+            const container = document.getElementById('paginatedTableContainer');
+            container.innerHTML = '';
+            container.appendChild(currentPaginatedTable.container);
+            logToArrayTableOutput('Создана таблица с пагинацией (25 элементов)');
+        }
+        
+        function demoEmptyTable() {
+            const table = createTableFromArray([], {
+                headers: ['Колонка 1', 'Колонка 2', 'Колонка 3']
+            });
+            
+            const container = document.getElementById('mixedTableContainer');
+            container.innerHTML = '';
+            container.appendChild(table);
+            logToArrayTableOutput('Создана таблица с пустыми данными');
+        }
+        
+        function demoClearArrayTables() {
+            document.getElementById('mixedTableContainer').innerHTML = '';
+            document.getElementById('paginatedTableContainer').innerHTML = '';
+            logToArrayTableOutput('Все таблицы очищены');
+        }
+        
+        function logToArrayTableOutput(message) {
+            const output = document.getElementById('arrayTableOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Утилитарные функции
+        function applyStyles(element, styles) {
+            Object.assign(element.style, styles);
+        }
+        
+        function addClass(element, className) {
+            element.classList.add(className);
+        }
+        
+        function removeClass(element, className) {
+            element.classList.remove(className);
+        }
+        
+        function toggleClass(element, className) {
+            element.classList.toggle(className);
+        }
+        
+        function setText(element, text) {
+            element.textContent = text;
+        }
+        
+        function setHTML(element, html) {
+            element.innerHTML = html;
+        }
+        
+        function forEachElement(elements, callback) {
+            elements.forEach((element, index) => {
+                callback(element, index, elements);
+            });
+        }
+        
+        function applyStylesToAll(elements, styles) {
+            forEachElement(elements, element => {
+                Object.assign(element.style, styles);
+            });
+        }
+        
+        function addClassToAll(elements, className) {
+            forEachElement(elements, element => {
+                element.classList.add(className);
+            });
+        }
+        
+        function removeClassFromAll(elements, className) {
+            forEachElement(elements, element => {
+                element.classList.remove(className);
+            });
+        }
+        
+        function setTextToAll(elements, text) {
+            forEachElement(elements, element => {
+                element.textContent = text;
+            });
+        }
+        
+        function setNumberedText(elements, prefix = 'Элемент') {
+            forEachElement(elements, (element, index) => {
+                element.textContent = `${prefix} ${index + 1}`;
+            });
+        }
+        
+        function processElements(elements, callback) {
+            if (typeof callback !== 'function') {
+                console.error('Callback должен быть функцией');
+                return;
+            }
+            
+            forEachElement(elements, (element, index) => {
+                callback(element, index);
+            });
+        }
+        
+        function filterElements(elements, filterCallback) {
+            const filtered = [];
+            
+            forEachElement(elements, (element, index) => {
+                if (filterCallback(element, index)) {
+                    filtered.push(element);
+                }
+            });
+            
+            return filtered;
+        }
+        
+        function mapElements(elements, transformCallback) {
+            const results = [];
+            
+            forEachElement(elements, (element, index) => {
+                results.push(transformCallback(element, index));
+            });
+            
+            return results;
+        }
+        
+        function processWithIndex(elements, callback) {
+            forEachElement(elements, (element, index) => {
+                callback(element, index);
+            });
+        }
+        
+        function sequentialAnimation(elements, animationCallback, delay = 200) {
+            forEachElement(elements, (element, index) => {
+                setTimeout(() => {
+                    animationCallback(element, index);
+                }, index * delay);
+            });
+        }
+        
+        function applyIndexedStyles(elements, styleCallback) {
+            processWithIndex(elements, (element, index) => {
+                const styles = styleCallback(index);
+                Object.assign(element.style, styles);
+            });
+        }
+        
+        function createElement(tagName, options = {}) {
+            const element = document.createElement(tagName);
+            
+            if (options.text) element.textContent = options.text;
+            if (options.html) element.innerHTML = options.html;
+            if (options.className) element.className = options.className;
+            if (options.id) element.id = options.id;
+            if (options.attributes) {
+                Object.keys(options.attributes).forEach(attr => {
+                    element.setAttribute(attr, options.attributes[attr]);
+                });
+            }
+            if (options.styles) {
+                Object.assign(element.style, options.styles);
+            }
+            if (options.events) {
+                Object.keys(options.events).forEach(event => {
+                    element.addEventListener(event, options.events[event]);
+                });
+            }
+            
+            return element;
+        }
+        
+        function insertElement(element, container, position = 'append') {
+            const target = typeof container === 'string' 
+                ? document.querySelector(container) 
+                : container;
+            
+            if (!target) {
+                console.error('Контейнер не найден');
+                return;
+            }
+            
+            switch (position) {
+                case 'append':
+                    target.appendChild(element);
+                    break;
+                case 'prepend':
+                    target.prepend(element);
+                    break;
+                case 'before':
+                    target.parentNode.insertBefore(element, target);
+                    break;
+                case 'after':
+                    target.parentNode.insertBefore(element, target.nextSibling);
+                    break;
+                default:
+                    target.appendChild(element);
+            }
+        }
+        
+        function removeElement(element) {
+            if (element && element.parentNode) {
+                element.parentNode.removeChild(element);
+            }
+        }
+        
+        function cloneElement(element, deep = true, modifications = {}) {
+            const clone = element.cloneNode(deep);
+            
+            if (modifications.text) clone.textContent = modifications.text;
+            if (modifications.html) clone.innerHTML = modifications.html;
+            if (modifications.className) clone.className = modifications.className;
+            if (modifications.styles) {
+                Object.assign(clone.style, modifications.styles);
+            }
+            
+            return clone;
+        }
+        
+        function replaceElement(oldElement, newElement) {
+            if (oldElement && oldElement.parentNode) {
+                oldElement.parentNode.replaceChild(newElement, oldElement);
+            }
+        }
+        
+        function createElementGroup(elementsData, elementCreator) {
+            return elementsData.map((data, index) => {
+                return elementCreator(data, index);
+            });
+        }
+        
+        function insertElementGroup(elements, container, position = 'append') {
+            const target = typeof container === 'string' 
+                ? document.querySelector(container) 
+                : container;
+            
+            if (!target) {
+                console.error('Контейнер не найден');
+                return;
+            }
+            
+            elements.forEach(element => {
+                insertElement(element, target, position);
+            });
+        }
+        
+        function filterElementGroup(elements, condition) {
+            return elements.filter(condition);
+        }
+        
+        function sortElementGroup(elements, comparator) {
+            return [...elements].sort(comparator);
+        }
+        
+        function applyToElementGroup(elements, action) {
+            elements.forEach((element, index) => {
+                action(element, index);
+            });
+        }
+        
+        function createTable(data, headers = [], options = {}) {
+            const table = document.createElement('table');
+            
+            Object.assign(table.style, {
+                width: '100%',
+                borderCollapse: 'collapse',
+                margin: '10px 0',
+                fontFamily: 'Courier New, monospace',
+                ...options.tableStyles
+            });
+            
+            if (headers && headers.length > 0) {
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    Object.assign(th.style, {
+                        padding: '12px',
+                        textAlign: 'left',
+                        backgroundColor: '#1a1a2a',
+                        color: '#00ffcc',
+                        border: '1px solid #00ccff',
+                        fontWeight: 'bold',
+                        ...options.headerStyles
+                    });
+                    headerRow.appendChild(th);
+                });
+                
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+            }
+            
+            const tbody = document.createElement('tbody');
+            
+            data.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                
+                const rowData = Array.isArray(row) ? row : Object.values(row);
+                
+                rowData.forEach((cell, cellIndex) => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    
+                    Object.assign(td.style, {
+                        padding: '10px',
+                        border: '1px solid #00ccff',
+                        backgroundColor: rowIndex % 2 === 0 ? '#0a0a1220' : '#1a1a2a20',
+                        color: '#ffcc00',
+                        ...options.cellStyles
+                    });
+                    
+                    if (options.cellStyler) {
+                        const customStyles = options.cellStyler(cell, rowIndex, cellIndex);
+                        Object.assign(td.style, customStyles);
+                    }
+                    
+                    tr.appendChild(td);
+                });
+                
+                tbody.appendChild(tr);
+            });
+            
+            table.appendChild(tbody);
+            
+            if (options.className) {
+                table.className = options.className;
+            }
+            
+            if (options.attributes) {
+                Object.keys(options.attributes).forEach(attr => {
+                    table.setAttribute(attr, options.attributes[attr]);
+                });
+            }
+            
+            return table;
+        }
+        
+        function createAdvancedTable(data, config = {}) {
+            const {
+                headers = [],
+                sortable = false,
+                ...options
+            } = config;
+            
+            const table = createTable(data, headers, options);
+            
+            if (sortable) {
+                makeTableSortable(table, headers);
+            }
+            
+            return table;
+        }
+        
+        function makeTableSortable(table, headers) {
+            const headerCells = table.querySelectorAll('th');
+            
+            headerCells.forEach((th, index) => {
+                th.style.cursor = 'pointer';
+                th.title = 'Нажмите для сортировки';
+                
+                th.addEventListener('click', () => {
+                    sortTableByColumn(table, index);
+                });
+            });
+        }
+        
+        function sortTableByColumn(table, columnIndex) {
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent;
+                const bValue = b.cells[columnIndex].textContent;
+                
+                const aNum = parseFloat(aValue);
+                const bNum = parseFloat(bValue);
+                
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return aNum - bNum;
+                }
+                
+                return aValue.localeCompare(bValue);
+            });
+            
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+            
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
+        function createTableFromArray(data, options = {}) {
+            if (!Array.isArray(data) || data.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.textContent = 'Нет данных для отображения';
+                emptyMsg.style.color = '#ff3300';
+                emptyMsg.style.padding = '20px';
+                emptyMsg.style.textAlign = 'center';
+                return emptyMsg;
+            }
+            
+            let headers = options.headers || [];
+            
+            if (headers.length === 0) {
+                const firstItem = data[0];
+                if (typeof firstItem === 'object' && firstItem !== null) {
+                    headers = Object.keys(firstItem);
+                } else if (Array.isArray(firstItem)) {
+                    headers = firstItem.map((_, index) => `Колонка ${index + 1}`);
+                }
+            }
+            
+            const tableData = data.map(item => {
+                if (Array.isArray(item)) {
+                    return item;
+                } else if (typeof item === 'object' && item !== null) {
+                    return headers.map(header => item[header]);
+                } else {
+                    return [item];
+                }
+            });
+            
+            return createTable(tableData, headers, options);
+        }
+        
+        function createSmartTable(data, options = {}) {
+            const table = createTableFromArray(data, options);
+            
+            const cells = table.querySelectorAll('td');
+            
+            cells.forEach(cell => {
+                const content = cell.textContent;
+                
+                if (!isNaN(content) && content.trim() !== '') {
+                    const num = parseFloat(content);
+                    if (!isNaN(num)) {
+                        if (options.currency && Math.abs(num) >= 1) {
+                            cell.textContent = new Intl.NumberFormat('ru-RU', {
+                                style: 'currency',
+                                currency: options.currency
+                            }).format(num);
+                            cell.style.color = '#ffcc00';
+                            cell.style.fontWeight = 'bold';
+                        } else {
+                            cell.textContent = new Intl.NumberFormat('ru-RU').format(num);
+                        }
+                    }
+                }
+                
+                const date = new Date(content);
+                if (!isNaN(date.getTime())) {
+                    cell.textContent = date.toLocaleDateString('ru-RU');
+                    cell.style.color = '#00ccff';
+                }
+                
+                if (content.toLowerCase() === 'true' || content.toLowerCase() === 'false') {
+                    cell.textContent = content.toLowerCase() === 'true' ? '✅ Да' : '❌ Нет';
+                    cell.style.textAlign = 'center';
+                }
+            });
+            
+            return table;
+        }
+        
+        function createPaginatedTable(data, options = {}) {
+            const pageSize = options.pageSize || 10;
+            let currentPage = 1;
+            const totalPages = Math.ceil(data.length / pageSize);
+            
+            const container = document.createElement('div');
+            
+            function updateTable() {
+                const startIndex = (currentPage - 1) * pageSize;
+                const endIndex = startIndex + pageSize;
+                const pageData = data.slice(startIndex, endIndex);
+                
+                const oldTable = container.querySelector('table');
+                if (oldTable) oldTable.remove();
+                
+                const table = createTableFromArray(pageData, options);
+                container.insertBefore(table, container.firstChild);
+                
+                updatePaginationInfo();
+            }
+            
+            function updatePaginationInfo() {
+                let paginationInfo = container.querySelector('.pagination-info');
+                if (!paginationInfo) {
+                    paginationInfo = document.createElement('div');
+                    paginationInfo.className = 'pagination-info';
+                    paginationInfo.style.cssText = `
+                        margin: 10px 0;
+                        padding: 10px;
+                        background: rgba(255, 0, 255, 0.1);
+                        border-radius: 5px;
+                        text-align: center;
+                        color: #ff00ff;
+                    `;
+                    container.appendChild(paginationInfo);
+                }
+                
+                const startItem = (currentPage - 1) * pageSize + 1;
+                const endItem = Math.min(currentPage * pageSize, data.length);
+                
+                paginationInfo.innerHTML = `
+                    Страница ${currentPage} из ${totalPages} 
+                    (элементы ${startItem}-${endItem} из ${data.length})
+                `;
+            }
+            
+            function createPaginationControls() {
+                const controls = document.createElement('div');
+                controls.style.cssText = `
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    margin: 10px 0;
+                `;
+                
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '← Назад';
+                prevButton.disabled = currentPage === 1;
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        updateTable();
+                    }
+                });
+                
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Вперед →';
+                nextButton.disabled = currentPage === totalPages;
+                nextButton.addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        updateTable();
+                    }
+                });
+                
+                const pageSelect = document.createElement('select');
+                for (let i = 1; i <= totalPages; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    if (i === currentPage) option.selected = true;
+                    pageSelect.appendChild(option);
+                }
+                
+                pageSelect.addEventListener('change', (e) => {
+                    currentPage = parseInt(e.target.value);
+                    updateTable();
+                });
+                
+                controls.appendChild(prevButton);
+                controls.appendChild(pageSelect);
+                controls.appendChild(nextButton);
+                container.appendChild(controls);
+            }
+            
+            updateTable();
+            createPaginationControls();
+            
+            return {
+                container: container,
+                updateTable: updateTable,
+                setPage: (page) => {
+                    currentPage = Math.max(1, Math.min(page, totalPages));
+                    updateTable();
+                }
+            };
+        }
+        
+        // Функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).textContent = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Оператор Spread</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ОПЕРАТОР SPREAD</h1>
+        <p class="subtitle">... - мощный оператор для работы с массивами и объектами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Оператор spread (...) позволяет разбирать итерируемые объекты на отдельные элементы.</p>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Основы оператора spread -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔮</div>
+                <h2>ОСНОВЫ ОПЕРАТОРА SPREAD</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Базовое использование с массивами</div>
+                <div class="code-block">// Копирование массива
+let original = [1, 2, 3];
+let copy = [...original];
+console.log("Оригинал:", original);
+console.log("Копия:", copy);
+console.log("Разные массивы?", original !== copy);
+
+// Добавление элементов
+let extended = [0, ...original, 4, 5];
+console.log("Расширенный массив:", extended);
+
+// Объединение массивов
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+let combined = [...arr1, ...arr2];
+console.log("Объединенный массив:", combined);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Spread с объектами</div>
+                <div class="code-block">// Копирование объектов
+let user = { name: "Анна", age: 25 };
+let userCopy = { ...user };
+console.log("Оригинал:", user);
+console.log("Копия:", userCopy);
+console.log("Разные объекты?", user !== userCopy);
+
+// Объединение объектов
+let userInfo = { ...user, city: "Москва", profession: "Разработчик" };
+console.log("Объединенный объект:", userInfo);
+
+// Перезапись свойств
+let updatedUser = { ...user, age: 26 };
+console.log("Обновленный возраст:", updatedUser);
+
+// Слияние объектов
+let defaults = { theme: "dark", language: "ru" };
+let settings = { language: "en", notifications: true };
+let merged = { ...defaults, ...settings };
+console.log("Слияние настроек:", merged);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Более сложные примеры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎩</div>
+                <h2>БОЛЕЕ СЛОЖНЫЕ ПРИМЕРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Spread в функциях</div>
+                <div class="code-block">// Передача элементов массива как аргументов
+function sum(a, b, c) {
+    return a + b + c;
+}
+
+let numbers = [1, 2, 3];
+console.log("Сумма через spread:", sum(...numbers));
+
+// Несколько spread операторов
+function multiply(a, b, c, d) {
+    return a * b * c * d;
+}
+
+let nums1 = [2, 3];
+let nums2 = [5, 7];
+console.log("Произведение:", multiply(...nums1, ...nums2));
+
+// Spread с Math функциями
+let values = [10, 5, 8, 3, 15];
+console.log("Максимум:", Math.max(...values));
+console.log("Минимум:", Math.min(...values));
+console.log("Среднее:", values.reduce((a, b) => a + b) / values.length);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Вложенные структуры</div>
+                <div class="code-block">// Глубокое копирование с вложенными объектами
+let complexObj = {
+    user: { name: "Иван", contacts: { email: "ivan@mail.com" } },
+    settings: { theme: "dark", notifications: true }
+};
+
+// Поверхностное копирование (вложенные объекты ссылаются на оригинал)
+let shallowCopy = { ...complexObj };
+console.log("Поверхностная копия:");
+console.log("user тот же объект?", shallowCopy.user === complexObj.user);
+
+// Глубокое копирование
+let deepCopy = {
+    ...complexObj,
+    user: { ...complexObj.user, contacts: { ...complexObj.user.contacts } }
+};
+console.log("Глубокая копия:");
+console.log("user тот же объект?", deepCopy.user === complexObj.user);
+
+// Обновление вложенных свойств
+let updated = {
+    ...complexObj,
+    user: {
+        ...complexObj.user,
+        contacts: {
+            ...complexObj.user.contacts,
+            phone: "+79991234567"
+        }
+    }
+};
+console.log("Обновленный объект:", updated);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Экстремальные значения массива -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>ЭКСТРЕМАЛЬНЫЕ ЗНАЧЕНИЯ МАССИВА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Поиск min/max с spread</div>
+                <div class="code-block">// Классический способ поиска экстремумов
+let temperatures = [22, 18, 25, 19, 30, 16, 28];
+
+// Максимальная температура
+let maxTemp = Math.max(...temperatures);
+console.log("Температуры:", temperatures);
+console.log("Максимальная:", maxTemp);
+
+// Минимальная температура
+let minTemp = Math.min(...temperatures);
+console.log("Минимальная:", minTemp);
+
+// Разница между max и min
+let difference = maxTemp - minTemp;
+console.log("Разница:", difference);
+
+// Нахождение второго максимального значения
+let sorted = [...temperatures].sort((a, b) => b - a);
+let secondMax = sorted[1];
+console.log("Второй максимум:", secondMax);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Анализ данных с spread</div>
+                <div class="code-block">let salesData = [1200, 800, 1500, 900, 2000, 1100, 1700];
+
+// Статистика продаж
+let maxSale = Math.max(...salesData);
+let minSale = Math.min(...salesData);
+let totalSales = salesData.reduce((sum, sale) => sum + sale, 0);
+let averageSale = totalSales / salesData.length;
+
+console.log("Данные продаж:", salesData);
+console.log("Максимальная продажа:", maxSale);
+console.log("Минимальная продажа:", minSale);
+console.log("Общий объем:", totalSales);
+console.log("Средняя продажа:", averageSale.toFixed(2));
+
+// Продажи выше среднего
+let aboveAverage = salesData.filter(sale => sale > averageSale);
+console.log("Продажи выше среднего:", aboveAverage);
+
+// Сортировка от лучших к худшим
+let rankedSales = [...salesData].sort((a, b) => b - a);
+console.log("Ранжированные продажи:", rankedSales);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Слияние массивов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>СЛИЯНИЕ МАССИВОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Базовое слияние массивов</div>
+                <div class="code-block">let fruits = ["яблоко", "банан"];
+let vegetables = ["морковь", "помидор"];
+let berries = ["клубника", "малина"];
+
+// Простое слияние
+let produce = [...fruits, ...vegetables];
+console.log("Фрукты и овощи:", produce);
+
+// Множественное слияние
+let allProduce = [...fruits, ...vegetables, ...berries];
+console.log("Все продукты:", allProduce);
+
+// Слияние с добавлением новых элементов
+let shoppingList = ["хлеб", ...fruits, "молоко", ...vegetables, "сыр"];
+console.log("Список покупок:", shoppingList);
+
+// Удаление дубликатов после слияния
+let list1 = [1, 2, 3, 4];
+let list2 = [3, 4, 5, 6];
+let mergedList = [...list1, ...list2];
+let uniqueList = [...new Set(mergedList)];
+console.log("Слияние с дубликатами:", mergedList);
+console.log("Уникальные значения:", uniqueList);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Слияние объектов массивов</div>
+                <div class="code-block">let usersTeamA = [
+    { id: 1, name: "Анна", role: "developer" },
+    { id: 2, name: "Иван", role: "designer" }
+];
+
+let usersTeamB = [
+    { id: 3, name: "Мария", role: "developer" },
+    { id: 4, name: "Петр", role: "manager" }
+];
+
+// Слияние команд
+let allUsers = [...usersTeamA, ...usersTeamB];
+console.log("Все пользователи:", allUsers);
+
+// Фильтрация после слияния
+let developers = allUsers.filter(user => user.role === "developer");
+console.log("Разработчики:", developers);
+
+// Группировка по ролям
+let roles = [...new Set(allUsers.map(user => user.role))];
+console.log("Все роли:", roles);
+
+// Создание матрицы (2D массива)
+let row1 = [1, 2, 3];
+let row2 = [4, 5, 6];
+let row3 = [7, 8, 9];
+let matrix = [row1, row2, row3];
+let flatMatrix = [...row1, ...row2, ...row3];
+console.log("Матрица:", matrix);
+console.log("Плоская матрица:", flatMatrix);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Разбиение строк -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📝</div>
+                <h2>РАЗБИЕНИЕ СТРОК</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Spread со строками</div>
+                <div class="code-block">let message = "Hello";
+
+// Разбиение строки на символы
+let characters = [...message];
+console.log("Строка:", message);
+console.log("Символы:", characters);
+
+// Подсчет уникальных символов
+let uniqueChars = [...new Set(characters)];
+console.log("Уникальные символы:", uniqueChars);
+
+// Обращение строки
+let reversed = [...message].reverse().join('');
+console.log("Обратная строка:", reversed);
+
+// Слияние строк
+let part1 = "Hello";
+let part2 = "World";
+let greeting = [...part1, " ", ...part2].join('');
+console.log("Приветствие:", greeting);
+
+// Разбиение предложения на слова
+let sentence = "JavaScript это мощный язык";
+let words = [...sentence.split(' ')];
+console.log("Слова:", words);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Анализ текста</div>
+                <div class="code-block">let text = "Программирование на JavaScript это интересно и полезно";
+
+// Статистика текста
+let allChars = [...text];
+let letters = allChars.filter(char => char.match(/[а-я]/i));
+let spaces = allChars.filter(char => char === ' ');
+
+console.log("Текст:", text);
+console.log("Всего символов:", allChars.length);
+console.log("Букв:", letters.length);
+console.log("Пробелов:", spaces.length);
+
+// Самые частые буквы
+let letterCount = {};
+letters.forEach(letter => {
+    letterCount[letter] = (letterCount[letter] || 0) + 1;
+});
+
+let frequentLetters = Object.entries(letterCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3);
+
+console.log("Самые частые буквы:", frequentLetters);
+
+// Разбиение на предложения
+let paragraph = "Первое предложение. Второе предложение! Третье предложение?";
+let sentences = paragraph.split(/[.!?]/).filter(s => s.trim());
+console.log("Предложения:", sentences);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Разбиение чисел -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>РАЗБИЕНИЕ ЧИСЕЛ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Разбиение чисел на цифры</div>
+                <div class="code-block">let number = 12345;
+
+// Преобразование числа в массив цифр
+let digits = [...String(number)].map(Number);
+console.log("Число:", number);
+console.log("Цифры:", digits);
+
+// Сумма цифр
+let sumOfDigits = digits.reduce((sum, digit) => sum + digit, 0);
+console.log("Сумма цифр:", sumOfDigits);
+
+// Произведение цифр
+let productOfDigits = digits.reduce((prod, digit) => prod * digit, 1);
+console.log("Произведение цифр:", productOfDigits);
+
+// Наибольшая и наименьшая цифра
+let maxDigit = Math.max(...digits);
+let minDigit = Math.min(...digits);
+console.log("Максимальная цифра:", maxDigit);
+console.log("Минимальная цифра:", minDigit);
+
+// Число в обратном порядке
+let reversedNumber = Number([...String(number)].reverse().join(''));
+console.log("Обратное число:", reversedNumber);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Математические операции</div>
+                <div class="code-block">// Генерация диапазона чисел
+function generateRange(start, end) {
+    return [...Array(end - start + 1).keys()].map(i => i + start);
+}
+
+let range = generateRange(5, 15);
+console.log("Диапазон 5-15:", range);
+
+// Фибоначчи с spread
+function fibonacci(n) {
+    if (n <= 0) return [];
+    if (n === 1) return [0];
+    
+    let sequence = [0, 1];
+    for (let i = 2; i < n; i++) {
+        sequence = [...sequence, sequence[i-1] + sequence[i-2]];
+    }
+    return sequence;
+}
+
+console.log("Первые 10 чисел Фибоначчи:", fibonacci(10));
+
+// Разложение числа на простые множители
+function primeFactors(num) {
+    let factors = [];
+    let divisor = 2;
+    
+    while (num >= 2) {
+        if (num % divisor === 0) {
+            factors = [...factors, divisor];
+            num = num / divisor;
+        } else {
+            divisor++;
+        }
+    }
+    return factors;
+}
+
+console.log("Простые множители 84:", primeFactors(84));</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Управление состоянием</div>
+                <div class="code-block">// Имитация React состояния
+let initialState = {
+    user: {
+        name: "Анна",
+        preferences: {
+            theme: "dark",
+            language: "ru",
+            notifications: true
+        }
+    },
+    cart: {
+        items: [
+            { id: 1, name: "Телефон", quantity: 1 },
+            { id: 2, name: "Наушники", quantity: 2 }
+        ],
+        total: 700
+    }
+};
+
+// Обновление предпочтений пользователя
+let updatedState = {
+    ...initialState,
+    user: {
+        ...initialState.user,
+        preferences: {
+            ...initialState.user.preferences,
+            theme: "light",
+            language: "en"
+        }
+    }
+};
+
+console.log("Исходное состояние:", initialState.user.preferences);
+console.log("Обновленное состояние:", updatedState.user.preferences);
+
+// Добавление товара в корзину
+let newItem = { id: 3, name: "Чехол", quantity: 1 };
+let updatedCart = {
+    ...initialState.cart,
+    items: [...initialState.cart.items, newItem],
+    total: initialState.cart.total + 20
+};
+
+console.log("Обновленная корзина:", updatedCart);</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Работа с формами</div>
+                <div class="code-block">// Обработка данных формы
+let formData = {
+    personal: {
+        firstName: "Иван",
+        lastName: "Петров",
+        age: 30
+    },
+    address: {
+        city: "Москва",
+        street: "Ленина",
+        zipCode: "123456"
+    }
+};
+
+// Валидация и очистка данных
+function sanitizeFormData(data) {
+    return {
+        ...data,
+        personal: {
+            ...data.personal,
+            firstName: data.personal.firstName.trim(),
+            lastName: data.personal.lastName.trim()
+        },
+        address: {
+            ...data.address,
+            zipCode: data.address.zipCode.replace(/\D/g, '')
+        }
+    };
+}
+
+let cleanData = sanitizeFormData(formData);
+console.log("Очищенные данные:", cleanData);
+
+// Слияние данных из нескольких источников
+let apiData = {
+    personal: {
+        email: "ivan@mail.com",
+        phone: "+79991234567"
+    },
+    preferences: {
+        newsletter: true,
+        marketing: false
+    }
+};
+
+let mergedData = {
+    ...formData,
+    personal: {
+        ...formData.personal,
+        ...apiData.personal
+    },
+    ...apiData
+};
+
+console.log("Объединенные данные:", mergedData);</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Продвинутые техники</div>
+                <div class="code-block">// Рекурсивное слияние объектов
+function deepMerge(target, source) {
+    let output = { ...target };
+    
+    for (let key in source) {
+        if (source[key] instanceof Object && key in target) {
+            output[key] = deepMerge(target[key], source[key]);
+        } else {
+            output[key] = source[key];
+        }
+    }
+    return output;
+}
+
+let obj1 = {
+    a: 1,
+    b: {
+        c: 2,
+        d: { e: 3 }
+    }
+};
+
+let obj2 = {
+    b: {
+        d: { f: 4 },
+        g: 5
+    },
+    h: 6
+};
+
+let merged = deepMerge(obj1, obj2);
+console.log("Глубокое слияние:", merged);
+
+// Создание иммутабельных обновлений
+function updateIn(path, value, obj) {
+    if (path.length === 0) return value;
+    
+    const [first, ...rest] = path;
+    return {
+        ...obj,
+        [first]: updateIn(rest, value, obj[first] || {})
+    };
+}
+
+let state = {
+    app: {
+        user: {
+            profile: {
+                name: "Анна",
+                age: 25
+            }
+        }
+    }
+};
+
+let newState = updateIn(['app', 'user', 'profile', 'age'], 26, state);
+console.log("Обновление по пути:", newState.app.user.profile);</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Оператор Spread &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Основы оператора spread
+        function runTask1() {
+            let output = "";
+            
+            let original = [1, 2, 3];
+            let copy = [...original];
+            let extended = [0, ...original, 4, 5];
+            let arr1 = [1, 2, 3];
+            let arr2 = [4, 5, 6];
+            let combined = [...arr1, ...arr2];
+            
+            output += "Оригинал: " + JSON.stringify(original) + "\n";
+            output += "Копия: " + JSON.stringify(copy) + "\n";
+            output += "Разные массивы? " + (original !== copy) + "\n";
+            output += "Расширенный массив: " + JSON.stringify(extended) + "\n";
+            output += "Объединенный массив: " + JSON.stringify(combined) + "\n";
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = "";
+            
+            let user = { name: "Анна", age: 25 };
+            let userCopy = { ...user };
+            let userInfo = { ...user, city: "Москва", profession: "Разработчик" };
+            let updatedUser = { ...user, age: 26 };
+            let defaults = { theme: "dark", language: "ru" };
+            let settings = { language: "en", notifications: true };
+            let merged = { ...defaults, ...settings };
+            
+            output += "Оригинал: " + JSON.stringify(user) + "\n";
+            output += "Копия: " + JSON.stringify(userCopy) + "\n";
+            output += "Разные объекты? " + (user !== userCopy) + "\n";
+            output += "Объединенный объект: " + JSON.stringify(userInfo) + "\n";
+            output += "Обновленный возраст: " + JSON.stringify(updatedUser) + "\n";
+            output += "Слияние настроек: " + JSON.stringify(merged) + "\n";
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Более сложные примеры
+        function runTask3() {
+            let output = "";
+            
+            function sum(a, b, c) {
+                return a + b + c;
+            }
+            
+            function multiply(a, b, c, d) {
+                return a * b * c * d;
+            }
+            
+            let numbers = [1, 2, 3];
+            let nums1 = [2, 3];
+            let nums2 = [5, 7];
+            let values = [10, 5, 8, 3, 15];
+            
+            output += "Сумма через spread: " + sum(...numbers) + "\n";
+            output += "Произведение: " + multiply(...nums1, ...nums2) + "\n";
+            output += "Максимум: " + Math.max(...values) + "\n";
+            output += "Минимум: " + Math.min(...values) + "\n";
+            output += "Среднее: " + (values.reduce((a, b) => a + b) / values.length).toFixed(2) + "\n";
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = "";
+            
+            let complexObj = {
+                user: { name: "Иван", contacts: { email: "ivan@mail.com" } },
+                settings: { theme: "dark", notifications: true }
+            };
+            
+            let shallowCopy = { ...complexObj };
+            let deepCopy = {
+                ...complexObj,
+                user: { ...complexObj.user, contacts: { ...complexObj.user.contacts } }
+            };
+            let updated = {
+                ...complexObj,
+                user: {
+                    ...complexObj.user,
+                    contacts: {
+                        ...complexObj.user.contacts,
+                        phone: "+79991234567"
+                    }
+                }
+            };
+            
+            output += "Поверхностная копия:\n";
+            output += "user тот же объект? " + (shallowCopy.user === complexObj.user) + "\n";
+            output += "Глубокая копия:\n";
+            output += "user тот же объект? " + (deepCopy.user === complexObj.user) + "\n";
+            output += "Обновленный объект: " + JSON.stringify(updated, null, 2) + "\n";
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Экстремальные значения массива
+        function runTask5() {
+            let output = "";
+            
+            let temperatures = [22, 18, 25, 19, 30, 16, 28];
+            let maxTemp = Math.max(...temperatures);
+            let minTemp = Math.min(...temperatures);
+            let difference = maxTemp - minTemp;
+            let sorted = [...temperatures].sort((a, b) => b - a);
+            let secondMax = sorted[1];
+            
+            output += "Температуры: " + JSON.stringify(temperatures) + "\n";
+            output += "Максимальная: " + maxTemp + "\n";
+            output += "Минимальная: " + minTemp + "\n";
+            output += "Разница: " + difference + "\n";
+            output += "Второй максимум: " + secondMax + "\n";
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = "";
+            
+            let salesData = [1200, 800, 1500, 900, 2000, 1100, 1700];
+            let maxSale = Math.max(...salesData);
+            let minSale = Math.min(...salesData);
+            let totalSales = salesData.reduce((sum, sale) => sum + sale, 0);
+            let averageSale = totalSales / salesData.length;
+            let aboveAverage = salesData.filter(sale => sale > averageSale);
+            let rankedSales = [...salesData].sort((a, b) => b - a);
+            
+            output += "Данные продаж: " + JSON.stringify(salesData) + "\n";
+            output += "Максимальная продажа: " + maxSale + "\n";
+            output += "Минимальная продажа: " + minSale + "\n";
+            output += "Общий объем: " + totalSales + "\n";
+            output += "Средняя продажа: " + averageSale.toFixed(2) + "\n";
+            output += "Продажи выше среднего: " + JSON.stringify(aboveAverage) + "\n";
+            output += "Ранжированные продажи: " + JSON.stringify(rankedSales) + "\n";
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Слияние массивов
+        function runTask7() {
+            let output = "";
+            
+            let fruits = ["яблоко", "банан"];
+            let vegetables = ["морковь", "помидор"];
+            let berries = ["клубника", "малина"];
+            let produce = [...fruits, ...vegetables];
+            let allProduce = [...fruits, ...vegetables, ...berries];
+            let shoppingList = ["хлеб", ...fruits, "молоко", ...vegetables, "сыр"];
+            let list1 = [1, 2, 3, 4];
+            let list2 = [3, 4, 5, 6];
+            let mergedList = [...list1, ...list2];
+            let uniqueList = [...new Set(mergedList)];
+            
+            output += "Фрукты и овощи: " + JSON.stringify(produce) + "\n";
+            output += "Все продукты: " + JSON.stringify(allProduce) + "\n";
+            output += "Список покупок: " + JSON.stringify(shoppingList) + "\n";
+            output += "Слияние с дубликатами: " + JSON.stringify(mergedList) + "\n";
+            output += "Уникальные значения: " + JSON.stringify(uniqueList) + "\n";
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = "";
+            
+            let usersTeamA = [
+                { id: 1, name: "Анна", role: "developer" },
+                { id: 2, name: "Иван", role: "designer" }
+            ];
+            
+            let usersTeamB = [
+                { id: 3, name: "Мария", role: "developer" },
+                { id: 4, name: "Петр", role: "manager" }
+            ];
+            
+            let allUsers = [...usersTeamA, ...usersTeamB];
+            let developers = allUsers.filter(user => user.role === "developer");
+            let roles = [...new Set(allUsers.map(user => user.role))];
+            let row1 = [1, 2, 3];
+            let row2 = [4, 5, 6];
+            let row3 = [7, 8, 9];
+            let matrix = [row1, row2, row3];
+            let flatMatrix = [...row1, ...row2, ...row3];
+            
+            output += "Все пользователи: " + JSON.stringify(allUsers, null, 2) + "\n";
+            output += "Разработчики: " + JSON.stringify(developers, null, 2) + "\n";
+            output += "Все роли: " + JSON.stringify(roles) + "\n";
+            output += "Матрица: " + JSON.stringify(matrix) + "\n";
+            output += "Плоская матрица: " + JSON.stringify(flatMatrix) + "\n";
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Разбиение строк
+        function runTask9() {
+            let output = "";
+            
+            let message = "Hello";
+            let characters = [...message];
+            let uniqueChars = [...new Set(characters)];
+            let reversed = [...message].reverse().join('');
+            let part1 = "Hello";
+            let part2 = "World";
+            let greeting = [...part1, " ", ...part2].join('');
+            let sentence = "JavaScript это мощный язык";
+            let words = [...sentence.split(' ')];
+            
+            output += "Строка: " + message + "\n";
+            output += "Символы: " + JSON.stringify(characters) + "\n";
+            output += "Уникальные символы: " + JSON.stringify(uniqueChars) + "\n";
+            output += "Обратная строка: " + reversed + "\n";
+            output += "Приветствие: " + greeting + "\n";
+            output += "Слова: " + JSON.stringify(words) + "\n";
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            let output = "";
+            
+            let text = "Программирование на JavaScript это интересно и полезно";
+            let allChars = [...text];
+            let letters = allChars.filter(char => char.match(/[а-я]/i));
+            let spaces = allChars.filter(char => char === ' ');
+            
+            let letterCount = {};
+            letters.forEach(letter => {
+                letterCount[letter] = (letterCount[letter] || 0) + 1;
+            });
+            
+            let frequentLetters = Object.entries(letterCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+            
+            let paragraph = "Первое предложение. Второе предложение! Третье предложение?";
+            let sentences = paragraph.split(/[.!?]/).filter(s => s.trim());
+            
+            output += "Текст: " + text + "\n";
+            output += "Всего символов: " + allChars.length + "\n";
+            output += "Букв: " + letters.length + "\n";
+            output += "Пробелов: " + spaces.length + "\n";
+            output += "Самые частые буквы: " + JSON.stringify(frequentLetters) + "\n";
+            output += "Предложения: " + JSON.stringify(sentences) + "\n";
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 6: Разбиение чисел
+        function runTask11() {
+            let output = "";
+            
+            let number = 12345;
+            let digits = [...String(number)].map(Number);
+            let sumOfDigits = digits.reduce((sum, digit) => sum + digit, 0);
+            let productOfDigits = digits.reduce((prod, digit) => prod * digit, 1);
+            let maxDigit = Math.max(...digits);
+            let minDigit = Math.min(...digits);
+            let reversedNumber = Number([...String(number)].reverse().join(''));
+            
+            output += "Число: " + number + "\n";
+            output += "Цифры: " + JSON.stringify(digits) + "\n";
+            output += "Сумма цифр: " + sumOfDigits + "\n";
+            output += "Произведение цифр: " + productOfDigits + "\n";
+            output += "Максимальная цифра: " + maxDigit + "\n";
+            output += "Минимальная цифра: " + minDigit + "\n";
+            output += "Обратное число: " + reversedNumber + "\n";
+            
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let output = "";
+            
+            function generateRange(start, end) {
+                return [...Array(end - start + 1).keys()].map(i => i + start);
+            }
+            
+            function fibonacci(n) {
+                if (n <= 0) return [];
+                if (n === 1) return [0];
+                
+                let sequence = [0, 1];
+                for (let i = 2; i < n; i++) {
+                    sequence = [...sequence, sequence[i-1] + sequence[i-2]];
+                }
+                return sequence;
+            }
+            
+            function primeFactors(num) {
+                let factors = [];
+                let divisor = 2;
+                
+                while (num >= 2) {
+                    if (num % divisor === 0) {
+                        factors = [...factors, divisor];
+                        num = num / divisor;
+                    } else {
+                        divisor++;
+                    }
+                }
+                return factors;
+            }
+            
+            let range = generateRange(5, 15);
+            let fibSequence = fibonacci(10);
+            let factors = primeFactors(84);
+            
+            output += "Диапазон 5-15: " + JSON.stringify(range) + "\n";
+            output += "Первые 10 чисел Фибоначчи: " + JSON.stringify(fibSequence) + "\n";
+            output += "Простые множители 84: " + JSON.stringify(factors) + "\n";
+            
+            document.getElementById('output12').innerHTML = output;
+        }
+
+        // Раздел 7: Практические задачи
+        function runTask13() {
+            let output = "";
+            
+            let initialState = {
+                user: {
+                    name: "Анна",
+                    preferences: {
+                        theme: "dark",
+                        language: "ru",
+                        notifications: true
+                    }
+                },
+                cart: {
+                    items: [
+                        { id: 1, name: "Телефон", quantity: 1 },
+                        { id: 2, name: "Наушники", quantity: 2 }
+                    ],
+                    total: 700
+                }
+            };
+            
+            let updatedState = {
+                ...initialState,
+                user: {
+                    ...initialState.user,
+                    preferences: {
+                        ...initialState.user.preferences,
+                        theme: "light",
+                        language: "en"
+                    }
+                }
+            };
+            
+            let newItem = { id: 3, name: "Чехол", quantity: 1 };
+            let updatedCart = {
+                ...initialState.cart,
+                items: [...initialState.cart.items, newItem],
+                total: initialState.cart.total + 20
+            };
+            
+            output += "Исходное состояние: " + JSON.stringify(initialState.user.preferences) + "\n";
+            output += "Обновленное состояние: " + JSON.stringify(updatedState.user.preferences) + "\n";
+            output += "Обновленная корзина: " + JSON.stringify(updatedCart, null, 2) + "\n";
+            
+            document.getElementById('output13').innerHTML = output;
+        }
+
+        function runTask14() {
+            let output = "";
+            
+            let formData = {
+                personal: {
+                    firstName: "Иван",
+                    lastName: "Петров",
+                    age: 30
+                },
+                address: {
+                    city: "Москва",
+                    street: "Ленина",
+                    zipCode: "123-456"
+                }
+            };
+            
+            function sanitizeFormData(data) {
+                return {
+                    ...data,
+                    personal: {
+                        ...data.personal,
+                        firstName: data.personal.firstName.trim(),
+                        lastName: data.personal.lastName.trim()
+                    },
+                    address: {
+                        ...data.address,
+                        zipCode: data.address.zipCode.replace(/\D/g, '')
+                    }
+                };
+            }
+            
+            let apiData = {
+                personal: {
+                    email: "ivan@mail.com",
+                    phone: "+79991234567"
+                },
+                preferences: {
+                    newsletter: true,
+                    marketing: false
+                }
+            };
+            
+            let cleanData = sanitizeFormData(formData);
+            let mergedData = {
+                ...formData,
+                personal: {
+                    ...formData.personal,
+                    ...apiData.personal
+                },
+                ...apiData
+            };
+            
+            output += "Очищенные данные: " + JSON.stringify(cleanData, null, 2) + "\n";
+            output += "Объединенные данные: " + JSON.stringify(mergedData, null, 2) + "\n";
+            
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let output = "";
+            
+            function deepMerge(target, source) {
+                let output = { ...target };
+                
+                for (let key in source) {
+                    if (source[key] instanceof Object && key in target) {
+                        output[key] = deepMerge(target[key], source[key]);
+                    } else {
+                        output[key] = source[key];
+                    }
+                }
+                return output;
+            }
+            
+            function updateIn(path, value, obj) {
+                if (path.length === 0) return value;
+                
+                const [first, ...rest] = path;
+                return {
+                    ...obj,
+                    [first]: updateIn(rest, value, obj[first] || {})
+                };
+            }
+            
+            let obj1 = {
+                a: 1,
+                b: {
+                    c: 2,
+                    d: { e: 3 }
+                }
+            };
+            
+            let obj2 = {
+                b: {
+                    d: { f: 4 },
+                    g: 5
+                },
+                h: 6
+            };
+            
+            let state = {
+                app: {
+                    user: {
+                        profile: {
+                            name: "Анна",
+                            age: 25
+                        }
+                    }
+                }
+            };
+            
+            let merged = deepMerge(obj1, obj2);
+            let newState = updateIn(['app', 'user', 'profile', 'age'], 26, state);
+            
+            output += "Глубокое слияние: " + JSON.stringify(merged, null, 2) + "\n";
+            output += "Обновление по пути: " + JSON.stringify(newState.app.user.profile, null, 2) + "\n";
+            
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

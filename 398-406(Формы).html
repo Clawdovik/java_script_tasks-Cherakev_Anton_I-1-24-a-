@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Формы</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Стили для форм */
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ccff;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            background-color: #1a1a2a;
+            border: 1px solid #00ffcc;
+            border-radius: 4px;
+            color: #00ffcc;
+            font-size: 14px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        input:disabled,
+        textarea:disabled,
+        select:disabled {
+            background-color: #2a2a2a;
+            border-color: #666;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .checkbox-group,
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .checkbox-item,
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ff00ff;
+        }
+
+        .form-highlight {
+            background-color: #2a3a2a !important;
+            border-color: #00ffcc !important;
+            box-shadow: 0 0 10px #00ffcc !important;
+        }
+
+        .form-error {
+            background-color: #3a2a2a !important;
+            border-color: #ff4444 !important;
+            box-shadow: 0 0 10px #ff4444 !important;
+        }
+
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .status-error {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+        }
+
+        .status-info {
+            background-color: rgba(0, 200, 255, 0.1);
+            border: 1px solid #00c8ff;
+            color: #00c8ff;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ФОРМЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с формами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Работа с текстовыми полями -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📝</div>
+                <h2>РАБОТА С TEXTAREA</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Работа с textarea</div>
+                <div class="code-block">// Получение и установка значения textarea
+const textarea = document.getElementById('demo-textarea');
+
+// Получение значения
+const currentValue = textarea.value;
+console.log('Текущее значение:', currentValue);
+
+// Установка значения
+textarea.value = 'Новое значение текстовой области';
+
+// Получение свойств
+const rows = textarea.rows;
+const cols = textarea.cols;
+const placeholder = textarea.placeholder;
+
+// Динамическое изменение размера
+textarea.style.minHeight = '100px';
+textarea.style.resize = 'both';</div>
+                <div class="form-group">
+                    <label for="demo-textarea">Текстовая область:</label>
+                    <textarea id="demo-textarea" rows="4" cols="50" placeholder="Введите текст здесь...">Исходный текст в textarea</textarea>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="resetTask1()">СБРОСИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Блокировка элементов</div>
+                <div class="code-block">// Блокировка и разблокировка элементов формы
+const inputField = document.getElementById('lock-input');
+const textareaField = document.getElementById('lock-textarea');
+const selectField = document.getElementById('lock-select');
+
+// Блокировка элементов
+inputField.disabled = true;
+textareaField.disabled = true;
+selectField.disabled = true;
+console.log('Элементы заблокированы');
+
+// Разблокировка
+// inputField.disabled = false;
+// textareaField.disabled = false;
+// selectField.disabled = false;
+
+// Проверка состояния
+const isInputDisabled = inputField.disabled;
+const isTextareaDisabled = textareaField.disabled;</div>
+                <div class="form-group">
+                    <label for="lock-input">Текстовое поле:</label>
+                    <input type="text" id="lock-input" value="Заблокированное поле">
+                    
+                    <label for="lock-textarea">Текстовая область:</label>
+                    <textarea id="lock-textarea" rows="3">Заблокированная область</textarea>
+                    
+                    <label for="lock-select">Выпадающий список:</label>
+                    <select id="lock-select">
+                        <option value="1">Опция 1</option>
+                        <option value="2">Опция 2</option>
+                        <option value="3">Опция 3</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ЗАБЛОКИРОВАТЬ</button>
+                    <button onclick="unlockTask2()">РАЗБЛОКИРОВАТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Чекбоксы и радиокнопки -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">☑️</div>
+                <h2>ЧЕКБОКСЫ И РАДИОКНОПКИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Работа с чекбоксами</div>
+                <div class="code-block">// Работа с одиночным чекбоксом
+const singleCheckbox = document.getElementById('single-checkbox');
+const isChecked = singleCheckbox.checked;
+console.log('Чекбокс отмечен:', isChecked);
+
+// Установка состояния
+singleCheckbox.checked = true;
+
+// Работа с группой чекбоксов
+const checkboxes = document.querySelectorAll('.group-checkbox');
+const selectedValues = [];
+
+checkboxes.forEach(checkbox => {
+    if (checkbox.checked) {
+        selectedValues.push(checkbox.value);
+    }
+});
+
+console.log('Выбранные значения:', selectedValues);
+
+// Переключение всех чекбоксов
+const toggleAll = document.getElementById('toggle-all');
+toggleAll.addEventListener('change', function() {
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});</div>
+                <div class="form-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="single-checkbox">
+                        <label for="single-checkbox">Одиночный чекбокс</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="toggle-all">
+                        <label for="toggle-all">Выбрать все</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="group-checkbox" value="option1" id="check1">
+                            <label for="check1">Опция 1</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="group-checkbox" value="option2" id="check2">
+                            <label for="check2">Опция 2</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="group-checkbox" value="option3" id="check3">
+                            <label for="check3">Опция 3</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button onclick="checkAll()">ВЫБРАТЬ ВСЕ</button>
+                    <button onclick="uncheckAll()">СНЯТЬ ВСЕ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Чередование атрибутов без значений</div>
+                <div class="code-block">// Атрибуты без значений (boolean атрибуты)
+const checkbox = document.getElementById('bool-checkbox');
+
+// Установка boolean атрибутов
+checkbox.checked = true;        // Эквивалент checked="checked"
+checkbox.disabled = true;       // Эквивалент disabled="disabled"
+checkbox.required = true;       // Эквивалент required="required"
+
+// Проверка boolean атрибутов
+const isChecked = checkbox.checked;
+const isDisabled = checkbox.disabled;
+const isRequired = checkbox.required;
+
+console.log('Checked:', isChecked);
+console.log('Disabled:', isDisabled);
+console.log('Required:', isRequired);
+
+// Удаление boolean атрибутов
+// checkbox.checked = false;
+// checkbox.disabled = false;
+// checkbox.required = false;</div>
+                <div class="form-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="bool-checkbox">
+                        <label for="bool-checkbox">Чекбокс с boolean атрибутами</label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">УСТАНОВИТЬ АТРИБУТЫ</button>
+                    <button onclick="removeBoolAttrs()">УДАЛИТЬ АТРИБУТЫ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Работа с радиокнопками</div>
+                <div class="code-block">// Работа с группой радиокнопок
+const radioButtons = document.querySelectorAll('input[name="radio-group"]');
+
+// Получение выбранной радиокнопки
+let selectedValue = null;
+radioButtons.forEach(radio => {
+    if (radio.checked) {
+        selectedValue = radio.value;
+    }
+});
+console.log('Выбранное значение:', selectedValue);
+
+// Установка выбранной радиокнопки
+function setRadioValue(value) {
+    radioButtons.forEach(radio => {
+        radio.checked = (radio.value === value);
+    });
+}
+
+// Получение выбранной радиокнопки через форму
+const form = document.getElementById('radio-form');
+const formData = new FormData(form);
+const selected = formData.get('radio-group');
+console.log('Выбрано через FormData:', selected);</div>
+                <form id="radio-form">
+                    <div class="form-group">
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="radio-group" value="option1" id="radio1">
+                                <label for="radio1">Опция 1</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="radio-group" value="option2" id="radio2">
+                                <label for="radio2">Опция 2</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="radio-group" value="option3" id="radio3" checked>
+                                <label for="radio3">Опция 3</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ПОЛУЧИТЬ ВЫБРАННОЕ</button>
+                    <button onclick="setRadioTo1()">ВЫБРАТЬ ОПЦИЮ 1</button>
+                    <button onclick="setRadioTo2()">ВЫБРАТЬ ОПЦИЮ 2</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: События форм -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎮</div>
+                <h2>СОБЫТИЯ ФОРМ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Событие change</div>
+                <div class="code-block">// Событие change срабатывает при изменении значения
+const changeInput = document.getElementById('change-input');
+const changeSelect = document.getElementById('change-select');
+const changeCheckbox = document.getElementById('change-checkbox');
+
+changeInput.addEventListener('change', function() {
+    console.log('Input changed:', this.value);
+    updateOutput('change', `Input changed: ${this.value}`);
+});
+
+changeSelect.addEventListener('change', function() {
+    console.log('Select changed:', this.value);
+    updateOutput('change', `Select changed: ${this.value}`);
+});
+
+changeCheckbox.addEventListener('change', function() {
+    console.log('Checkbox changed:', this.checked);
+    updateOutput('change', `Checkbox changed: ${this.checked}`);
+});
+
+function updateOutput(type, message) {
+    const output = document.getElementById('output6');
+    output.innerHTML += `[${type}] ${message}\\n`;
+}</div>
+                <div class="form-group">
+                    <label for="change-input">Текстовое поле (change):</label>
+                    <input type="text" id="change-input" placeholder="Введите текст и потеряйте фокус">
+                    
+                    <label for="change-select">Выпадающий список:</label>
+                    <select id="change-select">
+                        <option value="">Выберите опцию</option>
+                        <option value="1">Опция 1</option>
+                        <option value="2">Опция 2</option>
+                        <option value="3">Опция 3</option>
+                    </select>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="change-checkbox">
+                        <label for="change-checkbox">Чекбокс (change)</label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="clearOutput('output6')">ОЧИСТИТЬ ВЫВОД</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Событие input</div>
+                <div class="code-block">// Событие input срабатывает при каждом вводе
+const inputField = document.getElementById('input-event');
+const textareaField = document.getElementById('textarea-event');
+
+inputField.addEventListener('input', function() {
+    const charCount = this.value.length;
+    updateOutput('input', `Input: "${this.value}" (${charCount} символов)`);
+    
+    // Динамическое обновление интерфейса
+    const counter = document.getElementById('char-counter');
+    if (counter) {
+        counter.textContent = `Символов: ${charCount}`;
+    }
+});
+
+textareaField.addEventListener('input', function() {
+    const charCount = this.value.length;
+    updateOutput('input', `Textarea: ${charCount} символов`);
+});
+
+function updateOutput(type, message) {
+    const output = document.getElementById('output7');
+    output.innerHTML += `[${type}] ${message}\\n`;
+    output.scrollTop = output.scrollHeight;
+}</div>
+                <div class="form-group">
+                    <label for="input-event">Текстовое поле (input):</label>
+                    <input type="text" id="input-event" placeholder="Вводите текст...">
+                    <div id="char-counter" class="status-info">Символов: 0</div>
+                    
+                    <label for="textarea-event">Текстовая область (input):</label>
+                    <textarea id="textarea-event" rows="3" placeholder="Вводите текст здесь..."></textarea>
+                </div>
+                <div class="btn-group">
+                    <button onclick="clearOutput('output7')">ОЧИСТИТЬ ВЫВОД</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Фокусировка и практика -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ФОКУСИРОВКА И ПРАКТИКА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Методы focus и blur</div>
+                <div class="code-block">// Управление фокусом элементов
+const focusInput = document.getElementById('focus-input');
+const focusTextarea = document.getElementById('focus-textarea');
+
+// Установка фокуса
+focusInput.focus();
+console.log('Фокус установлен на input');
+
+// Снятие фокуса
+// focusInput.blur();
+
+// События фокуса
+focusInput.addEventListener('focus', function() {
+    this.classList.add('form-highlight');
+    updateOutput('focus', 'Input получил фокус');
+});
+
+focusInput.addEventListener('blur', function() {
+    this.classList.remove('form-highlight');
+    updateOutput('focus', 'Input потерял фокус');
+});
+
+focusTextarea.addEventListener('focus', function() {
+    this.classList.add('form-highlight');
+    updateOutput('focus', 'Textarea получил фокус');
+});
+
+focusTextarea.addEventListener('blur', function() {
+    this.classList.remove('form-highlight');
+    updateOutput('focus', 'Textarea потерял фокус');
+});</div>
+                <div class="form-group">
+                    <label for="focus-input">Поле для фокуса:</label>
+                    <input type="text" id="focus-input" placeholder="Кликните или используйте кнопки">
+                    
+                    <label for="focus-textarea">Текстовая область для фокуса:</label>
+                    <textarea id="focus-textarea" rows="3" placeholder="Кликните или используйте кнопки"></textarea>
+                </div>
+                <div class="btn-group">
+                    <button onclick="focusInput()">ФОКУС НА INPUT</button>
+                    <button onclick="focusTextarea()">ФОКУС НА TEXTAREA</button>
+                    <button onclick="blurAll()">СНЯТЬ ФОКУС</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Практика на поиск ошибок</div>
+                <div class="code-block">// Типичные ошибки при работе с формами
+function checkFormErrors() {
+    const form = document.getElementById('error-form');
+    const errors = [];
+    
+    // Проверка текстового поля
+    const nameInput = document.getElementById('error-name');
+    if (!nameInput.value.trim()) {
+        errors.push('Имя не заполнено');
+        nameInput.classList.add('form-error');
+    } else {
+        nameInput.classList.remove('form-error');
+    }
+    
+    // Проверка email
+    const emailInput = document.getElementById('error-email');
+    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+        errors.push('Некорректный email');
+        emailInput.classList.add('form-error');
+    } else {
+        emailInput.classList.remove('form-error');
+    }
+    
+    // Проверка чекбокса
+    const agreement = document.getElementById('error-agreement');
+    if (!agreement.checked) {
+        errors.push('Не принято соглашение');
+        agreement.classList.add('form-error');
+    } else {
+        agreement.classList.remove('form-error');
+    }
+    
+    // Вывод результатов
+    const output = document.getElementById('output9');
+    if (errors.length === 0) {
+        output.innerHTML = '<div class="status-success">✅ Форма заполнена корректно!</div>';
+    } else {
+        output.innerHTML = '<div class="status-error">❌ Обнаружены ошибки:</div>';
+        errors.forEach(error => {
+            output.innerHTML += `<div class="status-error">• ${error}</div>`;
+        });
+    }
+}</div>
+                <form id="error-form">
+                    <div class="form-group">
+                        <label for="error-name">Имя *:</label>
+                        <input type="text" id="error-name" placeholder="Введите ваше имя">
+                        
+                        <label for="error-email">Email *:</label>
+                        <input type="email" id="error-email" placeholder="example@mail.com">
+                        
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="error-agreement">
+                            <label for="error-agreement">Я согласен с условиями *</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="btn-group">
+                    <button onclick="checkFormErrors()">ПРОВЕРИТЬ ФОРМУ</button>
+                    <button onclick="fillCorrectData()">ЗАПОЛНИТЬ КОРРЕКТНО</button>
+                    <button onclick="fillIncorrectData()">ЗАПОЛНИТЬ С ОШИБКАМИ</button>
+                    <button class="secondary" onclick="clearFormErrors()">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Формы &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Работа с текстовыми полями
+        function runTask1() {
+            const textarea = document.getElementById('demo-textarea');
+            
+            // Получение значения
+            const currentValue = textarea.value;
+            
+            // Установка нового значения
+            textarea.value = 'Новое значение текстовой области';
+            
+            // Получение свойств
+            const rows = textarea.rows;
+            const cols = textarea.cols;
+            const placeholder = textarea.placeholder;
+            
+            // Изменение стилей
+            textarea.style.minHeight = '100px';
+            textarea.style.resize = 'both';
+            
+            let output = 'Работа с textarea:\n\n';
+            output += `Исходное значение: "${currentValue}"\n`;
+            output += `Новое значение: "${textarea.value}"\n`;
+            output += `Rows: ${rows}, Cols: ${cols}\n`;
+            output += `Placeholder: "${placeholder}"\n\n`;
+            output += 'Стили изменены: min-height, resize';
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function resetTask1() {
+            const textarea = document.getElementById('demo-textarea');
+            textarea.value = 'Исходный текст в textarea';
+            textarea.style.minHeight = '';
+            textarea.style.resize = '';
+            document.getElementById('output1').innerHTML = 'Textarea сброшена к исходному состоянию!';
+        }
+
+        function runTask2() {
+            const inputField = document.getElementById('lock-input');
+            const textareaField = document.getElementById('lock-textarea');
+            const selectField = document.getElementById('lock-select');
+            
+            // Блокировка элементов
+            inputField.disabled = true;
+            textareaField.disabled = true;
+            selectField.disabled = true;
+            
+            let output = 'Элементы заблокированы:\n\n';
+            output += `Input disabled: ${inputField.disabled}\n`;
+            output += `Textarea disabled: ${textareaField.disabled}\n`;
+            output += `Select disabled: ${selectField.disabled}\n\n`;
+            output += 'Использовано: element.disabled = true';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        function unlockTask2() {
+            const inputField = document.getElementById('lock-input');
+            const textareaField = document.getElementById('lock-textarea');
+            const selectField = document.getElementById('lock-select');
+            
+            // Разблокировка элементов
+            inputField.disabled = false;
+            textareaField.disabled = false;
+            selectField.disabled = false;
+            
+            document.getElementById('output2').innerHTML = 'Элементы разблокированы!';
+        }
+
+        // Раздел 2: Чекбоксы и радиокнопки
+        function runTask3() {
+            const singleCheckbox = document.getElementById('single-checkbox');
+            const isChecked = singleCheckbox.checked;
+            
+            const checkboxes = document.querySelectorAll('.group-checkbox');
+            const selectedValues = [];
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedValues.push(checkbox.value);
+                }
+            });
+            
+            let output = 'Состояние чекбоксов:\n\n';
+            output += `Одиночный чекбокс: ${isChecked ? 'отмечен' : 'не отмечен'}\n`;
+            output += `Выбранные в группе: ${selectedValues.join(', ') || 'нет'}\n`;
+            output += `Количество отмеченных: ${selectedValues.length}`;
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function checkAll() {
+            const checkboxes = document.querySelectorAll('.group-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            document.getElementById('output3').innerHTML = 'Все чекбоксы отмечены!';
+        }
+
+        function uncheckAll() {
+            const checkboxes = document.querySelectorAll('.group-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('output3').innerHTML = 'Все чекбоксы сняты!';
+        }
+
+        function runTask4() {
+            const checkbox = document.getElementById('bool-checkbox');
+            
+            // Установка boolean атрибутов
+            checkbox.checked = true;
+            checkbox.disabled = true;
+            checkbox.required = true;
+            
+            // Проверка boolean атрибутов
+            const isChecked = checkbox.checked;
+            const isDisabled = checkbox.disabled;
+            const isRequired = checkbox.required;
+            
+            let output = 'Boolean атрибуты установлены:\n\n';
+            output += `checked: ${isChecked}\n`;
+            output += `disabled: ${isDisabled}\n`;
+            output += `required: ${isRequired}\n\n`;
+            output += 'Boolean атрибуты не требуют значений:\n';
+            output += 'checked вместо checked="checked"';
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        function removeBoolAttrs() {
+            const checkbox = document.getElementById('bool-checkbox');
+            
+            // Удаление boolean атрибутов
+            checkbox.checked = false;
+            checkbox.disabled = false;
+            checkbox.required = false;
+            
+            document.getElementById('output4').innerHTML = 'Boolean атрибуты удалены!';
+        }
+
+        function runTask5() {
+            const radioButtons = document.querySelectorAll('input[name="radio-group"]');
+            
+            // Получение выбранной радиокнопки
+            let selectedValue = null;
+            radioButtons.forEach(radio => {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                }
+            });
+            
+            // Получение через FormData
+            const form = document.getElementById('radio-form');
+            const formData = new FormData(form);
+            const selected = formData.get('radio-group');
+            
+            let output = 'Работа с радиокнопками:\n\n';
+            output += `Выбранное значение: ${selectedValue}\n`;
+            output += `Через FormData: ${selected}\n\n`;
+            output += 'Особенности радиокнопок:\n';
+            output += '- Все кнопки имеют одинаковое name\n';
+            output += '- Только одна может быть выбрана\n';
+            output += '- Значение берется из атрибута value';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function setRadioTo1() {
+            const radioButtons = document.querySelectorAll('input[name="radio-group"]');
+            radioButtons.forEach(radio => {
+                radio.checked = (radio.value === 'option1');
+            });
+            document.getElementById('output5').innerHTML = 'Выбрана опция 1!';
+        }
+
+        function setRadioTo2() {
+            const radioButtons = document.querySelectorAll('input[name="radio-group"]');
+            radioButtons.forEach(radio => {
+                radio.checked = (radio.value === 'option2');
+            });
+            document.getElementById('output5').innerHTML = 'Выбрана опция 2!';
+        }
+
+        // Раздел 3: События форм
+        // Задача 6 уже имеет работающие обработчики в разметке
+
+        // Задача 7 уже имеет работающие обработчики в разметке
+
+        // Раздел 4: Фокусировка и практика
+        function focusInput() {
+            const input = document.getElementById('focus-input');
+            input.focus();
+            updateOutput8('focus', 'Фокус установлен на input');
+        }
+
+        function focusTextarea() {
+            const textarea = document.getElementById('focus-textarea');
+            textarea.focus();
+            updateOutput8('focus', 'Фокус установлен на textarea');
+        }
+
+        function blurAll() {
+            const activeElement = document.activeElement;
+            if (activeElement) {
+                activeElement.blur();
+                updateOutput8('focus', 'Фокус снят со всех элементов');
+            }
+        }
+
+        function updateOutput8(type, message) {
+            const output = document.getElementById('output8');
+            output.innerHTML += `[${type}] ${message}\n`;
+        }
+
+        // Обработчики для задачи 8
+        document.getElementById('focus-input').addEventListener('focus', function() {
+            this.classList.add('form-highlight');
+            updateOutput8('focus', 'Input получил фокус');
+        });
+
+        document.getElementById('focus-input').addEventListener('blur', function() {
+            this.classList.remove('form-highlight');
+            updateOutput8('focus', 'Input потерял фокус');
+        });
+
+        document.getElementById('focus-textarea').addEventListener('focus', function() {
+            this.classList.add('form-highlight');
+            updateOutput8('focus', 'Textarea получил фокус');
+        });
+
+        document.getElementById('focus-textarea').addEventListener('blur', function() {
+            this.classList.remove('form-highlight');
+            updateOutput8('focus', 'Textarea потерял фокус');
+        });
+
+        // Задача 9: Поиск ошибок
+        function checkFormErrors() {
+            const form = document.getElementById('error-form');
+            const errors = [];
+            
+            // Проверка текстового поля
+            const nameInput = document.getElementById('error-name');
+            if (!nameInput.value.trim()) {
+                errors.push('Имя не заполнено');
+                nameInput.classList.add('form-error');
+            } else {
+                nameInput.classList.remove('form-error');
+            }
+            
+            // Проверка email
+            const emailInput = document.getElementById('error-email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                errors.push('Некорректный email');
+                emailInput.classList.add('form-error');
+            } else {
+                emailInput.classList.remove('form-error');
+            }
+            
+            // Проверка чекбокса
+            const agreement = document.getElementById('error-agreement');
+            if (!agreement.checked) {
+                errors.push('Не принято соглашение');
+                agreement.classList.add('form-error');
+            } else {
+                agreement.classList.remove('form-error');
+            }
+            
+            // Вывод результатов
+            const output = document.getElementById('output9');
+            if (errors.length === 0) {
+                output.innerHTML = '<div class="status-success">✅ Форма заполнена корректно!</div>';
+            } else {
+                output.innerHTML = '<div class="status-error">❌ Обнаружены ошибки:</div>';
+                errors.forEach(error => {
+                    output.innerHTML += `<div class="status-error">• ${error}</div>`;
+                });
+            }
+        }
+
+        function fillCorrectData() {
+            document.getElementById('error-name').value = 'Иван Иванов';
+            document.getElementById('error-email').value = 'ivan@example.com';
+            document.getElementById('error-agreement').checked = true;
+            
+            // Убираем подсветку ошибок
+            document.querySelectorAll('.form-error').forEach(el => {
+                el.classList.remove('form-error');
+            });
+            
+            document.getElementById('output9').innerHTML = '<div class="status-success">✅ Данные заполнены корректно</div>';
+        }
+
+        function fillIncorrectData() {
+            document.getElementById('error-name').value = '';
+            document.getElementById('error-email').value = 'invalid-email';
+            document.getElementById('error-agreement').checked = false;
+            
+            document.getElementById('output9').innerHTML = '<div class="status-info">⚠ Данные заполнены с ошибками. Нажмите "ПРОВЕРИТЬ ФОРМУ"</div>';
+        }
+
+        function clearFormErrors() {
+            document.getElementById('error-name').value = '';
+            document.getElementById('error-email').value = '';
+            document.getElementById('error-agreement').checked = false;
+            
+            document.querySelectorAll('.form-error').forEach(el => {
+                el.classList.remove('form-error');
+            });
+            
+            document.getElementById('output9').innerHTML = 'Форма очищена!';
+        }
+
+        // Инициализация счетчика символов для задачи 7
+        document.getElementById('input-event').addEventListener('input', function() {
+            const charCount = this.value.length;
+            const counter = document.getElementById('char-counter');
+            if (counter) {
+                counter.textContent = `Символов: ${charCount}`;
+            }
+        });
+    </script>
+</body>
+</html>

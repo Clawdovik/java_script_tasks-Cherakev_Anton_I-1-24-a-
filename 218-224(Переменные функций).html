@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Пользовательские функции</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ПОЛЬЗОВАТЕЛЬСКИЕ ФУНКЦИИ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с пользовательскими функциями</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Создание и вызов функции -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon"⚙️</div>
+                <h2>СОЗДАНИЕ И ВЫЗОВ ФУНКЦИИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Простая функция приветствия</div>
+                <div class="code-block">// Объявление функции
+function sayHello(name) {
+    return `Привет, ${name}! Добро пожаловать в мир функций!`;
+}
+
+// Вызов функции
+console.log(sayHello("Алексей"));
+console.log(sayHello("Мария"));</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Функция с несколькими параметрами</div>
+                <div class="code-block">// Функция для вычисления площади прямоугольника
+function calculateRectangleArea(width, height) {
+    return width * height;
+}
+
+// Функция для форматированного вывода
+function showRectangleInfo(width, height) {
+    let area = calculateRectangleArea(width, height);
+    console.log(`Прямоугольник ${width}x${height} имеет площадь ${area}`);
+}
+
+// Вызовы функций
+showRectangleInfo(5, 10);
+showRectangleInfo(3, 7);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Инструкция return -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ИНСТРУКЦИЯ RETURN</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Возврат значений из функции</div>
+                <div class="code-block">// Функция проверки совершеннолетия
+function isAdult(age) {
+    return age >= 18;
+}
+
+// Функция определения времени суток
+function getTimeOfDay(hour) {
+    if (hour >= 6 && hour < 12) {
+        return "Утро";
+    } else if (hour >= 12 && hour < 18) {
+        return "День";
+    } else if (hour >= 18 && hour < 24) {
+        return "Вечер";
+    } else {
+        return "Ночь";
+    }
+}
+
+// Использование возвращаемых значений
+let age = 20;
+console.log(`Возраст ${age}: ${isAdult(age) ? "совершеннолетний" : "несовершеннолетний"}`);
+
+let currentHour = 14;
+console.log(`Сейчас ${getTimeOfDay(currentHour)}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Возврат нескольких значений через объект</div>
+                <div class="code-block">// Функция, возвращающая несколько значений
+function calculateCircle(radius) {
+    let diameter = 2 * radius;
+    let circumference = 2 * Math.PI * radius;
+    let area = Math.PI * radius * radius;
+    
+    return {
+        radius: radius,
+        diameter: diameter,
+        circumference: circumference.toFixed(2),
+        area: area.toFixed(2)
+    };
+}
+
+// Использование результата
+let circleInfo = calculateCircle(5);
+console.log("Информация о круге:");
+console.log(`Радиус: ${circleInfo.radius}`);
+console.log(`Диаметр: ${circleInfo.diameter}`);
+console.log(`Длина окружности: ${circleInfo.circumference}`);
+console.log(`Площадь: ${circleInfo.area}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Параметры функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎛️</div>
+                <h2>ПАРАМЕТРЫ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Параметры по умолчанию</div>
+                <div class="code-block">// Функция с параметрами по умолчанию
+function createUser(name, age = 18, role = "user") {
+    return {
+        name: name,
+        age: age,
+        role: role,
+        createdAt: new Date().toLocaleDateString()
+    };
+}
+
+// Вызовы с разным количеством параметров
+console.log("Пользователь 1:", createUser("Анна"));
+console.log("Пользователь 2:", createUser("Петр", 25));
+console.log("Пользователь 3:", createUser("Мария", 30, "admin"));</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Остаточные параметры (rest parameters)</div>
+                <div class="code-block">// Функция с остаточными параметрами
+function calculateAverage(name, ...scores) {
+    let total = scores.reduce((sum, score) => sum + score, 0);
+    let average = total / scores.length;
+    
+    return {
+        name: name,
+        scores: scores,
+        average: average.toFixed(2),
+        total: total
+    };
+}
+
+// Вызовы с разным количеством оценок
+console.log("Результат 1:", calculateAverage("Алексей", 4, 5, 3, 4));
+console.log("Результат 2:", calculateAverage("Мария", 5, 5, 5));
+console.log("Результат 3:", calculateAverage("Дмитрий", 3, 4, 3, 4, 5));</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Логические операторы без if в функциях -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔀</div>
+                <h2>ЛОГИЧЕСКИЕ ОПЕРАТОРЫ БЕЗ IF</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Использование логических операторов</div>
+                <div class="code-block">// Функция с логическими операторами вместо if
+function getDiscount(age, isStudent = false) {
+    // Логическое И (&&) - скидка для студентов
+    let studentDiscount = isStudent && 15;
+    
+    // Логическое ИЛИ (||) - скидка по возрасту или базовая
+    let ageDiscount = (age < 18 && 10) || (age >= 65 && 20) || 0;
+    
+    // Общая скидка (большая из двух)
+    let totalDiscount = studentDiscount || ageDiscount;
+    
+    return {
+        age: age,
+        isStudent: isStudent,
+        studentDiscount: studentDiscount || 0,
+        ageDiscount: ageDiscount,
+        totalDiscount: totalDiscount
+    };
+}
+
+// Примеры использования
+console.log("Скидка 1:", getDiscount(16, false));
+console.log("Скидка 2:", getDiscount(20, true));
+console.log("Скидка 3:", getDiscount(70, false));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Оператор нулевого слияния (??)</div>
+                <div class="code-block">// Функция с оператором нулевого слияния
+function getUserPreferences(theme, language, notifications) {
+    // ?? возвращает правый операнд, если левый null или undefined
+    return {
+        theme: theme ?? "dark",
+        language: language ?? "ru",
+        notifications: notifications ?? true,
+        lastLogin: new Date().toLocaleString()
+    };
+}
+
+// Примеры использования
+console.log("Настройки 1:", getUserPreferences("light", null, false));
+console.log("Настройки 2:", getUserPreferences(undefined, "en"));
+console.log("Настройки 3:", getUserPreferences("blue", "de", null));</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Комбинация вспомогательных функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧩</div>
+                <h2>КОМБИНАЦИЯ ВСПОМОГАТЕЛЬНЫХ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Композиция функций</div>
+                <div class="code-block">// Вспомогательные функции
+function formatPrice(price) {
+    return `$${price.toFixed(2)}`;
+}
+
+function applyDiscount(price, discountPercent) {
+    return price * (1 - discountPercent / 100);
+}
+
+function addTax(price, taxRate) {
+    return price * (1 + taxRate / 100);
+}
+
+// Основная функция, комбинирующая вспомогательные
+function calculateFinalPrice(originalPrice, discountPercent, taxRate) {
+    let discountedPrice = applyDiscount(originalPrice, discountPercent);
+    let finalPrice = addTax(discountedPrice, taxRate);
+    
+    return {
+        original: formatPrice(originalPrice),
+        discount: `${discountPercent}%`,
+        discounted: formatPrice(discountedPrice),
+        tax: `${taxRate}%`,
+        final: formatPrice(finalPrice)
+    };
+}
+
+// Пример использования
+console.log("Расчет цены:");
+console.log(calculateFinalPrice(100, 10, 20));</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Функции высшего порядка</div>
+                <div class="code-block">// Функция, возвращающая другую функцию
+function createMultiplier(multiplier) {
+    return function(number) {
+        return number * multiplier;
+    };
+}
+
+// Создание специализированных функций
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+const quadruple = createMultiplier(4);
+
+// Использование созданных функций
+console.log("Умножение чисел:");
+console.log(`double(5) = ${double(5)}`);
+console.log(`triple(5) = ${triple(5)}`);
+console.log(`quadruple(5) = ${quadruple(5)}`);
+
+// Функция-валидатор
+function createValidator(min, max) {
+    return function(value) {
+        return value >= min && value <= max;
+    };
+}
+
+// Создание валидаторов
+const isAdult = createValidator(18, 120);
+const isValidScore = createValidator(0, 100);
+
+console.log("Валидация:");
+console.log(`Возраст 25: ${isAdult(25) ? "валиден" : "невалиден"}`);
+console.log(`Оценка 85: ${isValidScore(85) ? "валидна" : "невалидна"}`);
+console.log(`Оценка 105: ${isValidScore(105) ? "валидна" : "невалидна"}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Пользовательские функции &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Создание и вызов функции
+        function runTask1() {
+            function sayHello(name) {
+                return `Привет, ${name}! Добро пожаловать в мир функций!`;
+            }
+            
+            let output = '';
+            output += sayHello("Алексей") + '\n';
+            output += sayHello("Мария") + '\n';
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            function calculateRectangleArea(width, height) {
+                return width * height;
+            }
+
+            function showRectangleInfo(width, height) {
+                let area = calculateRectangleArea(width, height);
+                return `Прямоугольник ${width}x${height} имеет площадь ${area}`;
+            }
+            
+            let output = '';
+            output += showRectangleInfo(5, 10) + '\n';
+            output += showRectangleInfo(3, 7) + '\n';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Инструкция return
+        function runTask3() {
+            function isAdult(age) {
+                return age >= 18;
+            }
+
+            function getTimeOfDay(hour) {
+                if (hour >= 6 && hour < 12) {
+                    return "Утро";
+                } else if (hour >= 12 && hour < 18) {
+                    return "День";
+                } else if (hour >= 18 && hour < 24) {
+                    return "Вечер";
+                } else {
+                    return "Ночь";
+                }
+            }
+            
+            let output = '';
+            let age = 20;
+            output += `Возраст ${age}: ${isAdult(age) ? "совершеннолетний" : "несовершеннолетний"}\n`;
+            
+            let currentHour = 14;
+            output += `Сейчас ${getTimeOfDay(currentHour)}\n`;
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            function calculateCircle(radius) {
+                let diameter = 2 * radius;
+                let circumference = 2 * Math.PI * radius;
+                let area = Math.PI * radius * radius;
+                
+                return {
+                    radius: radius,
+                    diameter: diameter,
+                    circumference: circumference.toFixed(2),
+                    area: area.toFixed(2)
+                };
+            }
+            
+            let circleInfo = calculateCircle(5);
+            let output = "Информация о круге:\n";
+            output += `Радиус: ${circleInfo.radius}\n`;
+            output += `Диаметр: ${circleInfo.diameter}\n`;
+            output += `Длина окружности: ${circleInfo.circumference}\n`;
+            output += `Площадь: ${circleInfo.area}\n`;
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Параметры функций
+        function runTask5() {
+            function createUser(name, age = 18, role = "user") {
+                return {
+                    name: name,
+                    age: age,
+                    role: role,
+                    createdAt: new Date().toLocaleDateString()
+                };
+            }
+            
+            let output = '';
+            output += "Пользователь 1: " + JSON.stringify(createUser("Анна")) + '\n\n';
+            output += "Пользователь 2: " + JSON.stringify(createUser("Петр", 25)) + '\n\n';
+            output += "Пользователь 3: " + JSON.stringify(createUser("Мария", 30, "admin")) + '\n';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            function calculateAverage(name, ...scores) {
+                let total = scores.reduce((sum, score) => sum + score, 0);
+                let average = total / scores.length;
+                
+                return {
+                    name: name,
+                    scores: scores,
+                    average: average.toFixed(2),
+                    total: total
+                };
+            }
+            
+            let output = '';
+            output += "Результат 1: " + JSON.stringify(calculateAverage("Алексей", 4, 5, 3, 4)) + '\n\n';
+            output += "Результат 2: " + JSON.stringify(calculateAverage("Мария", 5, 5, 5)) + '\n\n';
+            output += "Результат 3: " + JSON.stringify(calculateAverage("Дмитрий", 3, 4, 3, 4, 5)) + '\n';
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Логические операторы без if в функциях
+        function runTask7() {
+            function getDiscount(age, isStudent = false) {
+                let studentDiscount = isStudent && 15;
+                let ageDiscount = (age < 18 && 10) || (age >= 65 && 20) || 0;
+                let totalDiscount = studentDiscount || ageDiscount;
+                
+                return {
+                    age: age,
+                    isStudent: isStudent,
+                    studentDiscount: studentDiscount || 0,
+                    ageDiscount: ageDiscount,
+                    totalDiscount: totalDiscount
+                };
+            }
+            
+            let output = '';
+            output += "Скидка 1: " + JSON.stringify(getDiscount(16, false)) + '\n\n';
+            output += "Скидка 2: " + JSON.stringify(getDiscount(20, true)) + '\n\n';
+            output += "Скидка 3: " + JSON.stringify(getDiscount(70, false)) + '\n';
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            function getUserPreferences(theme, language, notifications) {
+                return {
+                    theme: theme ?? "dark",
+                    language: language ?? "ru",
+                    notifications: notifications ?? true,
+                    lastLogin: new Date().toLocaleString()
+                };
+            }
+            
+            let output = '';
+            output += "Настройки 1: " + JSON.stringify(getUserPreferences("light", null, false)) + '\n\n';
+            output += "Настройки 2: " + JSON.stringify(getUserPreferences(undefined, "en")) + '\n\n';
+            output += "Настройки 3: " + JSON.stringify(getUserPreferences("blue", "de", null)) + '\n';
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Комбинация вспомогательных функций
+        function runTask9() {
+            function formatPrice(price) {
+                return `$${price.toFixed(2)}`;
+            }
+
+            function applyDiscount(price, discountPercent) {
+                return price * (1 - discountPercent / 100);
+            }
+
+            function addTax(price, taxRate) {
+                return price * (1 + taxRate / 100);
+            }
+
+            function calculateFinalPrice(originalPrice, discountPercent, taxRate) {
+                let discountedPrice = applyDiscount(originalPrice, discountPercent);
+                let finalPrice = addTax(discountedPrice, taxRate);
+                
+                return {
+                    original: formatPrice(originalPrice),
+                    discount: `${discountPercent}%`,
+                    discounted: formatPrice(discountedPrice),
+                    tax: `${taxRate}%`,
+                    final: formatPrice(finalPrice)
+                };
+            }
+            
+            let output = "Расчет цены:\n";
+            output += JSON.stringify(calculateFinalPrice(100, 10, 20), null, 2);
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            function createMultiplier(multiplier) {
+                return function(number) {
+                    return number * multiplier;
+                };
+            }
+
+            const double = createMultiplier(2);
+            const triple = createMultiplier(3);
+            const quadruple = createMultiplier(4);
+            
+            let output = "Умножение чисел:\n";
+            output += `double(5) = ${double(5)}\n`;
+            output += `triple(5) = ${triple(5)}\n`;
+            output += `quadruple(5) = ${quadruple(5)}\n\n`;
+
+            function createValidator(min, max) {
+                return function(value) {
+                    return value >= min && value <= max;
+                };
+            }
+
+            const isAdult = createValidator(18, 120);
+            const isValidScore = createValidator(0, 100);
+            
+            output += "Валидация:\n";
+            output += `Возраст 25: ${isAdult(25) ? "валиден" : "невалиден"}\n`;
+            output += `Оценка 85: ${isValidScore(85) ? "валидна" : "невалидна"}\n`;
+            output += `Оценка 105: ${isValidScore(105) ? "валидна" : "невалидна"}\n`;
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

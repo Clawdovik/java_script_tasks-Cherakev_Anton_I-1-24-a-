@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON PUNK JAVASCRIPT - ТАЙМЕРЫ</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        button.danger {
+            background: linear-gradient(45deg, #ff3300, #ff6600);
+            box-shadow: 0 0 10px #ff3300;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Демонстрационные области */
+        .demo-area {
+            background-color: #0a0a12;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .demo-box {
+            border: 1px solid #ff00ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: rgba(26, 26, 42, 0.7);
+        }
+
+        .demo-box h3 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            text-align: center;
+            margin: 20px 0;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            font-weight: bold;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .timer-item {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #00ccff;
+            border-radius: 5px;
+            margin: 10px;
+            background: rgba(0, 204, 255, 0.1);
+        }
+
+        .timer-value {
+            font-size: 1.2rem;
+            color: #ff00ff;
+            margin: 5px 0;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .timer-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .timer-display {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON JAVASCRIPT - ТАЙМЕРЫ И ИНТЕРВАЛЫ</h1>
+        <p class="subtitle">Tempus fugit - Работа с setTimeout, setInterval и управление временем</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+            <p>Таймеры позволяют откладывать выполнение кода или запускать его периодически.</p>
+        </div>
+
+        <!-- Раздел 1: Основы работы с таймерами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⏱️</div>
+                <h2>ОСНОВЫ РАБОТЫ С ТАЙМЕРАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Запуск таймера</div>
+                <div class="code-block">// setTimeout - выполнение функции через указанное время
+// setInterval - периодическое выполнение функции
+
+// Простой таймер
+console.log('Начало работы');
+
+setTimeout(function() {
+    console.log('Это сообщение появится через 2 секунды');
+}, 2000);
+
+// Таймер с передачей параметров
+function greet(name, message) {
+    console.log(`Привет, ${name}! ${message}`);
+}
+
+setTimeout(greet, 3000, 'Анна', 'Как твои дела?');
+
+// Интервал - повторение каждую секунду
+let counter = 0;
+const intervalId = setInterval(function() {
+    counter++;
+    console.log(`Прошло ${counter} секунд`);
+    
+    if (counter >= 5) {
+        clearInterval(intervalId);
+        console.log('Интервал остановлен');
+    }
+}, 1000);
+
+console.log('Конец синхронного кода');</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Демонстрация таймеров</h3>
+                        <div class="timer-controls">
+                            <button onclick="startSingleTimer()">Запуск setTimeout</button>
+                            <button onclick="startIntervalTimer()">Запуск setInterval</button>
+                            <button class="danger" onclick="stopAllTimers()">Остановить все</button>
+                        </div>
+                        <div class="output" id="timerOutput1"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Счетчик на таймере</div>
+                <div class="code-block">// Создание счетчика с использованием setInterval
+
+class Timer {
+    constructor() {
+        this.seconds = 0;
+        this.minutes = 0;
+        this.hours = 0;
+        this.intervalId = null;
+        this.isRunning = false;
+    }
+    
+    start() {
+        if (this.isRunning) return;
+        
+        this.isRunning = true;
+        this.intervalId = setInterval(() => {
+            this.seconds++;
+            
+            if (this.seconds >= 60) {
+                this.seconds = 0;
+                this.minutes++;
+            }
+            
+            if (this.minutes >= 60) {
+                this.minutes = 0;
+                this.hours++;
+            }
+            
+            this.updateDisplay();
+        }, 1000);
+    }
+    
+    stop() {
+        this.isRunning = false;
+        clearInterval(this.intervalId);
+    }
+    
+    reset() {
+        this.stop();
+        this.seconds = 0;
+        this.minutes = 0;
+        this.hours = 0;
+        this.updateDisplay();
+    }
+    
+    updateDisplay() {
+        const timeString = `${this.hours.toString().padStart(2, '0')}:${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`;
+        console.log(`Текущее время: ${timeString}`);
+        return timeString;
+    }
+}
+
+// Использование таймера
+const myTimer = new Timer();
+myTimer.start();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Счетчик времени</h3>
+                        <div class="timer-display" id="timerDisplay">00:00:00</div>
+                        <div class="timer-controls">
+                            <button onclick="startCounter()">СТАРТ</button>
+                            <button class="secondary" onclick="pauseCounter()">ПАУЗА</button>
+                            <button class="danger" onclick="resetCounter()">СБРОС</button>
+                        </div>
+                        <div class="output" id="counterOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Остановка таймера</div>
+                <div class="code-block">// clearTimeout и clearInterval - остановка таймеров
+
+// Пример с clearTimeout
+console.log('Запуск отложенной задачи...');
+
+const timeoutId = setTimeout(() => {
+    console.log('Эта задача никогда не выполнится');
+}, 5000);
+
+// Отмена таймера через 2 секунды
+setTimeout(() => {
+    clearTimeout(timeoutId);
+    console.log('Таймер отменен!');
+}, 2000);
+
+// Пример с clearInterval
+let count = 0;
+const intervalId = setInterval(() => {
+    count++;
+    console.log(`Счетчик: ${count}`);
+    
+    if (count === 3) {
+        console.log('Останавливаем интервал...');
+        clearInterval(intervalId);
+    }
+}, 1000);
+
+// Управление несколькими таймерами
+const timers = [];
+
+function startRandomTimer() {
+    const id = setTimeout(() => {
+        console.log(`Таймер ${id} сработал!`);
+    }, Math.random() * 5000 + 1000);
+    
+    timers.push(id);
+    console.log(`Запущен таймер ${id}`);
+}
+
+function stopAllTimers() {
+    timers.forEach(id => clearTimeout(id));
+    console.log(`Остановлено ${timers.length} таймеров`);
+    timers.length = 0;
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Управление таймерами</h3>
+                        <div class="timer-controls">
+                            <button onclick="addRandomTimer()">Добавить случайный таймер</button>
+                            <button class="danger" onclick="clearRandomTimers()">Очистить все таймеры</button>
+                        </div>
+                        <div id="randomTimersInfo" style="margin-top: 10px; padding: 10px; border: 1px solid #ffcc00;">
+                            <strong>Активные таймеры:</strong> <span id="activeTimersCount">0</span>
+                        </div>
+                        <div class="output" id="timerControlOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Практическое применение -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ПРАКТИЧЕСКОЕ ПРИМЕНЕНИЕ ТАЙМЕРОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Кнопки для запуска</div>
+                <div class="code-block">// Создание интерактивных таймеров с кнопками
+
+class ButtonTimer {
+    constructor() {
+        this.timerId = null;
+        this.isActive = false;
+        this.counter = 0;
+    }
+    
+    startTimer(duration, callback) {
+        if (this.isActive) {
+            console.log('Таймер уже активен!');
+            return;
+        }
+        
+        this.isActive = true;
+        this.counter = 0;
+        
+        console.log(`Таймер запущен на ${duration}ms`);
+        
+        this.timerId = setInterval(() => {
+            this.counter += 100;
+            const progress = (this.counter / duration) * 100;
+            
+            console.log(`Прогресс: ${progress.toFixed(1)}%`);
+            
+            if (this.counter >= duration) {
+                this.stopTimer();
+                if (callback) callback();
+            }
+        }, 100);
+    }
+    
+    stopTimer() {
+        if (this.timerId) {
+            clearInterval(this.timerId);
+            this.isActive = false;
+            console.log('Таймер остановлен');
+        }
+    }
+    
+    getStatus() {
+        return this.isActive ? 'Активен' : 'Неактивен';
+    }
+}
+
+// Использование
+const buttonTimer = new ButtonTimer();
+
+// Запуск таймера на 3 секунды
+buttonTimer.startTimer(3000, () => {
+    console.log('Таймер завершен!');
+});</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Интерактивные таймеры</h3>
+                        <div class="timer-controls">
+                            <button onclick="startProgressTimer(2000)">Таймер 2с</button>
+                            <button onclick="startProgressTimer(5000)">Таймер 5с</button>
+                            <button class="danger" onclick="stopProgressTimer()">СТОП</button>
+                        </div>
+                        <div style="margin: 15px 0;">
+                            <div style="background: #1a1a2a; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div id="progressBar" style="background: linear-gradient(90deg, #ff00ff, #00ccff); height: 100%; width: 0%; transition: width 0.1s;"></div>
+                            </div>
+                            <div style="text-align: center; margin-top: 5px; color: #ffcc00;" id="progressText">0%</div>
+                        </div>
+                        <div class="output" id="buttonTimerOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Многократный запуск</div>
+                <div class="code-block">// Управление множественными таймерами
+
+class MultiTimer {
+    constructor() {
+        this.timers = new Map();
+        this.nextId = 1;
+    }
+    
+    createTimer(name, duration, callback) {
+        const id = this.nextId++;
+        
+        const timerInfo = {
+            id,
+            name,
+            startTime: Date.now(),
+            duration,
+            callback,
+            isActive: true
+        };
+        
+        const timeoutId = setTimeout(() => {
+            timerInfo.isActive = false;
+            this.timers.delete(id);
+            if (callback) callback();
+            console.log(`Таймер "${name}" завершен`);
+        }, duration);
+        
+        timerInfo.timeoutId = timeoutId;
+        this.timers.set(id, timerInfo);
+        
+        console.log(`Создан таймер "${name}" (ID: ${id}) на ${duration}ms`);
+        return id;
+    }
+    
+    cancelTimer(id) {
+        const timer = this.timers.get(id);
+        if (timer) {
+            clearTimeout(timer.timeoutId);
+            timer.isActive = false;
+            this.timers.delete(id);
+            console.log(`Таймер "${timer.name}" отменен`);
+            return true;
+        }
+        return false;
+    }
+    
+    getActiveTimers() {
+        return Array.from(this.timers.values()).filter(t => t.isActive);
+    }
+    
+    cancelAll() {
+        const count = this.timers.size;
+        this.timers.forEach(timer => {
+            clearTimeout(timer.timeoutId);
+        });
+        this.timers.clear();
+        console.log(`Отменено ${count} таймеров`);
+    }
+}
+
+// Демонстрация
+const multiTimer = new MultiTimer();
+
+// Создаем несколько таймеров
+multiTimer.createTimer('Быстрый', 2000, () => console.log('Быстрый таймер!'));
+multiTimer.createTimer('Медленный', 5000, () => console.log('Медленный таймер!'));</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Множественные таймеры</h3>
+                        <div class="timer-controls">
+                            <button onclick="addMultiTimer(1000)">+1с Таймер</button>
+                            <button onclick="addMultiTimer(3000)">+3с Таймер</button>
+                            <button class="danger" onclick="clearMultiTimers()">Очистить все</button>
+                        </div>
+                        <div id="multiTimersList" style="margin-top: 10px; padding: 10px; border: 1px solid #00ccff; min-height: 100px;">
+                            <strong>Активные таймеры:</strong>
+                            <div id="activeTimersList"></div>
+                        </div>
+                        <div class="output" id="multiTimerOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Кнопки для остановки</div>
+                <div class="code-block">// Создание индивидуальных контроллеров для таймеров
+
+class ControlledTimer {
+    constructor() {
+        this.timers = {};
+        this.counter = 0;
+    }
+    
+    start(name, duration, onComplete, onUpdate) {
+        if (this.timers[name]) {
+            console.log(`Таймер "${name}" уже запущен`);
+            return false;
+        }
+        
+        let elapsed = 0;
+        const startTime = Date.now();
+        
+        this.timers[name] = {
+            intervalId: setInterval(() => {
+                elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / duration) * 100, 100);
+                
+                if (onUpdate) {
+                    onUpdate(progress, elapsed);
+                }
+                
+                if (elapsed >= duration) {
+                    this.stop(name);
+                    if (onComplete) onComplete();
+                }
+            }, 50),
+            startTime,
+            duration,
+            isActive: true
+        };
+        
+        console.log(`Таймер "${name}" запущен`);
+        return true;
+    }
+    
+    stop(name) {
+        const timer = this.timers[name];
+        if (timer) {
+            clearInterval(timer.intervalId);
+            timer.isActive = false;
+            delete this.timers[name];
+            console.log(`Таймер "${name}" остановлен`);
+            return true;
+        }
+        return false;
+    }
+    
+    stopAll() {
+        Object.keys(this.timers).forEach(name => {
+            this.stop(name);
+        });
+        console.log('Все таймеры остановлены');
+    }
+    
+    getStatus(name) {
+        const timer = this.timers[name];
+        return timer ? 'Активен' : 'Неактивен';
+    }
+    
+    listActive() {
+        return Object.keys(this.timers);
+    }
+}
+
+// Использование
+const controlledTimer = new ControlledTimer();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Контролируемые таймеры</h3>
+                        <div class="timer-controls">
+                            <button onclick="startControlledTimer('red', 3000, '#ff0066')">Красный (3с)</button>
+                            <button onclick="startControlledTimer('green', 4000, '#00ff66')">Зеленый (4с)</button>
+                            <button onclick="startControlledTimer('blue', 5000, '#0066ff')">Синий (5с)</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin: 15px 0;">
+                            <div id="timerRed" style="flex: 1; height: 20px; background: #1a1a2a; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; width: 0%; transition: width 0.1s;"></div>
+                            </div>
+                            <div id="timerGreen" style="flex: 1; height: 20px; background: #1a1a2a; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; width: 0%; transition: width 0.1s;"></div>
+                            </div>
+                            <div id="timerBlue" style="flex: 1; height: 20px; background: #1a1a2a; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; width: 0%; transition: width 0.1s;"></div>
+                            </div>
+                        </div>
+                        <div class="timer-controls">
+                            <button class="danger" onclick="stopControlledTimer('red')">Стоп Красный</button>
+                            <button class="danger" onclick="stopControlledTimer('green')">Стоп Зеленый</button>
+                            <button class="danger" onclick="stopControlledTimer('blue')">Стоп Синий</button>
+                            <button class="secondary" onclick="stopAllControlledTimers()">Стоп Все</button>
+                        </div>
+                        <div class="output" id="controlledTimerOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Таймеры и DOM -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ТАЙМЕРЫ И РАБОТА С DOM</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Работа с DOM</div>
+                <div class="code-block">// Взаимодействие таймеров с DOM элементами
+
+class DomTimer {
+    constructor(displayElement, progressElement) {
+        this.displayElement = displayElement;
+        this.progressElement = progressElement;
+        this.seconds = 0;
+        this.intervalId = null;
+    }
+    
+    start() {
+        if (this.intervalId) return;
+        
+        this.seconds = 0;
+        this.intervalId = setInterval(() => {
+            this.seconds++;
+            this.updateDisplay();
+        }, 1000);
+        
+        this.updateDisplay();
+    }
+    
+    stop() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+    
+    reset() {
+        this.stop();
+        this.seconds = 0;
+        this.updateDisplay();
+    }
+    
+    updateDisplay() {
+        if (this.displayElement) {
+            const minutes = Math.floor(this.seconds / 60);
+            const secs = this.seconds % 60;
+            this.displayElement.textContent = 
+                `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        if (this.progressElement) {
+            const progress = (this.seconds % 60) / 60 * 100;
+            this.progressElement.style.width = `${progress}%`;
+        }
+    }
+}
+
+// Анимация элементов с таймерами
+function animateElement(element, duration) {
+    const startTime = Date.now();
+    
+    function update() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Анимация прозрачности
+        element.style.opacity = progress;
+        
+        // Анимация масштаба
+        const scale = 0.5 + progress * 0.5;
+        element.style.transform = `scale(${scale})`;
+        
+        // Анимация цвета
+        const hue = progress * 360;
+        element.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    update();
+}
+
+// Создание динамических элементов по таймеру
+function createTimedElements(container, count, interval) {
+    let created = 0;
+    
+    const timerId = setInterval(() => {
+        if (created >= count) {
+            clearInterval(timerId);
+            return;
+        }
+        
+        const element = document.createElement('div');
+        element.className = 'timed-element';
+        element.textContent = `Элемент ${created + 1}`;
+        element.style.cssText = `
+            padding: 10px;
+            margin: 5px;
+            background: #ff00ff;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+        `;
+        
+        container.appendChild(element);
+        created++;
+        
+    }, interval);
+}</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>DOM Таймеры и анимации</h3>
+                        <div class="timer-display" id="domTimerDisplay">00:00</div>
+                        <div style="background: #1a1a2a; height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden;">
+                            <div id="domProgressBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ff00ff, #00ccff); transition: width 1s;"></div>
+                        </div>
+                        <div class="timer-controls">
+                            <button onclick="startDomTimer()">Старт DOM Таймер</button>
+                            <button class="secondary" onclick="stopDomTimer()">Стоп</button>
+                            <button onclick="startDomAnimation()">Запустить анимацию</button>
+                        </div>
+                        <div id="animationBox" style="width: 100px; height: 100px; background: #ff00ff; margin: 15px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            Анимация
+                        </div>
+                        <button onclick="createDynamicElements()">Создать элементы</button>
+                        <div id="dynamicContainer" style="margin-top: 10px; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 5px;"></div>
+                        <div class="output" id="domTimerOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Таймеры и потеря контекста</div>
+                <div class="code-block">// Проблема потери контекста в таймерах
+
+class ProblematicTimer {
+    constructor() {
+        this.value = 100;
+        this.name = "Таймер";
+    }
+    
+    // Проблема: потеря контекста
+    startProblematic() {
+        setInterval(function() {
+            // this здесь - не экземпляр класса!
+            console.log('Проблемный таймер:', this.value); // undefined
+        }, 1000);
+    }
+    
+    // Решение 1: стрелочная функция
+    startSolution1() {
+        setInterval(() => {
+            // Стрелочная функция сохраняет контекст
+            console.log('Решение 1:', this.value); // 100
+        }, 1000);
+    }
+    
+    // Решение 2: bind
+    startSolution2() {
+        setInterval(function() {
+            console.log('Решение 2:', this.value); // 100
+        }.bind(this), 1000);
+    }
+    
+    // Решение 3: сохранение this
+    startSolution3() {
+        const self = this;
+        setInterval(function() {
+            console.log('Решение 3:', self.value); // 100
+        }, 1000);
+    }
+}
+
+// Демонстрация проблемы
+const problematic = new ProblematicTimer();
+
+// Вызов проблемного метода
+// problematic.startProblematic(); // Будет ошибка
+
+// Вызов решений
+problematic.startSolution1();
+problematic.startSolution2();
+problematic.startSolution3();
+
+// Проблема в обработчиках событий
+const buttonHandler = {
+    clicks: 0,
+    setup() {
+        // Проблема: this потерян
+        document.getElementById('problemButton').addEventListener('click', this.handleClick);
+        
+        // Решение: bind
+        document.getElementById('solutionButton').addEventListener('click', this.handleClick.bind(this));
+    },
+    handleClick() {
+        this.clicks++;
+        console.log(`Кликов: ${this.clicks}`);
+    }
+};</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Проблема контекста в таймерах</h3>
+                        <div class="timer-controls">
+                            <button id="problemButton" onclick="demonstrateContextProblem()">Проблемный таймер</button>
+                            <button id="solutionButton" onclick="demonstrateContextSolution()">Решение с bind</button>
+                            <button onclick="demonstrateArrowSolution()">Решение со стрелочной функцией</button>
+                        </div>
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(255,0,0,0.1); border: 1px solid #ff0000;">
+                            <strong>Проблема:</strong> <span id="contextProblemResult">-</span>
+                        </div>
+                        <div style="margin: 15px 0; padding: 10px; background: rgba(0,255,0,0.1); border: 1px solid #00ff00;">
+                            <strong>Решение:</strong> <span id="contextSolutionResult">-</span>
+                        </div>
+                        <div class="output" id="contextTimerOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Практика на таймеры и DOM</div>
+                <div class="code-block">// Комплексный пример: таймер обратного отсчета
+
+class CountdownTimer {
+    constructor(displayElement, duration) {
+        this.displayElement = displayElement;
+        this.duration = duration; // в секундах
+        this.remaining = duration;
+        this.intervalId = null;
+        this.isRunning = false;
+    }
+    
+    start() {
+        if (this.isRunning) return;
+        
+        this.isRunning = true;
+        this.intervalId = setInterval(() => {
+            this.remaining--;
+            this.updateDisplay();
+            
+            if (this.remaining <= 0) {
+                this.complete();
+            }
+        }, 1000);
+        
+        this.updateDisplay();
+    }
+    
+    pause() {
+        this.isRunning = false;
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+    
+    reset() {
+        this.pause();
+        this.remaining = this.duration;
+        this.updateDisplay();
+    }
+    
+    updateDisplay() {
+        if (!this.displayElement) return;
+        
+        const minutes = Math.floor(this.remaining / 60);
+        const seconds = this.remaining % 60;
+        this.displayElement.textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Визуальная обратная связь
+        const progress = (this.remaining / this.duration) * 100;
+        this.displayElement.style.color = progress > 50 ? '#00ffcc' : 
+                                         progress > 20 ? '#ffcc00' : '#ff0066';
+        
+        this.displayElement.style.textShadow = progress > 20 ? 
+            '0 0 10px currentColor' : '0 0 20px currentColor';
+    }
+    
+    complete() {
+        this.pause();
+        this.displayElement.style.animation = 'glow 0.5s infinite';
+        
+        // Создаем эффект завершения
+        const completionEvent = new CustomEvent('countdownComplete', {
+            detail: { duration: this.duration }
+        });
+        this.displayElement.dispatchEvent(completionEvent);
+        
+        console.log('Обратный отсчет завершен!');
+    }
+}
+
+// Создание и управление несколькими таймерами
+class TimerManager {
+    constructor() {
+        this.timers = new Map();
+    }
+    
+    createTimer(containerId, duration) {
+        const container = document.getElementById(containerId);
+        if (!container) return null;
+        
+        const timerId = 'timer_' + Date.now();
+        const timerElement = document.createElement('div');
+        timerElement.className = 'countdown-timer';
+        timerElement.innerHTML = `
+            <div class="timer-display" id="${timerId}_display">${this.formatTime(duration)}</div>
+            <div class="timer-controls">
+                <button onclick="timerManager.start('${timerId}')">Старт</button>
+                <button onclick="timerManager.pause('${timerId}')">Пауза</button>
+                <button onclick="timerManager.reset('${timerId}')">Сброс</button>
+                <button onclick="timerManager.remove('${timerId}')">Удалить</button>
+            </div>
+        `;
+        
+        container.appendChild(timerElement);
+        
+        const timer = new CountdownTimer(document.getElementById(timerId + '_display'), duration);
+        this.timers.set(timerId, timer);
+        
+        return timerId;
+    }
+    
+    start(timerId) {
+        const timer = this.timers.get(timerId);
+        if (timer) timer.start();
+    }
+    
+    pause(timerId) {
+        const timer = this.timers.get(timerId);
+        if (timer) timer.pause();
+    }
+    
+    reset(timerId) {
+        const timer = this.timers.get(timerId);
+        if (timer) timer.reset();
+    }
+    
+    remove(timerId) {
+        const timer = this.timers.get(timerId);
+        if (timer) {
+            timer.pause();
+            this.timers.delete(timerId);
+            const element = document.getElementById(timerId + '_display').parentElement;
+            if (element) element.remove();
+        }
+    }
+    
+    formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+}
+
+// Глобальный экземпляр менеджера таймеров
+const timerManager = new TimerManager();</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Практика: Таймеры обратного отсчета</h3>
+                        <div class="timer-controls">
+                            <button onclick="addCountdownTimer(30)">+30с Таймер</button>
+                            <button onclick="addCountdownTimer(60)">+1м Таймер</button>
+                            <button onclick="addCountdownTimer(300)">+5м Таймер</button>
+                            <button class="danger" onclick="clearAllCountdownTimers()">Очистить все</button>
+                        </div>
+                        <div id="countdownContainer" style="margin-top: 15px; display: grid; gap: 10px;"></div>
+                        <div class="output" id="countdownOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Задержка перед выполнением</div>
+                <div class="code-block">// Использование setTimeout для задержки выполнения
+
+// Дебаунсинг - устранение дребезга
+function debounce(func, delay) {
+    let timeoutId;
+    
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+// Троттлинг - ограничение частоты выполнения
+function throttle(func, delay) {
+    let lastCall = 0;
+    
+    return function(...args) {
+        const now = Date.now();
+        if (now - lastCall >= delay) {
+            lastCall = now;
+            func.apply(this, args);
+        }
+    };
+}
+
+// Задержка перед выполнением тяжелых операций
+function delayedOperation(data, callback) {
+    console.log('Начало тяжелой операции...');
+    
+    // Имитация тяжелой операции
+    setTimeout(() => {
+        const result = data.map(item => item * 2);
+        console.log('Тяжелая операция завершена');
+        if (callback) callback(result);
+    }, 2000);
+}
+
+// Последовательное выполнение с задержками
+function sequentialOperations(operations) {
+    let index = 0;
+    
+    function executeNext() {
+        if (index >= operations.length) {
+            console.log('Все операции завершены');
+            return;
+        }
+        
+        const operation = operations[index];
+        console.log(`Выполнение операции ${index + 1}: ${operation.name}`);
+        
+        setTimeout(() => {
+            operation.execute();
+            index++;
+            executeNext();
+        }, operation.delay || 1000);
+    }
+    
+    executeNext();
+}
+
+// Автосохранение с дебаунсингом
+class AutoSaver {
+    constructor(saveFunction, delay = 1000) {
+        this.saveFunction = saveFunction;
+        this.delay = delay;
+        this.timeoutId = null;
+        this.isSaving = false;
+    }
+    
+    triggerSave(data) {
+        if (this.isSaving) return;
+        
+        clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => {
+            this.isSaving = true;
+            console.log('Автосохранение...');
+            
+            this.saveFunction(data).then(() => {
+                this.isSaving = false;
+                console.log('Автосохранение завершено');
+            });
+        }, this.delay);
+    }
+}
+
+// Пример использования
+const searchDebounced = debounce(function(query) {
+    console.log(`Поиск: ${query}`);
+}, 500);
+
+const scrollThrottled = throttle(function(position) {
+    console.log(`Прокрутка: ${position}px`);
+}, 100);</div>
+                <div class="demo-area">
+                    <div class="demo-box">
+                        <h3>Задержки и оптимизация</h3>
+                        <div class="timer-controls">
+                            <button onclick="demonstrateDebounce()">Тест Дебаунс</button>
+                            <button onclick="demonstrateThrottle()">Тест Троттлинг</button>
+                            <button onclick="startSequentialOperations()">Последовательные операции</button>
+                            <button onclick="testAutoSave()">Тест Автосохранения</button>
+                        </div>
+                        <div style="margin: 15px 0;">
+                            <input type="text" id="searchInput" placeholder="Введите для теста дебаунса..." style="width: 100%; padding: 10px; background: #1a1a2a; border: 1px solid #00ccff; color: #00ffcc; border-radius: 5px;">
+                        </div>
+                        <div style="height: 200px; overflow-y: auto; border: 1px solid #ff00ff; padding: 10px; background: #1a1a2a;" id="scrollContainer">
+                            <div style="height: 800px; padding: 10px;">
+                Прокрутите для теста троттлинга...<br><br>
+                Содержимое для прокрутки<br>'.repeat(50)
+                            </div>
+                        </div>
+                        <div class="output" id="delayOutput"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Таймеры и интервалы © 2025 | Создано в стиле ретро-футуризма</p>
+        <p>Все методы проверены в современных браузерах</p>
+    </footer>
+
+    <script>
+        // Глобальные переменные для демонстраций
+        let activeTimers = [];
+        let counterInterval = null;
+        let counterSeconds = 0;
+        let progressTimer = null;
+        let multiTimers = [];
+        let controlledTimers = {};
+        let domTimer = null;
+        let countdownTimers = new Map();
+
+        // Функции для выполнения задач
+        
+        function runTask1() {
+            let output = document.getElementById('output1');
+            let result = '=== ОСНОВЫ ТАЙМЕРОВ ===\n\n';
+            
+            result += 'setTimeout - выполнение через указанное время\n';
+            result += 'setInterval - периодическое выполнение\n\n';
+            
+            result += 'Примеры:\n';
+            result += 'setTimeout(() => console.log("Привет"), 1000);\n';
+            result += 'setInterval(() => console.log("Тик"), 1000);\n\n';
+            
+            result += 'Очистка таймеров:\n';
+            result += 'clearTimeout(timerId);\n';
+            result += 'clearInterval(intervalId);\n\n';
+            
+            result += 'Таймеры работают асинхронно и не блокируют основной поток\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask2() {
+            let output = document.getElementById('output2');
+            let result = '=== СОЗДАНИЕ СЧЕТЧИКА ===\n\n';
+            
+            result += 'Класс Timer для управления временем:\n\n';
+            
+            result += 'class Timer {\n';
+            result += '  constructor() {\n';
+            result += '    this.seconds = 0;\n';
+            result += '    this.intervalId = null;\n';
+            result += '  }\n\n';
+            result += '  start() {\n';
+            result += '    this.intervalId = setInterval(() => {\n';
+            result += '      this.seconds++;\n';
+            result += '      this.updateDisplay();\n';
+            result += '    }, 1000);\n';
+            result += '  }\n\n';
+            result += '  stop() {\n';
+            result += '    clearInterval(this.intervalId);\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Использование:\n';
+            result += 'const timer = new Timer();\n';
+            result += 'timer.start();\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask3() {
+            let output = document.getElementById('output3');
+            let result = '=== УПРАВЛЕНИЕ ТАЙМЕРАМИ ===\n\n';
+            
+            result += 'Остановка таймеров:\n\n';
+            
+            result += '// setTimeout\n';
+            result += 'const timeoutId = setTimeout(() => {}, 5000);\n';
+            result += 'clearTimeout(timeoutId);\n\n';
+            
+            result += '// setInterval\n';
+            result += 'const intervalId = setInterval(() => {}, 1000);\n';
+            result += 'clearInterval(intervalId);\n\n';
+            
+            result += 'Управление несколькими таймерами:\n\n';
+            result += 'const timers = [];\n\n';
+            result += '// Добавление таймера\n';
+            result += 'timers.push(setTimeout(() => {}, 1000));\n\n';
+            result += '// Очистка всех\n';
+            result += 'timers.forEach(id => clearTimeout(id));\n';
+            result += 'timers.length = 0;\n\n';
+            
+            result += 'Важно всегда очищать таймеры чтобы избежать утечек памяти\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask4() {
+            let output = document.getElementById('output4');
+            let result = '=== КНОПКИ ДЛЯ ЗАПУСКА ===\n\n';
+            
+            result += 'Создание интерактивных таймеров:\n\n';
+            
+            result += 'class ButtonTimer {\n';
+            result += '  startTimer(duration, callback) {\n';
+            result += '    this.timerId = setInterval(() => {\n';
+            result += '      // Обновление прогресса\n';
+            result += '      if (callback) callback();\n';
+            result += '    }, 100);\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Использование с кнопками:\n\n';
+            result += '<button onclick="timer.startTimer(2000)">Запуск</button>\n';
+            result += '<button onclick="timer.stopTimer()">Стоп</button>\n\n';
+            
+            result += 'Визуальная обратная связь важна для пользователя\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask5() {
+            let output = document.getElementById('output5');
+            let result = '=== МНОГОКРАТНЫЙ ЗАПУСК ===\n\n';
+            
+            result += 'Управление множественными таймерами:\n\n';
+            
+            result += 'class MultiTimer {\n';
+            result += '  constructor() {\n';
+            result += '    this.timers = new Map();\n';
+            result += '  }\n\n';
+            result += '  createTimer(name, duration) {\n';
+            result += '    const id = setTimeout(() => {\n';
+            result += '      this.timers.delete(id);\n';
+            result += '    }, duration);\n';
+            result += '    this.timers.set(id, { name, duration });\n';
+            result += '  }\n\n';
+            result += '  cancelAll() {\n';
+            result += '    this.timers.forEach((timer, id) => {\n';
+            result += '      clearTimeout(id);\n';
+            result += '    });\n';
+            result += '    this.timers.clear();\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Это полезно для управления группой связанных таймеров\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask6() {
+            let output = document.getElementById('output6');
+            let result = '=== КНОПКИ ДЛЯ ОСТАНОВКИ ===\n\n';
+            
+            result += 'Индивидуальное управление таймерами:\n\n';
+            
+            result += 'class ControlledTimer {\n';
+            result += '  start(name, duration) {\n';
+            result += '    this.timers[name] = {\n';
+            result += '      intervalId: setInterval(() => {}, 50),\n';
+            result += '      isActive: true\n';
+            result += '    };\n';
+            result += '  }\n\n';
+            result += '  stop(name) {\n';
+            result += '    const timer = this.timers[name];\n';
+            result += '    if (timer) {\n';
+            result += '      clearInterval(timer.intervalId);\n';
+            result += '      delete this.timers[name];\n';
+            result += '    }\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Каждый таймер имеет свои контролы для точного управления\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask7() {
+            let output = document.getElementById('output7');
+            let result = '=== ТАЙМЕРЫ И DOM ===\n\n';
+            
+            result += 'Взаимодействие с DOM элементами:\n\n';
+            
+            result += 'class DomTimer {\n';
+            result += '  constructor(displayElement) {\n';
+            result += '    this.displayElement = displayElement;\n';
+            result += '    this.seconds = 0;\n';
+            result += '  }\n\n';
+            result += '  start() {\n';
+            result += '    this.intervalId = setInterval(() => {\n';
+            result += '      this.seconds++;\n';
+            result += '      this.updateDisplay();\n';
+            result += '    }, 1000);\n';
+            result += '  }\n\n';
+            result += '  updateDisplay() {\n';
+            result += '    this.displayElement.textContent = this.formatTime();\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Анимации с requestAnimationFrame:\n\n';
+            result += 'function animate() {\n';
+            result += '  element.style.transform = `scale(${progress})`;\n';
+            result += '  if (progress < 1) requestAnimationFrame(animate);\n';
+            result += '}\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask8() {
+            let output = document.getElementById('output8');
+            let result = '=== ТАЙМЕРЫ И ПОТЕРЯ КОНТЕКСТА ===\n\n';
+            
+            result += 'Проблема потери контекста в таймерах:\n\n';
+            
+            result += '// Проблемный код\n';
+            result += 'class Timer {\n';
+            result += '  value = 100;\n';
+            result += '  startProblematic() {\n';
+            result += '    setInterval(function() {\n';
+            result += '      console.log(this.value); // undefined!\n';
+            result += '    }, 1000);\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Решения:\n\n';
+            result += '1. Стрелочные функции:\n';
+            result += 'setInterval(() => {\n';
+            result += '  console.log(this.value); // 100\n';
+            result += '}, 1000);\n\n';
+            
+            result += '2. Метод bind:\n';
+            result += 'setInterval(function() {\n';
+            result += '  console.log(this.value); // 100\n';
+            result += '}.bind(this), 1000);\n\n';
+            
+            result += '3. Сохранение this:\n';
+            result += 'const self = this;\n';
+            result += 'setInterval(function() {\n';
+            result += '  console.log(self.value); // 100\n';
+            result += '}, 1000);\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask9() {
+            let output = document.getElementById('output9');
+            let result = '=== ПРАКТИКА: ТАЙМЕРЫ ОБРАТНОГО ОТСЧЕТА ===\n\n';
+            
+            result += 'Создание комплексной системы таймеров:\n\n';
+            
+            result += 'class CountdownTimer {\n';
+            result += '  constructor(displayElement, duration) {\n';
+            result += '    this.displayElement = displayElement;\n';
+            result += '    this.duration = duration;\n';
+            result += '    this.remaining = duration;\n';
+            result += '  }\n\n';
+            result += '  start() {\n';
+            result += '    this.intervalId = setInterval(() => {\n';
+            result += '      this.remaining--;\n';
+            result += '      this.updateDisplay();\n';
+            result += '      if (this.remaining <= 0) this.complete();\n';
+            result += '    }, 1000);\n';
+            result += '  }\n';
+            result += '}\n\n';
+            
+            result += 'Менеджер для управления несколькими таймерами:\n\n';
+            result += 'class TimerManager {\n';
+            result += '  createTimer(containerId, duration) {\n';
+            result += '    // Создание DOM элементов и таймера\n';
+            result += '  }\n';
+            result += '}\n';
+            
+            output.textContent = result;
+        }
+        
+        function runTask10() {
+            let output = document.getElementById('output10');
+            let result = '=== ЗАДЕРЖКА ПЕРЕД ВЫПОЛНЕНИЕМ ===\n\n';
+            
+            result += 'Продвинутые техники работы с таймерами:\n\n';
+            
+            result += 'Дебаунсинг (устранение дребезга):\n';
+            result += 'function debounce(func, delay) {\n';
+            result += '  let timeoutId;\n';
+            result += '  return (...args) => {\n';
+            result += '    clearTimeout(timeoutId);\n';
+            result += '    timeoutId = setTimeout(() => func(...args), delay);\n';
+            result += '  };\n';
+            result += '}\n\n';
+            
+            result += 'Троттлинг (ограничение частоты):\n';
+            result += 'function throttle(func, delay) {\n';
+            result += '  let lastCall = 0;\n';
+            result += '  return (...args) => {\n';
+            result += '    const now = Date.now();\n';
+            result += '    if (now - lastCall >= delay) {\n';
+            result += '      lastCall = now;\n';
+            result += '      func(...args);\n';
+            result += '    }\n';
+            result += '  };\n';
+            result += '}\n\n';
+            
+            result += 'Автосохранение:\n';
+            result += 'class AutoSaver {\n';
+            result += '  triggerSave(data) {\n';
+            result += '    clearTimeout(this.timeoutId);\n';
+            result += '    this.timeoutId = setTimeout(() => {\n';
+            result += '      this.saveFunction(data);\n';
+            result += '    }, this.delay);\n';
+            result += '  }\n';
+            result += '}\n';
+            
+            output.textContent = result;
+        }
+
+        // Демонстрационные функции
+        
+        function startSingleTimer() {
+            const output = document.getElementById('timerOutput1');
+            output.textContent += 'Таймер запущен...\n';
+            
+            setTimeout(() => {
+                output.textContent += 'Таймер сработал через 2 секунды!\n';
+            }, 2000);
+        }
+        
+        function startIntervalTimer() {
+            const output = document.getElementById('timerOutput1');
+            let count = 0;
+            
+            const intervalId = setInterval(() => {
+                count++;
+                output.textContent += `Интервал: ${count}\n`;
+                
+                if (count >= 5) {
+                    clearInterval(intervalId);
+                    output.textContent += 'Интервал остановлен\n';
+                }
+            }, 1000);
+        }
+        
+        function stopAllTimers() {
+            // В реальном приложении здесь бы очищались все активные таймеры
+            const output = document.getElementById('timerOutput1');
+            output.textContent += 'Все таймеры остановлены\n';
+        }
+        
+        function startCounter() {
+            if (counterInterval) return;
+            
+            counterInterval = setInterval(() => {
+                counterSeconds++;
+                updateCounterDisplay();
+            }, 1000);
+            
+            document.getElementById('counterOutput').textContent = 'Счетчик запущен\n';
+        }
+        
+        function pauseCounter() {
+            if (counterInterval) {
+                clearInterval(counterInterval);
+                counterInterval = null;
+                document.getElementById('counterOutput').textContent = 'Счетчик на паузе\n';
+            }
+        }
+        
+        function resetCounter() {
+            pauseCounter();
+            counterSeconds = 0;
+            updateCounterDisplay();
+            document.getElementById('counterOutput').textContent = 'Счетчик сброшен\n';
+        }
+        
+        function updateCounterDisplay() {
+            const hours = Math.floor(counterSeconds / 3600);
+            const minutes = Math.floor((counterSeconds % 3600) / 60);
+            const seconds = counterSeconds % 60;
+            
+            const display = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').textContent = display;
+        }
+        
+        function addRandomTimer() {
+            const duration = Math.random() * 4000 + 1000;
+            const timerId = setTimeout(() => {
+                document.getElementById('timerControlOutput').textContent += 
+                    `Случайный таймер сработал через ${Math.round(duration)}ms\n`;
+                
+                // Удаляем из активных
+                const index = activeTimers.indexOf(timerId);
+                if (index > -1) activeTimers.splice(index, 1);
+                updateActiveTimersCount();
+            }, duration);
+            
+            activeTimers.push(timerId);
+            updateActiveTimersCount();
+            document.getElementById('timerControlOutput').textContent += 
+                `Добавлен таймер на ${Math.round(duration)}ms\n`;
+        }
+        
+        function clearRandomTimers() {
+            activeTimers.forEach(id => clearTimeout(id));
+            document.getElementById('timerControlOutput').textContent += 
+                `Остановлено ${activeTimers.length} таймеров\n`;
+            activeTimers = [];
+            updateActiveTimersCount();
+        }
+        
+        function updateActiveTimersCount() {
+            document.getElementById('activeTimersCount').textContent = activeTimers.length;
+        }
+        
+        function startProgressTimer(duration) {
+            if (progressTimer) {
+                clearInterval(progressTimer);
+            }
+            
+            const startTime = Date.now();
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const output = document.getElementById('buttonTimerOutput');
+            
+            output.textContent = `Таймер запущен на ${duration}ms\n`;
+            
+            progressTimer = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min((elapsed / duration) * 100, 100);
+                
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `${Math.round(progress)}%`;
+                
+                if (elapsed >= duration) {
+                    clearInterval(progressTimer);
+                    progressTimer = null;
+                    output.textContent += 'Таймер завершен!\n';
+                }
+            }, 50);
+        }
+        
+        function stopProgressTimer() {
+            if (progressTimer) {
+                clearInterval(progressTimer);
+                progressTimer = null;
+                document.getElementById('buttonTimerOutput').textContent += 'Таймер остановлен\n';
+            }
+        }
+        
+        function addMultiTimer(duration) {
+            const timerId = setTimeout(() => {
+                document.getElementById('multiTimerOutput').textContent += 
+                    `Таймер на ${duration}ms завершен\n`;
+                
+                // Удаляем из списка
+                const index = multiTimers.findIndex(t => t.id === timerId);
+                if (index > -1) multiTimers.splice(index, 1);
+                updateMultiTimersList();
+            }, duration);
+            
+            multiTimers.push({
+                id: timerId,
+                duration: duration,
+                startTime: Date.now()
+            });
+            
+            updateMultiTimersList();
+            document.getElementById('multiTimerOutput').textContent += 
+                `Добавлен таймер на ${duration}ms\n`;
+        }
+        
+        function clearMultiTimers() {
+            multiTimers.forEach(timer => clearTimeout(timer.id));
+            document.getElementById('multiTimerOutput').textContent += 
+                `Остановлено ${multiTimers.length} таймеров\n`;
+            multiTimers = [];
+            updateMultiTimersList();
+        }
+        
+        function updateMultiTimersList() {
+            const list = document.getElementById('activeTimersList');
+            list.innerHTML = '';
+            
+            multiTimers.forEach(timer => {
+                const item = document.createElement('div');
+                item.textContent = `Таймер ${timer.id}: ${timer.duration}ms`;
+                item.style.cssText = 'padding: 5px; margin: 2px; background: rgba(255,0,255,0.2); border-radius: 3px;';
+                list.appendChild(item);
+            });
+        }
+        
+        function startControlledTimer(name, duration, color) {
+            if (controlledTimers[name]) {
+                document.getElementById('controlledTimerOutput').textContent += 
+                    `Таймер "${name}" уже запущен\n`;
+                return;
+            }
+            
+            const startTime = Date.now();
+            const progressElement = document.getElementById(`timer${name.charAt(0).toUpperCase() + name.slice(1)}`).firstElementChild;
+            
+            controlledTimers[name] = {
+                intervalId: setInterval(() => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min((elapsed / duration) * 100, 100);
+                    
+                    progressElement.style.width = `${progress}%`;
+                    progressElement.style.background = color;
+                    
+                    if (elapsed >= duration) {
+                        stopControlledTimer(name);
+                        document.getElementById('controlledTimerOutput').textContent += 
+                            `Таймер "${name}" завершен!\n`;
+                    }
+                }, 50),
+                startTime: startTime,
+                duration: duration
+            };
+            
+            document.getElementById('controlledTimerOutput').textContent += 
+                `Таймер "${name}" запущен на ${duration}ms\n`;
+        }
+        
+        function stopControlledTimer(name) {
+            const timer = controlledTimers[name];
+            if (timer) {
+                clearInterval(timer.intervalId);
+                delete controlledTimers[name];
+                document.getElementById('controlledTimerOutput').textContent += 
+                    `Таймер "${name}" остановлен\n`;
+            }
+        }
+        
+        function stopAllControlledTimers() {
+            Object.keys(controlledTimers).forEach(name => {
+                stopControlledTimer(name);
+            });
+            document.getElementById('controlledTimerOutput').textContent += 
+                'Все таймеры остановлены\n';
+        }
+        
+        function startDomTimer() {
+            const display = document.getElementById('domTimerDisplay');
+            const progress = document.getElementById('domProgressBar');
+            
+            if (domTimer) {
+                clearInterval(domTimer);
+            }
+            
+            let seconds = 0;
+            domTimer = setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                display.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                // Обновление прогресс-бара
+                progress.style.width = `${(secs / 60) * 100}%`;
+                
+            }, 1000);
+            
+            document.getElementById('domTimerOutput').textContent = 'DOM таймер запущен\n';
+        }
+        
+        function stopDomTimer() {
+            if (domTimer) {
+                clearInterval(domTimer);
+                domTimer = null;
+                document.getElementById('domTimerOutput').textContent += 'DOM таймер остановлен\n';
+            }
+        }
+        
+        function startDomAnimation() {
+            const box = document.getElementById('animationBox');
+            const startTime = Date.now();
+            const duration = 2000;
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Анимация прозрачности и масштаба
+                box.style.opacity = progress;
+                box.style.transform = `scale(${0.5 + progress * 0.5}) rotate(${progress * 360}deg)`;
+                
+                // Анимация цвета
+                const hue = progress * 360;
+                box.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            animate();
+            document.getElementById('domTimerOutput').textContent += 'Анимация запущена\n';
+        }
+        
+        function createDynamicElements() {
+            const container = document.getElementById('dynamicContainer');
+            container.innerHTML = '';
+            let created = 0;
+            
+            const intervalId = setInterval(() => {
+                if (created >= 10) {
+                    clearInterval(intervalId);
+                    return;
+                }
+                
+                const element = document.createElement('div');
+                element.className = 'timed-element';
+                element.textContent = `Эл. ${created + 1}`;
+                element.style.cssText = `
+                    padding: 10px;
+                    background: #ff00ff;
+                    color: white;
+                    border-radius: 5px;
+                    text-align: center;
+                    animation: fadeIn 0.5s;
+                `;
+                
+                container.appendChild(element);
+                created++;
+                
+            }, 500);
+            
+            document.getElementById('domTimerOutput').textContent += 'Создание элементов запущено\n';
+        }
+        
+        function demonstrateContextProblem() {
+            const obj = {
+                value: 42,
+                startProblematicTimer: function() {
+                    setTimeout(function() {
+                        // Проблема: this потерян
+                        document.getElementById('contextProblemResult').textContent = 
+                            `this.value = ${this.value} (должно быть 42)`;
+                    }, 1000);
+                }
+            };
+            
+            obj.startProblematicTimer();
+            document.getElementById('contextTimerOutput').textContent = 
+                'Запущен проблемный таймер (контекст потерян)\n';
+        }
+        
+        function demonstrateContextSolution() {
+            const obj = {
+                value: 42,
+                startSolutionTimer: function() {
+                    setTimeout(function() {
+                        // Решение: bind
+                        document.getElementById('contextSolutionResult').textContent = 
+                            `this.value = ${this.value} (корректно: 42)`;
+                    }.bind(this), 1000);
+                }
+            };
+            
+            obj.startSolutionTimer();
+            document.getElementById('contextTimerOutput').textContent += 
+                'Запущен таймер с решением (bind)\n';
+        }
+        
+        function demonstrateArrowSolution() {
+            const obj = {
+                value: 42,
+                startArrowTimer: function() {
+                    setTimeout(() => {
+                        // Решение: стрелочная функция
+                        document.getElementById('contextSolutionResult').textContent = 
+                            `this.value = ${this.value} (корректно: 42)`;
+                    }, 1000);
+                }
+            };
+            
+            obj.startArrowTimer();
+            document.getElementById('contextTimerOutput').textContent += 
+                'Запущен таймер с решением (стрелочная функция)\n';
+        }
+        
+        function addCountdownTimer(duration) {
+            const container = document.getElementById('countdownContainer');
+            const timerId = 'countdown_' + Date.now();
+            
+            const timerElement = document.createElement('div');
+            timerElement.className = 'countdown-timer';
+            timerElement.style.cssText = `
+                padding: 15px;
+                border: 1px solid #00ccff;
+                border-radius: 8px;
+                background: rgba(0, 204, 255, 0.1);
+            `;
+            
+            timerElement.innerHTML = `
+                <div class="timer-display" id="${timerId}_display" style="font-size: 1.5rem; text-align: center; margin-bottom: 10px;">${formatTime(duration)}</div>
+                <div class="timer-controls" style="display: flex; gap: 5px; justify-content: center;">
+                    <button onclick="startCountdownTimer('${timerId}')" style="font-size: 0.8rem;">Старт</button>
+                    <button onclick="pauseCountdownTimer('${timerId}')" style="font-size: 0.8rem;">Пауза</button>
+                    <button onclick="resetCountdownTimer('${timerId}', ${duration})" style="font-size: 0.8rem;">Сброс</button>
+                    <button onclick="removeCountdownTimer('${timerId}')" style="font-size: 0.8rem; background: #ff3300;">Удалить</button>
+                </div>
+            `;
+            
+            container.appendChild(timerElement);
+            
+            const timer = {
+                duration: duration,
+                remaining: duration,
+                intervalId: null,
+                isRunning: false,
+                displayElement: document.getElementById(timerId + '_display')
+            };
+            
+            countdownTimers.set(timerId, timer);
+            document.getElementById('countdownOutput').textContent += 
+                `Добавлен таймер обратного отсчета на ${duration} секунд\n`;
+        }
+        
+        function startCountdownTimer(timerId) {
+            const timer = countdownTimers.get(timerId);
+            if (!timer || timer.isRunning) return;
+            
+            timer.isRunning = true;
+            timer.intervalId = setInterval(() => {
+                timer.remaining--;
+                updateCountdownDisplay(timerId);
+                
+                if (timer.remaining <= 0) {
+                    completeCountdownTimer(timerId);
+                }
+            }, 1000);
+            
+            document.getElementById('countdownOutput').textContent += 
+                `Таймер ${timerId} запущен\n`;
+        }
+        
+        function pauseCountdownTimer(timerId) {
+            const timer = countdownTimers.get(timerId);
+            if (!timer || !timer.isRunning) return;
+            
+            timer.isRunning = false;
+            clearInterval(timer.intervalId);
+            document.getElementById('countdownOutput').textContent += 
+                `Таймер ${timerId} на паузе\n`;
+        }
+        
+        function resetCountdownTimer(timerId, duration) {
+            const timer = countdownTimers.get(timerId);
+            if (!timer) return;
+            
+            pauseCountdownTimer(timerId);
+            timer.remaining = duration;
+            updateCountdownDisplay(timerId);
+            document.getElementById('countdownOutput').textContent += 
+                `Таймер ${timerId} сброшен\n`;
+        }
+        
+        function removeCountdownTimer(timerId) {
+            pauseCountdownTimer(timerId);
+            countdownTimers.delete(timerId);
+            
+            const element = document.getElementById(timerId + '_display').parentElement;
+            if (element) element.remove();
+            
+            document.getElementById('countdownOutput').textContent += 
+                `Таймер ${timerId} удален\n`;
+        }
+        
+        function clearAllCountdownTimers() {
+            countdownTimers.forEach((timer, timerId) => {
+                pauseCountdownTimer(timerId);
+            });
+            countdownTimers.clear();
+            
+            const container = document.getElementById('countdownContainer');
+            container.innerHTML = '';
+            
+            document.getElementById('countdownOutput').textContent += 
+                'Все таймеры удалены\n';
+        }
+        
+        function updateCountdownDisplay(timerId) {
+            const timer = countdownTimers.get(timerId);
+            if (!timer || !timer.displayElement) return;
+            
+            timer.displayElement.textContent = formatTime(timer.remaining);
+            
+            // Визуальная обратная связь
+            const progress = (timer.remaining / timer.duration) * 100;
+            timer.displayElement.style.color = progress > 50 ? '#00ffcc' : 
+                                             progress > 20 ? '#ffcc00' : '#ff0066';
+        }
+        
+        function completeCountdownTimer(timerId) {
+            const timer = countdownTimers.get(timerId);
+            if (!timer) return;
+            
+            pauseCountdownTimer(timerId);
+            timer.displayElement.style.animation = 'glow 0.5s infinite';
+            document.getElementById('countdownOutput').textContent += 
+                `Таймер ${timerId} завершен!\n`;
+        }
+        
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Дебаунсинг и троттлинг
+        const debounce = (func, delay) => {
+            let timeoutId;
+            return (...args) => {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func(...args), delay);
+            };
+        };
+        
+        const throttle = (func, delay) => {
+            let lastCall = 0;
+            return (...args) => {
+                const now = Date.now();
+                if (now - lastCall >= delay) {
+                    lastCall = now;
+                    func(...args);
+                }
+            };
+        };
+        
+        const debouncedSearch = debounce((query) => {
+            document.getElementById('delayOutput').textContent += 
+                `Выполнен поиск: "${query}"\n`;
+        }, 500);
+        
+        const throttledScroll = throttle((position) => {
+            document.getElementById('delayOutput').textContent += 
+                `Прокрутка: ${position}px (троттлинг)\n`;
+        }, 1000);
+        
+        function demonstrateDebounce() {
+            document.getElementById('delayOutput').textContent = 
+                'Дебаунсинг: быстро вводите текст в поле поиска\n';
+            
+            // Настройка обработчика для input
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                debouncedSearch(e.target.value);
+            });
+        }
+        
+        function demonstrateThrottle() {
+            document.getElementById('delayOutput').textContent += 
+                '\nТроттлинг: прокручивайте контейнер\n';
+            
+            // Настройка обработчика для прокрутки
+            const scrollContainer = document.getElementById('scrollContainer');
+            scrollContainer.addEventListener('scroll', (e) => {
+                throttledScroll(e.target.scrollTop);
+            });
+        }
+        
+        function startSequentialOperations() {
+            document.getElementById('delayOutput').textContent += 
+                '\nПоследовательные операции:\n';
+            
+            const operations = [
+                {
+                    name: 'Загрузка данных',
+                    execute: () => {
+                        document.getElementById('delayOutput').textContent += 
+                            '✓ Данные загружены\n';
+                    },
+                    delay: 1000
+                },
+                {
+                    name: 'Обработка данных',
+                    execute: () => {
+                        document.getElementById('delayOutput').textContent += 
+                            '✓ Данные обработаны\n';
+                    },
+                    delay: 1500
+                },
+                {
+                    name: 'Сохранение результатов',
+                    execute: () => {
+                        document.getElementById('delayOutput').textContent += 
+                            '✓ Результаты сохранены\n';
+                    },
+                    delay: 800
+                }
+            ];
+            
+            let index = 0;
+            
+            function executeNext() {
+                if (index >= operations.length) {
+                    document.getElementById('delayOutput').textContent += 
+                        '✓ Все операции завершены\n';
+                    return;
+                }
+                
+                const operation = operations[index];
+                document.getElementById('delayOutput').textContent += 
+                    `⏳ ${operation.name}...\n`;
+                
+                setTimeout(() => {
+                    operation.execute();
+                    index++;
+                    executeNext();
+                }, operation.delay);
+            }
+            
+            executeNext();
+        }
+        
+        function testAutoSave() {
+            document.getElementById('delayOutput').textContent += 
+                '\nАвтосохранение: имитация изменений\n';
+            
+            let saveCount = 0;
+            
+            const autoSaver = {
+                timeoutId: null,
+                delay: 2000,
+                
+                triggerSave: function(data) {
+                    clearTimeout(this.timeoutId);
+                    this.timeoutId = setTimeout(() => {
+                        saveCount++;
+                        document.getElementById('delayOutput').textContent += 
+                            `💾 Автосохранение #${saveCount}: "${data}"\n`;
+                    }, this.delay);
+                }
+            };
+            
+            // Имитация быстрых изменений
+            autoSaver.triggerSave('Первое изменение');
+            setTimeout(() => autoSaver.triggerSave('Второе изменение'), 500);
+            setTimeout(() => autoSaver.triggerSave('Третье изменение'), 1000);
+        }
+        
+        // Функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).textContent = '';
+        }
+    </script>
+</body>
+</html>

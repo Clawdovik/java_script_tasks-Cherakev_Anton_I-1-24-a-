@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Перебирающие методы</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ПЕРЕБИРАЮЩИЕ МЕТОДЫ</h1>
+        <p class="subtitle">Мощные методы для работы с массивами - функциональное программирование</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Перебирающие методы массивов позволяют удобно работать с коллекциями данных без использования циклов.</p>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Метод map -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🗺️</div>
+                <h2>МЕТОД MAP - ПРЕОБРАЗОВАНИЕ МАССИВА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Базовое использование map</div>
+                <div class="code-block">// map создает новый массив, преобразуя каждый элемент
+let numbers = [1, 2, 3, 4, 5];
+
+// Умножаем каждый элемент на 2
+let doubled = numbers.map(num => num * 2);
+console.log("Исходный массив:", numbers);
+console.log("Умноженный на 2:", doubled);
+
+// Преобразуем числа в строки
+let strings = numbers.map(num => `Число: ${num}`);
+console.log("Строковое представление:", strings);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Map с объектами</div>
+                <div class="code-block">let users = [
+    { id: 1, name: "Анна", age: 25 },
+    { id: 2, name: "Иван", age: 30 },
+    { id: 3, name: "Мария", age: 28 }
+];
+
+// Извлекаем только имена
+let names = users.map(user => user.name);
+console.log("Имена пользователей:", names);
+
+// Создаем новые объекты с дополнительными полями
+let userProfiles = users.map(user => ({
+    ...user,
+    isAdult: user.age >= 18,
+    greeting: `Привет, ${user.name}!`
+}));
+console.log("Профили пользователей:", userProfiles);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Метод forEach -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>МЕТОД FOREACH - ПЕРЕБОР ЭЛЕМЕНТОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Базовое использование forEach</div>
+                <div class="code-block">// forEach выполняет функцию для каждого элемента
+let fruits = ["яблоко", "банан", "апельсин", "груша"];
+
+// Простой перебор
+console.log("Все фрукты:");
+fruits.forEach(fruit => {
+    console.log("- " + fruit);
+});
+
+// forEach с индексом
+console.log("Фрукты с индексами:");
+fruits.forEach((fruit, index) => {
+    console.log(`${index + 1}. ${fruit}`);
+});</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> ForEach vs For loop</div>
+                <div class="code-block">let numbers = [10, 20, 30, 40, 50];
+
+// Традиционный for loop
+console.log("For loop:");
+let sumFor = 0;
+for (let i = 0; i < numbers.length; i++) {
+    sumFor += numbers[i];
+    console.log(`numbers[${i}] = ${numbers[i]}`);
+}
+console.log("Сумма (for):", sumFor);
+
+// ForEach
+console.log("\nForEach:");
+let sumForEach = 0;
+numbers.forEach((number, index) => {
+    sumForEach += number;
+    console.log(`numbers[${index}] = ${number}`);
+});
+console.log("Сумма (forEach):", sumForEach);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Метод filter -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2>МЕТОД FILTER - ФИЛЬТРАЦИЯ МАССИВА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Базовое использование filter</div>
+                <div class="code-block">let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Четные числа
+let evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log("Четные числа:", evenNumbers);
+
+// Числа больше 5
+let greaterThan5 = numbers.filter(num => num > 5);
+console.log("Числа больше 5:", greaterThan5);
+
+// Простые числа
+let primes = numbers.filter(num => {
+    if (num < 2) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
+});
+console.log("Простые числа:", primes);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Filter с объектами</div>
+                <div class="code-block">let products = [
+    { name: "Телефон", price: 500, category: "электроника" },
+    { name: "Книга", price: 20, category: "литература" },
+    { name: "Наушники", price: 100, category: "электроника" },
+    { name: "Футболка", price: 30, category: "одежда" },
+    { name: "Ноутбук", price: 1000, category: "электроника" }
+];
+
+// Товары из категории "электроника"
+let electronics = products.filter(product => product.category === "электроника");
+console.log("Электроника:", electronics);
+
+// Товары дороже 50
+let expensiveProducts = products.filter(product => product.price > 50);
+console.log("Дорогие товары:", expensiveProducts);
+
+// Товары с длиной названия больше 6 символов
+let longNameProducts = products.filter(product => product.name.length > 6);
+console.log("Товары с длинными названиями:", longNameProducts);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Метод every -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">✅</div>
+                <h2>МЕТОД EVERY - ПРОВЕРКА ВСЕХ ЭЛЕМЕНТОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Базовое использование every</div>
+                <div class="code-block">// every возвращает true, если ВСЕ элементы удовлетворяют условию
+let numbers1 = [2, 4, 6, 8, 10];
+let numbers2 = [1, 3, 5, 7, 8];
+
+// Все числа четные?
+let allEven1 = numbers1.every(num => num % 2 === 0);
+let allEven2 = numbers2.every(num => num % 2 === 0);
+
+console.log("Массив 1:", numbers1, "- Все четные?", allEven1);
+console.log("Массив 2:", numbers2, "- Все четные?", allEven2);
+
+// Проверка на положительные числа
+let positiveNumbers = [1, 2, 3, 4, 5];
+let mixedNumbers = [1, -2, 3, 4, 5];
+
+console.log("Все положительные?", positiveNumbers.every(n => n > 0));
+console.log("Все положительные?", mixedNumbers.every(n => n > 0));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Every с объектами</div>
+                <div class="code-block">let students = [
+    { name: "Анна", grade: 85, attendance: 95 },
+    { name: "Иван", grade: 92, attendance: 98 },
+    { name: "Мария", grade: 78, attendance: 90 }
+];
+
+// Все студенты с оценкой выше 75?
+let allPassing = students.every(student => student.grade > 75);
+console.log("Все сдали экзамен?", allPassing);
+
+// Все с посещаемостью выше 90%?
+let goodAttendance = students.every(student => student.attendance > 90);
+console.log("Все с хорошей посещаемостью?", goodAttendance);
+
+// Проверка формата данных
+let validStudents = students.every(student => 
+    student.name && 
+    typeof student.grade === 'number' && 
+    typeof student.attendance === 'number'
+);
+console.log("Все студенты имеют валидные данные?", validStudents);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Метод some -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔎</div>
+                <h2>МЕТОД SOME - ПРОВЕРКА ХОТЯ БЫ ОДНОГО ЭЛЕМЕНТА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Базовое использование some</div>
+                <div class="code-block">// some возвращает true, если ХОТЯ БЫ ОДИН элемент удовлетворяет условию
+let numbers = [1, 3, 5, 7, 8, 9];
+
+// Есть ли четные числа?
+let hasEven = numbers.some(num => num % 2 === 0);
+console.log("Массив:", numbers);
+console.log("Есть четные числа?", hasEven);
+
+// Есть ли числа больше 10?
+let hasGreaterThan10 = numbers.some(num => num > 10);
+console.log("Есть числа больше 10?", hasGreaterThan10);
+
+// Есть ли отрицательные числа?
+let hasNegative = numbers.some(num => num < 0);
+console.log("Есть отрицательные числа?", hasNegative);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Some с объектами</div>
+                <div class="code-block">let employees = [
+    { name: "Анна", department: "IT", salary: 50000 },
+    { name: "Иван", department: "HR", salary: 45000 },
+    { name: "Мария", department: "IT", salary: 55000 },
+    { name: "Петр", department: "Finance", salary: 60000 }
+];
+
+// Есть ли сотрудники с зарплатой выше 55000?
+let hasHighSalary = employees.some(emp => emp.salary > 55000);
+console.log("Есть высокооплачиваемые сотрудники?", hasHighSalary);
+
+// Есть ли сотрудники из отдела Marketing?
+let hasMarketing = employees.some(emp => emp.department === "Marketing");
+console.log("Есть сотрудники из Marketing?", hasMarketing);
+
+// Есть ли сотрудники с именем "Анна"?
+let hasAnna = employees.some(emp => emp.name === "Анна");
+console.log("Есть сотрудник Анна?", hasAnna);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Метод find -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2>МЕТОД FIND - ПОИСК ЭЛЕМЕНТА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Базовое использование find</div>
+                <div class="code-block">// find возвращает ПЕРВЫЙ элемент, удовлетворяющий условию
+let numbers = [5, 12, 8, 130, 44];
+
+// Найти первое число больше 10
+let firstLarge = numbers.find(num => num > 10);
+console.log("Первое число больше 10:", firstLarge);
+
+// Найти первое четное число
+let firstEven = numbers.find(num => num % 2 === 0);
+console.log("Первое четное число:", firstEven);
+
+// Поиск в массиве объектов
+let users = [
+    { id: 1, name: "Анна" },
+    { id: 2, name: "Иван" },
+    { id: 3, name: "Мария" }
+];
+
+// Найти пользователя с id = 2
+let user = users.find(u => u.id === 2);
+console.log("Пользователь с id=2:", user);
+
+// Найти пользователя с именем "Мария"
+let maria = users.find(u => u.name === "Мария");
+console.log("Пользователь Мария:", maria);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Find vs Filter</div>
+                <div class="code-block">let products = [
+    { id: 1, name: "Телефон", inStock: true },
+    { id: 2, name: "Ноутбук", inStock: false },
+    { id: 3, name: "Планшет", inStock: true },
+    { id: 4, name: "Наушники", inStock: true }
+];
+
+// find - возвращает первый найденный элемент
+let firstInStock = products.find(p => p.inStock);
+console.log("Первый товар в наличии (find):", firstInStock);
+
+// filter - возвращает все подходящие элементы
+let allInStock = products.filter(p => p.inStock);
+console.log("Все товары в наличии (filter):", allInStock);
+
+// findIndex - возвращает индекс первого найденного элемента
+let firstInStockIndex = products.findIndex(p => p.inStock);
+console.log("Индекс первого товара в наличии:", firstInStockIndex);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Метод reduce -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧮</div>
+                <h2>МЕТОД REDUCE - АККУМУЛЯЦИЯ ЗНАЧЕНИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Базовое использование reduce</div>
+                <div class="code-block">// reduce преобразует массив в одно значение
+let numbers = [1, 2, 3, 4, 5];
+
+// Сумма всех чисел
+let sum = numbers.reduce((accumulator, current) => accumulator + current, 0);
+console.log("Сумма чисел:", sum);
+
+// Произведение всех чисел
+let product = numbers.reduce((acc, curr) => acc * curr, 1);
+console.log("Произведение чисел:", product);
+
+// Поиск максимального числа
+let max = numbers.reduce((acc, curr) => Math.max(acc, curr), -Infinity);
+console.log("Максимальное число:", max);
+
+// Конкатенация строк
+let words = ["Hello", " ", "world", "!"];
+let sentence = words.reduce((acc, curr) => acc + curr, "");
+console.log("Предложение:", sentence);</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Reduce с объектами</div>
+                <div class="code-block">let orders = [
+    { product: "Телефон", price: 500, quantity: 2 },
+    { product: "Наушники", price: 100, quantity: 1 },
+    { product: "Чехол", price: 20, quantity: 3 }
+];
+
+// Общая стоимость заказа
+let totalCost = orders.reduce((acc, order) => 
+    acc + (order.price * order.quantity), 0
+);
+console.log("Общая стоимость:", totalCost);
+
+// Группировка по категориям
+let items = [
+    { category: "фрукты", name: "яблоко" },
+    { category: "фрукты", name: "банан" },
+    { category: "овощи", name: "морковь" },
+    { category: "фрукты", name: "апельсин" },
+    { category: "овощи", name: "помидор" }
+];
+
+let grouped = items.reduce((acc, item) => {
+    if (!acc[item.category]) {
+        acc[item.category] = [];
+    }
+    acc[item.category].push(item.name);
+    return acc;
+}, {});
+
+console.log("Сгруппированные товары:", grouped);</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Сложные операции с reduce</div>
+                <div class="code-block">let students = [
+    { name: "Анна", grades: [85, 90, 92] },
+    { name: "Иван", grades: [78, 82, 80] },
+    { name: "Мария", grades: [95, 88, 91] },
+    { name: "Петр", grades: [65, 70, 68] }
+];
+
+// Средний балл каждого студента
+let studentAverages = students.reduce((acc, student) => {
+    let average = student.grades.reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+    acc[student.name] = average.toFixed(2);
+    return acc;
+}, {});
+console.log("Средние баллы:", studentAverages);
+
+// Статистика по оценкам
+let allGrades = students.flatMap(student => student.grades);
+let gradeStats = allGrades.reduce((acc, grade) => {
+    acc.total += grade;
+    acc.count++;
+    acc.min = Math.min(acc.min, grade);
+    acc.max = Math.max(acc.max, grade);
+    return acc;
+}, { total: 0, count: 0, min: Infinity, max: -Infinity });
+
+gradeStats.average = (gradeStats.total / gradeStats.count).toFixed(2);
+console.log("Статистика оценок:", gradeStats);</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Перебирающие методы &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Метод map
+        function runTask1() {
+            let output = "";
+            
+            let numbers = [1, 2, 3, 4, 5];
+            let doubled = numbers.map(num => num * 2);
+            let strings = numbers.map(num => `Число: ${num}`);
+            
+            output += "Исходный массив: " + JSON.stringify(numbers) + "\n";
+            output += "Умноженный на 2: " + JSON.stringify(doubled) + "\n";
+            output += "Строковое представление: " + JSON.stringify(strings) + "\n";
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = "";
+            
+            let users = [
+                { id: 1, name: "Анна", age: 25 },
+                { id: 2, name: "Иван", age: 30 },
+                { id: 3, name: "Мария", age: 28 }
+            ];
+            
+            let names = users.map(user => user.name);
+            let userProfiles = users.map(user => ({
+                ...user,
+                isAdult: user.age >= 18,
+                greeting: `Привет, ${user.name}!`
+            }));
+            
+            output += "Имена пользователей: " + JSON.stringify(names) + "\n";
+            output += "Профили пользователей: " + JSON.stringify(userProfiles, null, 2) + "\n";
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Метод forEach
+        function runTask3() {
+            let output = "";
+            
+            let fruits = ["яблоко", "банан", "апельсин", "груша"];
+            
+            output += "Все фрукты:\n";
+            fruits.forEach(fruit => {
+                output += "- " + fruit + "\n";
+            });
+            
+            output += "\nФрукты с индексами:\n";
+            fruits.forEach((fruit, index) => {
+                output += `${index + 1}. ${fruit}\n`;
+            });
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = "";
+            
+            let numbers = [10, 20, 30, 40, 50];
+            
+            output += "For loop:\n";
+            let sumFor = 0;
+            for (let i = 0; i < numbers.length; i++) {
+                sumFor += numbers[i];
+                output += `numbers[${i}] = ${numbers[i]}\n`;
+            }
+            output += "Сумма (for): " + sumFor + "\n\n";
+            
+            output += "ForEach:\n";
+            let sumForEach = 0;
+            numbers.forEach((number, index) => {
+                sumForEach += number;
+                output += `numbers[${index}] = ${number}\n`;
+            });
+            output += "Сумма (forEach): " + sumForEach + "\n";
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Метод filter
+        function runTask5() {
+            let output = "";
+            
+            let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            
+            let evenNumbers = numbers.filter(num => num % 2 === 0);
+            let greaterThan5 = numbers.filter(num => num > 5);
+            let primes = numbers.filter(num => {
+                if (num < 2) return false;
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                    if (num % i === 0) return false;
+                }
+                return true;
+            });
+            
+            output += "Четные числа: " + JSON.stringify(evenNumbers) + "\n";
+            output += "Числа больше 5: " + JSON.stringify(greaterThan5) + "\n";
+            output += "Простые числа: " + JSON.stringify(primes) + "\n";
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = "";
+            
+            let products = [
+                { name: "Телефон", price: 500, category: "электроника" },
+                { name: "Книга", price: 20, category: "литература" },
+                { name: "Наушники", price: 100, category: "электроника" },
+                { name: "Футболка", price: 30, category: "одежда" },
+                { name: "Ноутбук", price: 1000, category: "электроника" }
+            ];
+            
+            let electronics = products.filter(product => product.category === "электроника");
+            let expensiveProducts = products.filter(product => product.price > 50);
+            let longNameProducts = products.filter(product => product.name.length > 6);
+            
+            output += "Электроника: " + JSON.stringify(electronics, null, 2) + "\n";
+            output += "Дорогие товары: " + JSON.stringify(expensiveProducts, null, 2) + "\n";
+            output += "Товары с длинными названиями: " + JSON.stringify(longNameProducts, null, 2) + "\n";
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Метод every
+        function runTask7() {
+            let output = "";
+            
+            let numbers1 = [2, 4, 6, 8, 10];
+            let numbers2 = [1, 3, 5, 7, 8];
+            let positiveNumbers = [1, 2, 3, 4, 5];
+            let mixedNumbers = [1, -2, 3, 4, 5];
+            
+            let allEven1 = numbers1.every(num => num % 2 === 0);
+            let allEven2 = numbers2.every(num => num % 2 === 0);
+            
+            output += "Массив 1: " + JSON.stringify(numbers1) + " - Все четные? " + allEven1 + "\n";
+            output += "Массив 2: " + JSON.stringify(numbers2) + " - Все четные? " + allEven2 + "\n";
+            output += "Все положительные? " + positiveNumbers.every(n => n > 0) + "\n";
+            output += "Все положительные? " + mixedNumbers.every(n => n > 0) + "\n";
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = "";
+            
+            let students = [
+                { name: "Анна", grade: 85, attendance: 95 },
+                { name: "Иван", grade: 92, attendance: 98 },
+                { name: "Мария", grade: 78, attendance: 90 }
+            ];
+            
+            let allPassing = students.every(student => student.grade > 75);
+            let goodAttendance = students.every(student => student.attendance > 90);
+            let validStudents = students.every(student => 
+                student.name && 
+                typeof student.grade === 'number' && 
+                typeof student.attendance === 'number'
+            );
+            
+            output += "Все сдали экзамен? " + allPassing + "\n";
+            output += "Все с хорошей посещаемостью? " + goodAttendance + "\n";
+            output += "Все студенты имеют валидные данные? " + validStudents + "\n";
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Метод some
+        function runTask9() {
+            let output = "";
+            
+            let numbers = [1, 3, 5, 7, 8, 9];
+            
+            let hasEven = numbers.some(num => num % 2 === 0);
+            let hasGreaterThan10 = numbers.some(num => num > 10);
+            let hasNegative = numbers.some(num => num < 0);
+            
+            output += "Массив: " + JSON.stringify(numbers) + "\n";
+            output += "Есть четные числа? " + hasEven + "\n";
+            output += "Есть числа больше 10? " + hasGreaterThan10 + "\n";
+            output += "Есть отрицательные числа? " + hasNegative + "\n";
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            let output = "";
+            
+            let employees = [
+                { name: "Анна", department: "IT", salary: 50000 },
+                { name: "Иван", department: "HR", salary: 45000 },
+                { name: "Мария", department: "IT", salary: 55000 },
+                { name: "Петр", department: "Finance", salary: 60000 }
+            ];
+            
+            let hasHighSalary = employees.some(emp => emp.salary > 55000);
+            let hasMarketing = employees.some(emp => emp.department === "Marketing");
+            let hasAnna = employees.some(emp => emp.name === "Анна");
+            
+            output += "Есть высокооплачиваемые сотрудники? " + hasHighSalary + "\n";
+            output += "Есть сотрудники из Marketing? " + hasMarketing + "\n";
+            output += "Есть сотрудник Анна? " + hasAnna + "\n";
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 6: Метод find
+        function runTask11() {
+            let output = "";
+            
+            let numbers = [5, 12, 8, 130, 44];
+            let users = [
+                { id: 1, name: "Анна" },
+                { id: 2, name: "Иван" },
+                { id: 3, name: "Мария" }
+            ];
+            
+            let firstLarge = numbers.find(num => num > 10);
+            let firstEven = numbers.find(num => num % 2 === 0);
+            let user = users.find(u => u.id === 2);
+            let maria = users.find(u => u.name === "Мария");
+            
+            output += "Первое число больше 10: " + firstLarge + "\n";
+            output += "Первое четное число: " + firstEven + "\n";
+            output += "Пользователь с id=2: " + JSON.stringify(user) + "\n";
+            output += "Пользователь Мария: " + JSON.stringify(maria) + "\n";
+            
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let output = "";
+            
+            let products = [
+                { id: 1, name: "Телефон", inStock: true },
+                { id: 2, name: "Ноутбук", inStock: false },
+                { id: 3, name: "Планшет", inStock: true },
+                { id: 4, name: "Наушники", inStock: true }
+            ];
+            
+            let firstInStock = products.find(p => p.inStock);
+            let allInStock = products.filter(p => p.inStock);
+            let firstInStockIndex = products.findIndex(p => p.inStock);
+            
+            output += "Первый товар в наличии (find): " + JSON.stringify(firstInStock) + "\n";
+            output += "Все товары в наличии (filter): " + JSON.stringify(allInStock) + "\n";
+            output += "Индекс первого товара в наличии: " + firstInStockIndex + "\n";
+            
+            document.getElementById('output12').innerHTML = output;
+        }
+
+        // Раздел 7: Метод reduce
+        function runTask13() {
+            let output = "";
+            
+            let numbers = [1, 2, 3, 4, 5];
+            let words = ["Hello", " ", "world", "!"];
+            
+            let sum = numbers.reduce((acc, curr) => acc + curr, 0);
+            let product = numbers.reduce((acc, curr) => acc * curr, 1);
+            let max = numbers.reduce((acc, curr) => Math.max(acc, curr), -Infinity);
+            let sentence = words.reduce((acc, curr) => acc + curr, "");
+            
+            output += "Сумма чисел: " + sum + "\n";
+            output += "Произведение чисел: " + product + "\n";
+            output += "Максимальное число: " + max + "\n";
+            output += "Предложение: " + sentence + "\n";
+            
+            document.getElementById('output13').innerHTML = output;
+        }
+
+        function runTask14() {
+            let output = "";
+            
+            let orders = [
+                { product: "Телефон", price: 500, quantity: 2 },
+                { product: "Наушники", price: 100, quantity: 1 },
+                { product: "Чехол", price: 20, quantity: 3 }
+            ];
+            
+            let items = [
+                { category: "фрукты", name: "яблоко" },
+                { category: "фрукты", name: "банан" },
+                { category: "овощи", name: "морковь" },
+                { category: "фрукты", name: "апельсин" },
+                { category: "овощи", name: "помидор" }
+            ];
+            
+            let totalCost = orders.reduce((acc, order) => 
+                acc + (order.price * order.quantity), 0
+            );
+            
+            let grouped = items.reduce((acc, item) => {
+                if (!acc[item.category]) {
+                    acc[item.category] = [];
+                }
+                acc[item.category].push(item.name);
+                return acc;
+            }, {});
+            
+            output += "Общая стоимость: " + totalCost + "\n";
+            output += "Сгруппированные товары: " + JSON.stringify(grouped, null, 2) + "\n";
+            
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let output = "";
+            
+            let students = [
+                { name: "Анна", grades: [85, 90, 92] },
+                { name: "Иван", grades: [78, 82, 80] },
+                { name: "Мария", grades: [95, 88, 91] },
+                { name: "Петр", grades: [65, 70, 68] }
+            ];
+            
+            let studentAverages = students.reduce((acc, student) => {
+                let average = student.grades.reduce((sum, grade) => sum + grade, 0) / student.grades.length;
+                acc[student.name] = average.toFixed(2);
+                return acc;
+            }, {});
+            
+            let allGrades = students.flatMap(student => student.grades);
+            let gradeStats = allGrades.reduce((acc, grade) => {
+                acc.total += grade;
+                acc.count++;
+                acc.min = Math.min(acc.min, grade);
+                acc.max = Math.max(acc.max, grade);
+                return acc;
+            }, { total: 0, count: 0, min: Infinity, max: -Infinity });
+            
+            gradeStats.average = (gradeStats.total / gradeStats.count).toFixed(2);
+            
+            output += "Средние баллы: " + JSON.stringify(studentAverages, null, 2) + "\n";
+            output += "Статистика оценок: " + JSON.stringify(gradeStats, null, 2) + "\n";
+            
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Массивы</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - МАССИВЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с массивами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Создание и базовые операции с массивами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>СОЗДАНИЕ И БАЗОВЫЕ ОПЕРАЦИИ С МАССИВАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Создание и вывод массива</div>
+                <div class="code-block">let array1 = ['a', 'b', 'c'];
+console.log(array1);
+alert(array1);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Вывод отдельного элемента массива</div>
+                <div class="code-block">let arr3 = ['a', 'b', 'c'];
+console.log('Вывожу 2-й элемент массива - это ' + arr3[1]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Вывод элементов массива через +</div>
+                <div class="code-block">let array3 = ['a', 'b', 'c', 'd'];
+document.write(`${array3[0]}+${array3[1]}+${array3[2]}+${array3[3]}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Сумма элементов массива</div>
+                <div class="code-block">let array4 = [1, 2, 3];
+document.write(array4[0] + array4[1] + array4[2]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Математические операции с массивом</div>
+                <div class="code-block">let array5 = [2, 5, 3, 9];
+let result = (array5[0] * array5[1]) + (array5[2] * array5[3]);
+document.write(`Результат: ${result}`);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Свойства и методы массивов -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📏</div>
+                <h2>СВОЙСТВА И МЕТОДЫ МАССИВОВ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Длина массива</div>
+                <div class="code-block">let arr4 = [1, 2, 3, 4];
+console.log(arr4.length);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Последний элемент массива</div>
+                <div class="code-block">let arr5 = [1, 2, 5, 10];
+console.log(arr5[arr5.length - 1]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Изменение элементов массива</div>
+                <div class="code-block">let arr6 = ['a', 'b', 'c'];
+arr6[0] = 1;
+arr6[1] = 2;
+arr6[2] = 3;
+console.log(arr6);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Перезапись элементов массива</div>
+                <div class="code-block">let arr7 = ['a', 'b', 'c'];
+arr7[0] += 'a';
+console.log(arr7);</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Расширенные операции с массивами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>РАСШИРЕННЫЕ ОПЕРАЦИИ С МАССИВАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Добавление элементов в массив</div>
+                <div class="code-block">let array11 = [1, 2, 3];
+array11[3] = 'Четыре';
+console.log(array11);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Разреженный массив</div>
+                <div class="code-block">let arr8 = ['a', 'b', 'c'];
+arr8[4] = 'была ошибка, а стал я';
+console.log(arr8);
+console.log('arr8[3] =', arr8[3]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Смешанные типы данных в массиве</div>
+                <div class="code-block">let arr2 = [1, 2, 'a', 'b', null, true, false];
+console.log('Массив со смешанными типами:', arr2);
+console.log('Тип элемента 0:', typeof arr2[0]);
+console.log('Тип элемента 2:', typeof arr2[2]);
+console.log('Тип элемента 4:', typeof arr2[4]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Дни недели</div>
+                <div class="code-block">let weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+console.log('Все дни недели:', weekDays);
+console.log('Рабочие дни:', weekDays.slice(0, 5));
+console.log('Выходные дни:', weekDays.slice(5));</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Поиск в массиве</div>
+                <div class="code-block">let fruits = ['яблоко', 'банан', 'апельсин', 'груша'];
+let search = 'банан';
+console.log(`Индекс "${search}" в массиве:`, fruits.indexOf(search));
+console.log(`Есть ли "${search}" в массиве:`, fruits.includes(search));</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Сумма и среднее значение</div>
+                <div class="code-block">let numbers = [10, 20, 30, 40, 50];
+let sum = numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4];
+let average = sum / numbers.length;
+console.log('Массив чисел:', numbers);
+console.log('Сумма:', sum);
+console.log('Среднее значение:', average);</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Массивы &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Создание и базовые операции с массивами
+        function runTask1() {
+            let array1 = ['a', 'b', 'c'];
+            let output = `Массив: [${array1}]\n`;
+            output += `console.log(array1) выведет: ['a', 'b', 'c']\n`;
+            output += `alert(array1) выведет: a, b, c`;
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let arr3 = ['a', 'b', 'c'];
+            document.getElementById('output2').innerHTML = `Второй элемент массива ['a', 'b', 'c']: ${arr3[1]}`;
+        }
+
+        function runTask3() {
+            let array3 = ['a', 'b', 'c', 'd'];
+            document.getElementById('output3').innerHTML = `${array3[0]}+${array3[1]}+${array3[2]}+${array3[3]}`;
+        }
+
+        function runTask4() {
+            let array4 = [1, 2, 3];
+            let sum = array4[0] + array4[1] + array4[2];
+            document.getElementById('output4').innerHTML = `Сумма элементов [1, 2, 3]: ${sum}`;
+        }
+
+        function runTask5() {
+            let array5 = [2, 5, 3, 9];
+            let result = (array5[0] * array5[1]) + (array5[2] * array5[3]);
+            document.getElementById('output5').innerHTML = `(2*5) + (3*9) = ${result}`;
+        }
+
+        // Раздел 2: Свойства и методы массивов
+        function runTask6() {
+            let arr4 = [1, 2, 3, 4];
+            document.getElementById('output6').innerHTML = `Длина массива [1, 2, 3, 4]: ${arr4.length}`;
+        }
+
+        function runTask7() {
+            let arr5 = [1, 2, 5, 10];
+            let lastElement = arr5[arr5.length - 1];
+            document.getElementById('output7').innerHTML = `Последний элемент массива [1, 2, 5, 10]: ${lastElement}`;
+        }
+
+        function runTask8() {
+            let arr6 = ['a', 'b', 'c'];
+            arr6[0] = 1;
+            arr6[1] = 2;
+            arr6[2] = 3;
+            document.getElementById('output8').innerHTML = `Исходный массив: ['a', 'b', 'c']\nИзмененный массив: [${arr6}]`;
+        }
+
+        function runTask9() {
+            let arr7 = ['a', 'b', 'c'];
+            arr7[0] += 'a';
+            document.getElementById('output9').innerHTML = `Массив после arr7[0] += 'a': [${arr7}]`;
+        }
+
+        // Раздел 3: Расширенные операции с массивами
+        function runTask10() {
+            let array11 = [1, 2, 3];
+            array11[3] = 'Четыре';
+            document.getElementById('output10').innerHTML = `Исходный массив: [1, 2, 3]\nМассив после добавления элемента: [${array11}]`;
+        }
+
+        function runTask11() {
+            let arr8 = ['a', 'b', 'c'];
+            arr8[4] = 'была ошибка, а стал я';
+            let output = `Разреженный массив: [${arr8}]\n`;
+            output += `arr8[3] = ${arr8[3]} (undefined)\n`;
+            output += `arr8[4] = '${arr8[4]}'`;
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let arr2 = [1, 2, 'a', 'b', null, true, false];
+            let output = `Массив со смешанными типами: [${arr2}]\n`;
+            output += `Тип элемента 0 (${arr2[0]}): ${typeof arr2[0]}\n`;
+            output += `Тип элемента 2 (${arr2[2]}): ${typeof arr2[2]}\n`;
+            output += `Тип элемента 4 (${arr2[4]}): ${typeof arr2[4]}\n`;
+            output += `Тип элемента 5 (${arr2[5]}): ${typeof arr2[5]}`;
+            document.getElementById('output12').innerHTML = output;
+        }
+
+        // Раздел 4: Практические задачи
+        function runTask13() {
+            let weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+            let output = `Все дни недели: [${weekDays}]\n`;
+            output += `Рабочие дни: [${weekDays.slice(0, 5)}]\n`;
+            output += `Выходные дни: [${weekDays.slice(5)}]`;
+            document.getElementById('output13').innerHTML = output;
+        }
+
+        function runTask14() {
+            let fruits = ['яблоко', 'банан', 'апельсин', 'груша'];
+            let search = 'банан';
+            let output = `Массив фруктов: [${fruits}]\n`;
+            output += `Индекс "${search}" в массиве: ${fruits.indexOf(search)}\n`;
+            output += `Есть ли "${search}" в массиве: ${fruits.includes(search)}`;
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let numbers = [10, 20, 30, 40, 50];
+            let sum = numbers[0] + numbers[1] + numbers[2] + numbers[3] + numbers[4];
+            let average = sum / numbers.length;
+            let output = `Массив чисел: [${numbers}]\n`;
+            output += `Сумма: ${sum}\n`;
+            output += `Среднее значение: ${average}`;
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

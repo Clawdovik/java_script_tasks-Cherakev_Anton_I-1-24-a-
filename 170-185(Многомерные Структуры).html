@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Многомерные структуры</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - МНОГОМЕРНЫЕ СТРУКТУРЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с многомерными массивами и объектами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Многомерные массивы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>МНОГОМЕРНЫЕ МАССИВЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Создание многомерных массивов</div>
+                <div class="code-block">// Двумерный массив (матрица)
+let matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+console.log('Матрица 3x3:');
+console.log(matrix);
+console.log('Элемент [1][2]:', matrix[1][2]); // 6</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Заполнение многомерных массивов</div>
+                <div class="code-block">// Создание и заполнение таблицы умножения
+let multiplicationTable = [];
+
+for (let i = 1; i <= 5; i++) {
+    let row = [];
+    for (let j = 1; j <= 5; j++) {
+        row.push(i * j);
+    }
+    multiplicationTable.push(row);
+}
+
+console.log('Таблица умножения 5x5:');
+console.log(multiplicationTable);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Перебор многомерных массивов</div>
+                <div class="code-block">// Перебор матрицы с выводом координат и значений
+let grid = [
+    ['A', 'B', 'C'],
+    ['D', 'E', 'F'],
+    ['G', 'H', 'I']
+];
+
+console.log('Перебор сетки 3x3:');
+for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+        console.log(`[${i}][${j}] = ${grid[i][j]}`);
+    }
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Многомерные объекты -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>МНОГОМЕРНЫЕ ОБЪЕКТЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Создание многомерных объектов</div>
+                <div class="code-block">// Объект с вложенными объектами
+let company = {
+    name: 'TechCorp',
+    departments: {
+        development: {
+            manager: 'Иван Иванов',
+            employees: 15,
+            projects: ['Web App', 'Mobile App']
+        },
+        marketing: {
+            manager: 'Петр Петров',
+            employees: 8,
+            projects: ['SEO', 'Social Media']
+        }
+    }
+};
+
+console.log('Структура компании:');
+console.log(company);
+console.log('Менеджер разработки:', company.departments.development.manager);</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Перебор многомерных объектов</div>
+                <div class="code-block">// Рекурсивный перебор вложенных объектов
+let userProfile = {
+    personal: {
+        name: 'Анна',
+        age: 28,
+        contacts: {
+            email: 'anna@mail.com',
+            phone: '+7-999-123-45-67'
+        }
+    },
+    work: {
+        position: 'Developer',
+        skills: ['JavaScript', 'React', 'Node.js']
+    }
+};
+
+function printObject(obj, indent = '') {
+    for (let key in obj) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+            console.log(indent + key + ':');
+            printObject(obj[key], indent + '  ');
+        } else {
+            console.log(indent + key + ': ' + obj[key]);
+        }
+    }
+}
+
+console.log('Структура профиля пользователя:');
+printObject(userProfile);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Комбинированные структуры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>КОМБИНИРОВАННЫЕ СТРУКТУРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Массивы объектов</div>
+                <div class="code-block">// Массив объектов (частая структура в разработке)
+let students = [
+    {
+        name: 'Алексей',
+        age: 20,
+        grades: [4, 5, 4, 3]
+    },
+    {
+        name: 'Мария',
+        age: 19,
+        grades: [5, 5, 4, 5]
+    },
+    {
+        name: 'Дмитрий',
+        age: 21,
+        grades: [3, 4, 3, 4]
+    }
+];
+
+console.log('Список студентов:');
+for (let student of students) {
+    console.log(`${student.name}, ${student.age} лет, оценки: ${student.grades.join(', ')}`);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Объекты с массивами</div>
+                <div class="code-block">// Объект, содержащий массивы
+let library = {
+    name: 'Городская библиотека',
+    books: [
+        {
+            title: 'JavaScript для начинающих',
+            author: 'Иван Петров',
+            year: 2022
+        },
+        {
+            title: 'React в действии',
+            author: 'Мария Сидорова',
+            year: 2023
+        }
+    ],
+    visitors: ['Анна', 'Петр', 'Ольга']
+};
+
+console.log('Библиотека:', library.name);
+console.log('Книги в библиотеке:');
+library.books.forEach((book, index) => {
+    console.log(`${index + 1}. "${book.title}" - ${book.author} (${book.year})`);
+});
+console.log('Посетители:', library.visitors.join(', '));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Ключи из переменных в многомерных структурах</div>
+                <div class="code-block">// Динамическое обращение к свойствам объектов
+let data = {
+    users: {
+        'user1': { name: 'Алексей', role: 'admin' },
+        'user2': { name: 'Мария', role: 'user' },
+        'user3': { name: 'Петр', role: 'moderator' }
+    }
+};
+
+// Использование переменных для доступа к ключам
+let userId = 'user2';
+let property = 'name';
+
+console.log('Пользователь:', data.users[userId]);
+console.log('Имя пользователя:', data.users[userId][property]);
+
+// Динамическое создание структуры
+let dynamicKey = 'newUser';
+data.users[dynamicKey] = { name: 'Ольга', role: 'user' };
+console.log('Новый пользователь:', data.users.newUser);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Игровое поле (сетка)</div>
+                <div class="code-block">// Создание игрового поля 4x4
+let gameBoard = [];
+const size = 4;
+
+// Заполнение поля нулями
+for (let i = 0; i < size; i++) {
+    let row = [];
+    for (let j = 0; j < size; j++) {
+        row.push(0);
+    }
+    gameBoard.push(row);
+}
+
+// Добавление нескольких единиц (игровые элементы)
+gameBoard[1][2] = 1;
+gameBoard[3][0] = 1;
+gameBoard[2][3] = 1;
+
+console.log('Игровое поле 4x4:');
+for (let row of gameBoard) {
+    console.log(row.join(' '));
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> База данных продуктов</div>
+                <div class="code-block">// Сложная многомерная структура
+let store = {
+    name: 'Супермаркет',
+    categories: {
+        fruits: {
+            items: [
+                { name: 'Яблоки', price: 80, quantity: 50 },
+                { name: 'Бананы', price: 60, quantity: 30 }
+            ],
+            manager: 'Ирина'
+        },
+        vegetables: {
+            items: [
+                { name: 'Морковь', price: 40, quantity: 100 },
+                { name: 'Помидоры', price: 120, quantity: 25 }
+            ],
+            manager: 'Сергей'
+        }
+    },
+    getTotalValue: function() {
+        let total = 0;
+        for (let category in this.categories) {
+            for (let item of this.categories[category].items) {
+                total += item.price * item.quantity;
+            }
+        }
+        return total;
+    }
+};
+
+console.log('Магазин:', store.name);
+console.log('Общая стоимость товаров:', store.getTotalValue() + ' руб.');
+
+// Перебор всех категорий и товаров
+for (let category in store.categories) {
+    console.log(`\nКатегория: ${category}`);
+    console.log(`Менеджер: ${store.categories[category].manager}`);
+    console.log('Товары:');
+    store.categories[category].items.forEach(item => {
+        console.log(`  - ${item.name}: ${item.price} руб. (${item.quantity} шт.)`);
+    });
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Многомерные структуры &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Многомерные массивы
+        function runTask1() {
+            let matrix = [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]
+            ];
+            let output = 'Матрица 3x3:\n' + JSON.stringify(matrix, null, 2) + '\n\n';
+            output += `Элемент [1][2]: ${matrix[1][2]}`;
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let multiplicationTable = [];
+            for (let i = 1; i <= 5; i++) {
+                let row = [];
+                for (let j = 1; j <= 5; j++) {
+                    row.push(i * j);
+                }
+                multiplicationTable.push(row);
+            }
+            let output = 'Таблица умножения 5x5:\n\n';
+            for (let row of multiplicationTable) {
+                output += row.join('\t') + '\n';
+            }
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        function runTask3() {
+            let grid = [
+                ['A', 'B', 'C'],
+                ['D', 'E', 'F'],
+                ['G', 'H', 'I']
+            ];
+            let output = 'Перебор сетки 3x3:\n\n';
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    output += `[${i}][${j}] = ${grid[i][j]}\n`;
+                }
+            }
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        // Раздел 2: Многомерные объекты
+        function runTask4() {
+            let company = {
+                name: 'TechCorp',
+                departments: {
+                    development: {
+                        manager: 'Иван Иванов',
+                        employees: 15,
+                        projects: ['Web App', 'Mobile App']
+                    },
+                    marketing: {
+                        manager: 'Петр Петров',
+                        employees: 8,
+                        projects: ['SEO', 'Social Media']
+                    }
+                }
+            };
+            let output = 'Структура компании:\n' + JSON.stringify(company, null, 2) + '\n\n';
+            output += `Менеджер разработки: ${company.departments.development.manager}`;
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        function runTask5() {
+            let userProfile = {
+                personal: {
+                    name: 'Анна',
+                    age: 28,
+                    contacts: {
+                        email: 'anna@mail.com',
+                        phone: '+7-999-123-45-67'
+                    }
+                },
+                work: {
+                    position: 'Developer',
+                    skills: ['JavaScript', 'React', 'Node.js']
+                }
+            };
+
+            let output = 'Структура профиля пользователя:\n\n';
+            
+            function printObject(obj, indent = '') {
+                for (let key in obj) {
+                    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                        output += indent + key + ':\n';
+                        printObject(obj[key], indent + '  ');
+                    } else if (Array.isArray(obj[key])) {
+                        output += indent + key + ': [' + obj[key].join(', ') + ']\n';
+                    } else {
+                        output += indent + key + ': ' + obj[key] + '\n';
+                    }
+                }
+            }
+            
+            printObject(userProfile);
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        // Раздел 3: Комбинированные структуры
+        function runTask6() {
+            let students = [
+                {
+                    name: 'Алексей',
+                    age: 20,
+                    grades: [4, 5, 4, 3]
+                },
+                {
+                    name: 'Мария',
+                    age: 19,
+                    grades: [5, 5, 4, 5]
+                },
+                {
+                    name: 'Дмитрий',
+                    age: 21,
+                    grades: [3, 4, 3, 4]
+                }
+            ];
+            let output = 'Список студентов:\n\n';
+            for (let student of students) {
+                output += `${student.name}, ${student.age} лет, оценки: ${student.grades.join(', ')}\n`;
+            }
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        function runTask7() {
+            let library = {
+                name: 'Городская библиотека',
+                books: [
+                    {
+                        title: 'JavaScript для начинающих',
+                        author: 'Иван Петров',
+                        year: 2022
+                    },
+                    {
+                        title: 'React в действии',
+                        author: 'Мария Сидорова',
+                        year: 2023
+                    }
+                ],
+                visitors: ['Анна', 'Петр', 'Ольга']
+            };
+            let output = `Библиотека: ${library.name}\n\n`;
+            output += 'Книги в библиотеке:\n';
+            library.books.forEach((book, index) => {
+                output += `${index + 1}. "${book.title}" - ${book.author} (${book.year})\n`;
+            });
+            output += `\nПосетители: ${library.visitors.join(', ')}`;
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let data = {
+                users: {
+                    'user1': { name: 'Алексей', role: 'admin' },
+                    'user2': { name: 'Мария', role: 'user' },
+                    'user3': { name: 'Петр', role: 'moderator' }
+                }
+            };
+            let output = '';
+            let userId = 'user2';
+            let property = 'name';
+            output += `Пользователь: ${JSON.stringify(data.users[userId])}\n`;
+            output += `Имя пользователя: ${data.users[userId][property]}\n\n`;
+            
+            let dynamicKey = 'newUser';
+            data.users[dynamicKey] = { name: 'Ольга', role: 'user' };
+            output += `Новый пользователь: ${JSON.stringify(data.users.newUser)}`;
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 4: Практические задачи
+        function runTask9() {
+            let gameBoard = [];
+            const size = 4;
+            for (let i = 0; i < size; i++) {
+                let row = [];
+                for (let j = 0; j < size; j++) {
+                    row.push(0);
+                }
+                gameBoard.push(row);
+            }
+            gameBoard[1][2] = 1;
+            gameBoard[3][0] = 1;
+            gameBoard[2][3] = 1;
+            
+            let output = 'Игровое поле 4x4:\n\n';
+            for (let row of gameBoard) {
+                output += row.join(' ') + '\n';
+            }
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            let store = {
+                name: 'Супермаркет',
+                categories: {
+                    fruits: {
+                        items: [
+                            { name: 'Яблоки', price: 80, quantity: 50 },
+                            { name: 'Бананы', price: 60, quantity: 30 }
+                        ],
+                        manager: 'Ирина'
+                    },
+                    vegetables: {
+                        items: [
+                            { name: 'Морковь', price: 40, quantity: 100 },
+                            { name: 'Помидоры', price: 120, quantity: 25 }
+                        ],
+                        manager: 'Сергей'
+                    }
+                },
+                getTotalValue: function() {
+                    let total = 0;
+                    for (let category in this.categories) {
+                        for (let item of this.categories[category].items) {
+                            total += item.price * item.quantity;
+                        }
+                    }
+                    return total;
+                }
+            };
+            let output = `Магазин: ${store.name}\n`;
+            output += `Общая стоимость товаров: ${store.getTotalValue()} руб.\n\n`;
+            for (let category in store.categories) {
+                output += `Категория: ${category}\n`;
+                output += `Менеджер: ${store.categories[category].manager}\n`;
+                output += 'Товары:\n';
+                store.categories[category].items.forEach(item => {
+                    output += `  - ${item.name}: ${item.price} руб. (${item.quantity} шт.)\n`;
+                });
+                output += '\n';
+            }
+            document.getElementById('output10').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

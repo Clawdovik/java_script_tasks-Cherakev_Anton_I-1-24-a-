@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Вложенные функции</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ВЛОЖЕННЫЕ ФУНКЦИИ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Глубина вложенности и замыкания</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Вложенные функции и область видимости -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2>ВЛОЖЕННЫЕ ФУНКЦИИ И ОБЛАСТЬ ВИДИМОСТИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Внутренние функции и область видимости</div>
+                <div class="code-block">// Внешняя функция
+function outerFunction(outerParam) {
+    let outerVariable = "Внешняя переменная";
+    
+    // Внутренняя функция
+    function innerFunction(innerParam) {
+        let innerVariable = "Внутренняя переменная";
+        
+        console.log("--- Внутри innerFunction ---");
+        console.log("innerParam:", innerParam);
+        console.log("innerVariable:", innerVariable);
+        console.log("outerParam:", outerParam); // Доступ к параметру внешней функции
+        console.log("outerVariable:", outerVariable); // Доступ к переменной внешней функции
+        
+        return `Результат: ${outerParam} + ${innerParam} = ${outerParam + innerParam}`;
+    }
+    
+    console.log("--- Внутри outerFunction ---");
+    console.log("Вызов innerFunction с параметром 5:");
+    let result = innerFunction(5);
+    console.log(result);
+    
+    // Возвращаем внутреннюю функцию
+    return innerFunction;
+}
+
+// Использование
+console.log("=== Создание замыкания ===");
+const closure = outerFunction(10);
+
+console.log("\n=== Использование возвращенной функции ===");
+console.log(closure(3));
+console.log(closure(7));</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Параметры внешней и внутренней функций</div>
+                <div class="code-block">function mathOperations(x, y) {
+    console.log(`Внешняя функция получила: x=${x}, y=${y}`);
+    
+    // Внутренняя функция сложения
+    function add() {
+        console.log(`add() использует x=${x}, y=${y}`);
+        return x + y;
+    }
+    
+    // Внутренняя функция умножения
+    function multiply() {
+        console.log(`multiply() использует x=${x}, y=${y}`);
+        return x * y;
+    }
+    
+    // Внутренняя функция с собственными параметрами
+    function power(exponent) {
+        console.log(`power(${exponent}) использует x=${x}`);
+        return Math.pow(x, exponent);
+    }
+    
+    console.log("Результаты внутренних функций:");
+    console.log("add():", add());
+    console.log("multiply():", multiply());
+    console.log("power(3):", power(3));
+    
+    // Возвращаем объект с методами
+    return {
+        add: add,
+        multiply: multiply,
+        power: power,
+        getValues: function() {
+            return { x, y };
+        }
+    };
+}
+
+// Использование
+console.log("=== Создание калькулятора ===");
+const calculator = mathOperations(5, 3);
+
+console.log("\n=== Использование методов ===");
+console.log("calculator.add():", calculator.add());
+console.log("calculator.multiply():", calculator.multiply());
+console.log("calculator.power(2):", calculator.power(2));
+console.log("calculator.getValues():", calculator.getValues());</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Одноименные параметры и возврат функций -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ОДНОИМЕННЫЕ ПАРАМЕТРЫ И ВОЗВРАТ ФУНКЦИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Одноименные параметры</div>
+                <div class="code-block">function demonstrateShadowing(value) {
+    console.log(`Внешняя функция: value = ${value}`);
+    
+    function innerFunction(value) { // Одноименный параметр
+        console.log(`Внутренняя функция до: value = ${value}`);
+        
+        // Изменяем параметр (не влияет на внешний)
+        value = value * 2;
+        console.log(`Внутренняя функция после: value = ${value}`);
+        
+        return value;
+    }
+    
+    function innerFunctionNoParam() {
+        // Нет параметра - используем внешний value
+        console.log(`Внутренняя функция без параметра: value = ${value}`);
+        
+        // Можем читать, но не изменять внешний value
+        let result = value + 10;
+        console.log(`Результат: ${result}`);
+        
+        return result;
+    }
+    
+    console.log("--- Вызов innerFunction с параметром ---");
+    let result1 = innerFunction(5);
+    console.log(`Результат innerFunction: ${result1}`);
+    console.log(`Внешний value после innerFunction: ${value}`);
+    
+    console.log("--- Вызов innerFunctionNoParam ---");
+    let result2 = innerFunctionNoParam();
+    console.log(`Результат innerFunctionNoParam: ${result2}`);
+    console.log(`Внешний value после innerFunctionNoParam: ${value}`);
+    
+    return { result1, result2, originalValue: value };
+}
+
+console.log("=== Тест с value = 10 ===");
+const results1 = demonstrateShadowing(10);
+
+console.log("\n=== Тест с value = 3 ===");
+const results2 = demonstrateShadowing(3);</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Функция, возвращающая функцию</div>
+                <div class="code-block">// Функция, создающая приветствия
+function createGreeter(greeting) {
+    console.log(`Создаем приветствие с текстом: "${greeting}"`);
+    
+    return function(name) {
+        return `${greeting}, ${name}!`;
+    };
+}
+
+// Функция с несколькими уровнями вложенности
+function createAdvancedCalculator(initialValue = 0) {
+    console.log(`Создание калькулятора с начальным значением: ${initialValue}`);
+    
+    let current = initialValue;
+    
+    function add(x) {
+        current += x;
+        console.log(`Добавлено ${x}, текущее значение: ${current}`);
+        return this; // Возвращаем this для цепочки вызовов
+    }
+    
+    function multiply(x) {
+        current *= x;
+        console.log(`Умножено на ${x}, текущее значение: ${current}`);
+        return this;
+    }
+    
+    function getValue() {
+        return current;
+    }
+    
+    function createSaver() {
+        // Еще один уровень вложенности
+        const saved = current;
+        return function() {
+            return saved;
+        };
+    }
+    
+    // Возвращаем объект с методами
+    return {
+        add,
+        multiply,
+        getValue,
+        createSaver,
+        reset: function() {
+            current = initialValue;
+            console.log(`Сброс к начальному значению: ${current}`);
+            return this;
+        }
+    };
+}
+
+// Использование
+console.log("=== Создание приветствий ===");
+const helloGreeter = createGreeter("Hello");
+const hiGreeter = createGreeter("Hi");
+const privetGreeter = createGreeter("Привет");
+
+console.log(helloGreeter("John"));
+console.log(hiGreeter("Jane"));
+console.log(privetGreeter("Петр"));
+
+console.log("\n=== Использование калькулятора ===");
+const calc = createAdvancedCalculator(10);
+calc.add(5).multiply(2).add(3);
+console.log("Текущее значение:", calc.getValue());
+
+const saver = calc.createSaver();
+calc.add(100);
+console.log("Сохраненное значение:", saver());
+console.log("Текущее значение после изменений:", calc.getValue());</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Передача функций параметрами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ПЕРЕДАЧА ФУНКЦИЙ ПАРАМЕТРАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Передача функций параметрами и числа</div>
+                <div class="code-block">// Функция, принимающая другую функцию как параметр
+function processNumber(number, processor) {
+    console.log(`Обработка числа ${number} с помощью функции`);
+    console.log("Имя функции:", processor.name || "анонимная функция");
+    console.log("Код функции:", processor.toString());
+    
+    const result = processor(number);
+    console.log(`Результат: ${result}`);
+    
+    return result;
+}
+
+// Функции-обработчики
+function double(x) {
+    return x * 2;
+}
+
+function square(x) {
+    return x * x;
+}
+
+const cube = function(x) {
+    return x * x * x;
+};
+
+// Использование
+console.log("=== Передача именованных функций ===");
+processNumber(5, double);
+processNumber(3, square);
+processNumber(2, cube);
+
+console.log("\n=== Передача анонимных функций ===");
+processNumber(10, function(x) {
+    return x + 100;
+});
+
+processNumber(7, (x) => Math.sqrt(x));
+
+console.log("\n=== Создание специализированных обработчиков ===");
+function createMultiplier(factor) {
+    return function(x) {
+        return x * factor;
+    };
+}
+
+const triple = createMultiplier(3);
+const quintuple = createMultiplier(5);
+
+processNumber(4, triple);
+processNumber(4, quintuple);</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Функции-коллбэки и их применение</div>
+                <div class="code-block">// Имитация асинхронной операции
+function simulateAsyncOperation(data, callback) {
+    console.log(`Начало обработки данных: ${data}`);
+    
+    // Имитация задержки
+    setTimeout(() => {
+        const result = data.toUpperCase();
+        console.log(`Операция завершена, результат: ${result}`);
+        
+        // Вызов callback-функции
+        if (typeof callback === 'function') {
+            callback(result);
+        } else {
+            console.log("Callback не предоставлен");
+        }
+    }, 1000);
+}
+
+// Функция для обработки массива с callback
+function processArray(array, processor, callback) {
+    console.log("Обработка массива:", array);
+    
+    const results = [];
+    let completed = 0;
+    
+    array.forEach((item, index) => {
+        setTimeout(() => {
+            const result = processor(item, index);
+            results[index] = result;
+            completed++;
+            
+            console.log(`Обработан элемент ${index}: ${item} -> ${result}`);
+            
+            // Если все элементы обработаны, вызываем callback
+            if (completed === array.length && typeof callback === 'function') {
+                callback(results);
+            }
+        }, index * 500);
+    });
+}
+
+// Коллбэк функции
+function logResult(result) {
+    console.log("📝 Коллбэк: Получен результат -", result);
+}
+
+function saveResult(result) {
+    console.log("💾 Коллбэк: Сохранение результата -", result);
+}
+
+function complexCallback(result) {
+    console.log("🔧 Сложный коллбэк:");
+    console.log("   Длина результата:", result.length);
+    console.log("   Первые 3 символа:", result.slice(0, 3));
+}
+
+// Использование
+console.log("=== Асинхронная операция ===");
+simulateAsyncOperation("hello world", logResult);
+simulateAsyncOperation("javascript", saveResult);
+simulateAsyncOperation("callback demo", complexCallback);
+
+console.log("\n=== Обработка массива ===");
+processArray(
+    [1, 2, 3, 4, 5],
+    function(x) { return x * x; },
+    function(results) {
+        console.log("🎯 Все элементы обработаны!");
+        console.log("Результаты:", results);
+        console.log("Сумма результатов:", results.reduce((a, b) => a + b, 0));
+    }
+);</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Стрелочные функции и нюансы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🏹</div>
+                <h2>СТРЕЛОЧНЫЕ ФУНКЦИИ И НЮАНСЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Стрелочные функции и их применение</div>
+                <div class="code-block">// Сравнение обычных и стрелочных функций
+function compareFunctions() {
+    const numbers = [1, 2, 3, 4, 5];
+    
+    console.log("Исходный массив:", numbers);
+    
+    // Обычная функция
+    const squaredRegular = numbers.map(function(x) {
+        return x * x;
+    });
+    
+    // Стрелочная функция
+    const squaredArrow = numbers.map(x => x * x);
+    
+    console.log("Квадраты (обычная функция):", squaredRegular);
+    console.log("Квадраты (стрелочная функция):", squaredArrow);
+    
+    // Фильтрация с стрелочными функциями
+    const evenNumbers = numbers.filter(x => x % 2 === 0);
+    const oddNumbers = numbers.filter(x => x % 2 !== 0);
+    
+    console.log("Четные числа:", evenNumbers);
+    console.log("Нечетные числа:", oddNumbers);
+    
+    // Сокращенный синтаксис для объектов
+    const createUser = (name, age) => ({ name, age, isAdult: age >= 18 });
+    
+    console.log("Создание пользователей:");
+    console.log(createUser("Анна", 25));
+    console.log(createUser("Петр", 16));
+}
+
+// Вложенные стрелочные функции
+const createMultiplier = factor => value => value * factor;
+
+const createAdvancedMultiplier = (factor1, factor2) => {
+    // Возвращаем стрелочную функцию
+    return value => {
+        const intermediate = value * factor1;
+        return intermediate * factor2;
+    };
+};
+
+// Каррирование с стрелочными функциями
+const curryAdd = a => b => c => a + b + c;
+
+// Использование
+console.log("=== Сравнение функций ===");
+compareFunctions();
+
+console.log("\n=== Создание множителей ===");
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+console.log("double(5):", double(5));
+console.log("triple(5):", triple(5));
+
+const doubleThenTriple = createAdvancedMultiplier(2, 3);
+console.log("doubleThenTriple(4):", doubleThenTriple(4));
+
+console.log("\n=== Каррирование ===");
+const add5 = curryAdd(5);
+const add5And3 = add5(3);
+console.log("add5And3(2):", add5And3(2));
+console.log("curryAdd(1)(2)(3):", curryAdd(1)(2)(3));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Нюансы коллбэков и стрелочных функций</div>
+                <div class="code-block">// Разница в this между обычными и стрелочными функциями
+const obj = {
+    name: "Тестовый объект",
+    values: [1, 2, 3, 4, 5],
+    
+    processWithRegular: function() {
+        console.log("=== Обычные функции ===");
+        
+        this.values.forEach(function(item, index) {
+            console.log(`Обработка ${item} (индекс ${index})`);
+            // this здесь - не obj, а глобальный объект или undefined
+            console.log("   this.name:", this.name); // undefined
+        });
+    },
+    
+    processWithArrow: function() {
+        console.log("=== Стрелочные функции ===");
+        
+        this.values.forEach((item, index) => {
+            console.log(`Обработка ${item} (индекс ${index})`);
+            // this здесь наследуется от окружающего контекста (obj)
+            console.log("   this.name:", this.name); // "Тестовый объект"
+        });
+    },
+    
+    processWithBind: function() {
+        console.log("=== Обычные функции с bind ===");
+        
+        this.values.forEach(function(item, index) {
+            console.log(`Обработка ${item} (индекс ${index})`);
+            console.log("   this.name:", this.name); // "Тестовый объект"
+        }.bind(this));
+    },
+    
+    // Метод со стрелочной функцией (не рекомендуется)
+    badMethod: () => {
+        console.log("this в стрелочном методе:", this); // Не obj!
+    }
+};
+
+// Проблемы с асинхронными коллбэками
+function problematicCallback() {
+    console.log("\n=== Проблемы с коллбэками ===");
+    
+    for (var i = 0; i < 3; i++) {
+        setTimeout(function() {
+            console.log(`var i = ${i}`); // Всегда 3!
+        }, 100);
+    }
+    
+    for (let j = 0; j < 3; j++) {
+        setTimeout(function() {
+            console.log(`let j = ${j}`); // 0, 1, 2
+        }, 100);
+    }
+    
+    for (var k = 0; k < 3; k++) {
+        setTimeout(() => {
+            console.log(`var k в стрелочной функции = ${k}`); // Всегда 3!
+        }, 100);
+    }
+}
+
+// Использование
+obj.processWithRegular();
+obj.processWithArrow();
+obj.processWithBind();
+obj.badMethod();
+
+setTimeout(problematicCallback, 500);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Вложенные функции &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Вложенные функции и область видимости
+        function runTask1() {
+            let output = '';
+            
+            function outerFunction(outerParam) {
+                let outerVariable = "Внешняя переменная";
+                
+                function innerFunction(innerParam) {
+                    let innerVariable = "Внутренняя переменная";
+                    
+                    output += "--- Внутри innerFunction ---\n";
+                    output += "innerParam: " + innerParam + "\n";
+                    output += "innerVariable: " + innerVariable + "\n";
+                    output += "outerParam: " + outerParam + "\n";
+                    output += "outerVariable: " + outerVariable + "\n";
+                    
+                    return `Результат: ${outerParam} + ${innerParam} = ${outerParam + innerParam}`;
+                }
+                
+                output += "--- Внутри outerFunction ---\n";
+                output += "Вызов innerFunction с параметром 5:\n";
+                let result = innerFunction(5);
+                output += result + "\n";
+                
+                return innerFunction;
+            }
+            
+            output += "=== Создание замыкания ===\n";
+            const closure = outerFunction(10);
+
+            output += "\n=== Использование возвращенной функции ===\n";
+            output += closure(3) + "\n";
+            output += closure(7) + "\n";
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = '';
+            
+            function mathOperations(x, y) {
+                output += `Внешняя функция получила: x=${x}, y=${y}\n`;
+                
+                function add() {
+                    output += `add() использует x=${x}, y=${y}\n`;
+                    return x + y;
+                }
+                
+                function multiply() {
+                    output += `multiply() использует x=${x}, y=${y}\n`;
+                    return x * y;
+                }
+                
+                function power(exponent) {
+                    output += `power(${exponent}) использует x=${x}\n`;
+                    return Math.pow(x, exponent);
+                }
+                
+                output += "Результаты внутренних функций:\n";
+                output += "add(): " + add() + "\n";
+                output += "multiply(): " + multiply() + "\n";
+                output += "power(3): " + power(3) + "\n";
+                
+                return {
+                    add: add,
+                    multiply: multiply,
+                    power: power,
+                    getValues: function() {
+                        return { x, y };
+                    }
+                };
+            }
+            
+            output += "=== Создание калькулятора ===\n";
+            const calculator = mathOperations(5, 3);
+
+            output += "\n=== Использование методов ===\n";
+            output += "calculator.add(): " + calculator.add() + "\n";
+            output += "calculator.multiply(): " + calculator.multiply() + "\n";
+            output += "calculator.power(2): " + calculator.power(2) + "\n";
+            output += "calculator.getValues(): " + JSON.stringify(calculator.getValues()) + "\n";
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Одноименные параметры и возврат функций
+        function runTask3() {
+            let output = '';
+            
+            function demonstrateShadowing(value) {
+                output += `Внешняя функция: value = ${value}\n`;
+                
+                function innerFunction(value) {
+                    output += `Внутренняя функция до: value = ${value}\n`;
+                    
+                    value = value * 2;
+                    output += `Внутренняя функция после: value = ${value}\n`;
+                    
+                    return value;
+                }
+                
+                function innerFunctionNoParam() {
+                    output += `Внутренняя функция без параметра: value = ${value}\n`;
+                    
+                    let result = value + 10;
+                    output += `Результат: ${result}\n`;
+                    
+                    return result;
+                }
+                
+                output += "--- Вызов innerFunction с параметром ---\n";
+                let result1 = innerFunction(5);
+                output += `Результат innerFunction: ${result1}\n`;
+                output += `Внешний value после innerFunction: ${value}\n`;
+                
+                output += "--- Вызов innerFunctionNoParam ---\n";
+                let result2 = innerFunctionNoParam();
+                output += `Результат innerFunctionNoParam: ${result2}\n`;
+                output += `Внешний value после innerFunctionNoParam: ${value}\n`;
+                
+                return { result1, result2, originalValue: value };
+            }
+            
+            output += "=== Тест с value = 10 ===\n";
+            const results1 = demonstrateShadowing(10);
+
+            output += "\n=== Тест с value = 3 ===\n";
+            const results2 = demonstrateShadowing(3);
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = '';
+            
+            function createGreeter(greeting) {
+                output += `Создаем приветствие с текстом: "${greeting}"\n`;
+                
+                return function(name) {
+                    return `${greeting}, ${name}!`;
+                };
+            }
+
+            function createAdvancedCalculator(initialValue = 0) {
+                output += `Создание калькулятора с начальным значением: ${initialValue}\n`;
+                
+                let current = initialValue;
+                
+                function add(x) {
+                    current += x;
+                    output += `Добавлено ${x}, текущее значение: ${current}\n`;
+                    return this;
+                }
+                
+                function multiply(x) {
+                    current *= x;
+                    output += `Умножено на ${x}, текущее значение: ${current}\n`;
+                    return this;
+                }
+                
+                function getValue() {
+                    return current;
+                }
+                
+                function createSaver() {
+                    const saved = current;
+                    return function() {
+                        return saved;
+                    };
+                }
+                
+                return {
+                    add,
+                    multiply,
+                    getValue,
+                    createSaver,
+                    reset: function() {
+                        current = initialValue;
+                        output += `Сброс к начальному значению: ${current}\n`;
+                        return this;
+                    }
+                };
+            }
+            
+            output += "=== Создание приветствий ===\n";
+            const helloGreeter = createGreeter("Hello");
+            const hiGreeter = createGreeter("Hi");
+            const privetGreeter = createGreeter("Привет");
+
+            output += helloGreeter("John") + "\n";
+            output += hiGreeter("Jane") + "\n";
+            output += privetGreeter("Петр") + "\n";
+
+            output += "\n=== Использование калькулятора ===\n";
+            const calc = createAdvancedCalculator(10);
+            calc.add(5).multiply(2).add(3);
+            output += "Текущее значение: " + calc.getValue() + "\n";
+
+            const saver = calc.createSaver();
+            calc.add(100);
+            output += "Сохраненное значение: " + saver() + "\n";
+            output += "Текущее значение после изменений: " + calc.getValue() + "\n";
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Передача функций параметрами
+        function runTask5() {
+            let output = '';
+            
+            function processNumber(number, processor) {
+                output += `Обработка числа ${number} с помощью функции\n`;
+                output += "Имя функции: " + (processor.name || "анонимная функция") + "\n";
+                output += "Код функции: " + processor.toString().substring(0, 50) + "...\n";
+                
+                const result = processor(number);
+                output += `Результат: ${result}\n\n`;
+                
+                return result;
+            }
+
+            function double(x) {
+                return x * 2;
+            }
+
+            function square(x) {
+                return x * x;
+            }
+
+            const cube = function(x) {
+                return x * x * x;
+            };
+
+            function createMultiplier(factor) {
+                return function(x) {
+                    return x * factor;
+                };
+            }
+            
+            output += "=== Передача именованных функций ===\n";
+            processNumber(5, double);
+            processNumber(3, square);
+            processNumber(2, cube);
+
+            output += "=== Передача анонимных функций ===\n";
+            processNumber(10, function(x) {
+                return x + 100;
+            });
+
+            processNumber(7, (x) => Math.sqrt(x));
+
+            output += "=== Создание специализированных обработчиков ===\n";
+            const triple = createMultiplier(3);
+            const quintuple = createMultiplier(5);
+
+            processNumber(4, triple);
+            processNumber(4, quintuple);
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = '';
+            
+            // Для этой задачи используем setTimeout с небольшими задержками
+            // чтобы показать асинхронное поведение
+            
+            function simulateAsyncOperation(data, callback) {
+                output += `Начало обработки данных: ${data}\n`;
+                
+                setTimeout(() => {
+                    const result = data.toUpperCase();
+                    output += `Операция завершена, результат: ${result}\n`;
+                    
+                    if (typeof callback === 'function') {
+                        callback(result);
+                    } else {
+                        output += "Callback не предоставлен\n";
+                    }
+                }, 100);
+            }
+
+            function processArray(array, processor, callback) {
+                output += "Обработка массива: " + array + "\n";
+                
+                const results = [];
+                let completed = 0;
+                
+                array.forEach((item, index) => {
+                    setTimeout(() => {
+                        const result = processor(item, index);
+                        results[index] = result;
+                        completed++;
+                        
+                        output += `Обработан элемент ${index}: ${item} -> ${result}\n`;
+                        
+                        if (completed === array.length && typeof callback === 'function') {
+                            callback(results);
+                        }
+                    }, index * 100);
+                });
+            }
+
+            function logResult(result) {
+                output += "📝 Коллбэк: Получен результат - " + result + "\n";
+            }
+
+            function saveResult(result) {
+                output += "💾 Коллбэк: Сохранение результата - " + result + "\n";
+            }
+
+            function complexCallback(result) {
+                output += "🔧 Сложный коллбэк:\n";
+                output += "   Длина результата: " + result.length + "\n";
+                output += "   Первые 3 символа: " + result.slice(0, 3) + "\n";
+            }
+            
+            output += "=== Асинхронная операция ===\n";
+            simulateAsyncOperation("hello world", logResult);
+            
+            setTimeout(() => {
+                simulateAsyncOperation("javascript", saveResult);
+            }, 200);
+            
+            setTimeout(() => {
+                simulateAsyncOperation("callback demo", complexCallback);
+            }, 400);
+            
+            setTimeout(() => {
+                output += "\n=== Обработка массива ===\n";
+                processArray(
+                    [1, 2, 3, 4, 5],
+                    function(x) { return x * x; },
+                    function(results) {
+                        output += "🎯 Все элементы обработаны!\n";
+                        output += "Результаты: " + results + "\n";
+                        output += "Сумма результатов: " + results.reduce((a, b) => a + b, 0) + "\n";
+                        
+                        document.getElementById('output6').innerHTML = output;
+                    }
+                );
+            }, 600);
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Стрелочные функции и нюансы
+        function runTask7() {
+            let output = '';
+            
+            function compareFunctions() {
+                const numbers = [1, 2, 3, 4, 5];
+                
+                output += "Исходный массив: " + numbers + "\n";
+                
+                const squaredRegular = numbers.map(function(x) {
+                    return x * x;
+                });
+                
+                const squaredArrow = numbers.map(x => x * x);
+                
+                output += "Квадраты (обычная функция): " + squaredRegular + "\n";
+                output += "Квадраты (стрелочная функция): " + squaredArrow + "\n";
+                
+                const evenNumbers = numbers.filter(x => x % 2 === 0);
+                const oddNumbers = numbers.filter(x => x % 2 !== 0);
+                
+                output += "Четные числа: " + evenNumbers + "\n";
+                output += "Нечетные числа: " + oddNumbers + "\n";
+                
+                const createUser = (name, age) => ({ name, age, isAdult: age >= 18 });
+                
+                output += "Создание пользователей:\n";
+                output += JSON.stringify(createUser("Анна", 25)) + "\n";
+                output += JSON.stringify(createUser("Петр", 16)) + "\n";
+            }
+
+            const createMultiplier = factor => value => value * factor;
+
+            const createAdvancedMultiplier = (factor1, factor2) => {
+                return value => {
+                    const intermediate = value * factor1;
+                    return intermediate * factor2;
+                };
+            };
+
+            const curryAdd = a => b => c => a + b + c;
+            
+            output += "=== Сравнение функций ===\n";
+            compareFunctions();
+
+            output += "\n=== Создание множителей ===\n";
+            const double = createMultiplier(2);
+            const triple = createMultiplier(3);
+
+            output += "double(5): " + double(5) + "\n";
+            output += "triple(5): " + triple(5) + "\n";
+
+            const doubleThenTriple = createAdvancedMultiplier(2, 3);
+            output += "doubleThenTriple(4): " + doubleThenTriple(4) + "\n";
+
+            output += "\n=== Каррирование ===\n";
+            const add5 = curryAdd(5);
+            const add5And3 = add5(3);
+            output += "add5And3(2): " + add5And3(2) + "\n";
+            output += "curryAdd(1)(2)(3): " + curryAdd(1)(2)(3) + "\n";
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = '';
+            
+            const obj = {
+                name: "Тестовый объект",
+                values: [1, 2, 3, 4, 5],
+                
+                processWithRegular: function() {
+                    output += "=== Обычные функции ===\n";
+                    
+                    this.values.forEach(function(item, index) {
+                        output += `Обработка ${item} (индекс ${index})\n`;
+                        output += "   this.name: " + (this.name || "undefined") + "\n";
+                    });
+                },
+                
+                processWithArrow: function() {
+                    output += "=== Стрелочные функции ===\n";
+                    
+                    this.values.forEach((item, index) => {
+                        output += `Обработка ${item} (индекс ${index})\n`;
+                        output += "   this.name: " + this.name + "\n";
+                    });
+                },
+                
+                processWithBind: function() {
+                    output += "=== Обычные функции с bind ===\n";
+                    
+                    this.values.forEach(function(item, index) {
+                        output += `Обработка ${item} (индекс ${index})\n`;
+                        output += "   this.name: " + this.name + "\n";
+                    }.bind(this));
+                },
+                
+                badMethod: () => {
+                    output += "this в стрелочном методе: " + (this === window ? "window" : "не obj") + "\n";
+                }
+            };
+
+            function problematicCallback() {
+                output += "\n=== Проблемы с коллбэками ===\n";
+                
+                for (var i = 0; i < 3; i++) {
+                    setTimeout(function() {
+                        output += `var i = ${i}\n`;
+                    }, 10);
+                }
+                
+                for (let j = 0; j < 3; j++) {
+                    setTimeout(function() {
+                        output += `let j = ${j}\n`;
+                    }, 10);
+                }
+                
+                for (var k = 0; k < 3; k++) {
+                    setTimeout(() => {
+                        output += `var k в стрелочной функции = ${k}\n`;
+                    }, 10);
+                }
+            }
+            
+            obj.processWithRegular();
+            obj.processWithArrow();
+            obj.processWithBind();
+            obj.badMethod();
+
+            setTimeout(() => {
+                problematicCallback();
+                // Обновляем вывод после всех setTimeout
+                setTimeout(() => {
+                    document.getElementById('output8').innerHTML = output;
+                }, 100);
+            }, 50);
+            
+            document.getElementById('output8').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

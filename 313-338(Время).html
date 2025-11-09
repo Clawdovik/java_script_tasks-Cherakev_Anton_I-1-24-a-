@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Работа со Временем</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - РАБОТА СО ВРЕМЕНЕМ</h1>
+        <p class="subtitle">Tempus fugit - Время летит: Практика работы с объектом Date</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Работа с объектом Date -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📅</div>
+                <h2>РАБОТА С ОБЪЕКТОМ DATE</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Создание и форматирование дат</div>
+                <div class="code-block">// Работа с объектом Date
+const now = new Date();
+console.log('Текущая дата:', now);
+console.log('Timestamp:', now.getTime());
+console.log('Год:', now.getFullYear());
+console.log('Месяц (0-11):', now.getMonth());
+console.log('День месяца:', now.getDate());
+console.log('День недели (0-6):', now.getDay());
+console.log('Часы:', now.getHours());
+console.log('Минуты:', now.getMinutes());
+console.log('Секунды:', now.getSeconds());
+
+// Форматирование даты
+console.log('Локализованная дата:', now.toLocaleDateString('ru-RU'));
+console.log('Локализованное время:', now.toLocaleTimeString('ru-RU'));
+console.log('Полная локализованная дата:', now.toLocaleString('ru-RU'));
+
+// Смена формата даты
+const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
+console.log('Форматированная дата (ДД.ММ.ГГГГ):', formattedDate);
+
+// Получение дня недели
+const daysOfWeek = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+console.log('День недели:', daysOfWeek[now.getDay()]);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Вывод даты словом и установка времени</div>
+                <div class="code-block">// Вывод даты словом
+function getDateInWords(date) {
+    const months = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${day} ${month} ${year} года`;
+}
+
+const today = new Date();
+console.log('Дата словами:', getDateInWords(today));
+
+// Установка времени
+const specificDate = new Date(2024, 5, 15, 14, 30, 0); // 15 июня 2024, 14:30:00
+console.log('Конкретная дата:', specificDate);
+
+// Формат timestamp
+const timestamp = Date.now();
+console.log('Текущий timestamp:', timestamp);
+console.log('Дата из timestamp:', new Date(timestamp));
+
+// Установка компонентов даты
+const customDate = new Date();
+customDate.setFullYear(2025);
+customDate.setMonth(11); // Декабрь
+customDate.setDate(25);
+customDate.setHours(20, 0, 0);
+console.log('Настроенная дата:', customDate);</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Разность дат и временные промежутки -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⏱️</div>
+                <h2>РАЗНОСТЬ ДАТ И ВРЕМЕННЫЕ ПРОМЕЖУТКИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Разность между timestamp и объектами Date</div>
+                <div class="code-block">// Разность между timestamp
+const startTimestamp = Date.now();
+// Имитация задержки
+setTimeout(() => {
+    const endTimestamp = Date.now();
+    const difference = endTimestamp - startTimestamp;
+    console.log('Разность timestamp (мс):', difference);
+}, 100);
+
+// Разность объектов с датами
+const date1 = new Date(2024, 0, 1); // 1 января 2024
+const date2 = new Date(2024, 11, 31); // 31 декабря 2024
+const diffMilliseconds = date2 - date1;
+const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+console.log('Разность в миллисекундах:', diffMilliseconds);
+console.log('Разность в днях:', diffDays);
+
+// Автоматическая корректировка дат
+const autoCorrectDate = new Date(2024, 0, 32); // 32 января -> 1 февраля
+console.log('Автокорректировка даты:', autoCorrectDate);
+
+// Функция для вычисления разности дат
+function getDateDifference(startDate, endDate) {
+    const diffTime = Math.abs(endDate - startDate);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffMonths = Math.floor(diffDays / 30);
+    const diffYears = Math.floor(diffMonths / 12);
+    
+    return {
+        days: diffDays,
+        months: diffMonths,
+        years: diffYears,
+        totalMilliseconds: diffTime
+    };
+}
+
+const birthday = new Date(1990, 5, 15);
+const today = new Date();
+console.log('Разность с днем рождения:', getDateDifference(birthday, today));</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Календарные операции -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📆</div>
+                <h2>КАЛЕНДАРНЫЕ ОПЕРАЦИИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Нахождение последнего дня месяца и високосные годы</div>
+                <div class="code-block">// Нахождение последнего дня месяца
+function getLastDayOfMonth(year, month) {
+    return new Date(year, month + 1, 0).getDate();
+}
+
+console.log('Последний день февраля 2024:', getLastDayOfMonth(2024, 1));
+console.log('Последний день декабря 2024:', getLastDayOfMonth(2024, 11));
+
+// Определение високосного года
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+console.log('2024 високосный?', isLeapYear(2024));
+console.log('2023 високосный?', isLeapYear(2023));
+console.log('2000 високосный?', isLeapYear(2000));
+console.log('1900 високосный?', isLeapYear(1900));
+
+// Проверка корректности даты
+function isValidDate(year, month, day) {
+    const date = new Date(year, month, day);
+    return date.getFullYear() === year && 
+           date.getMonth() === month && 
+           date.getDate() === day;
+}
+
+console.log('29.02.2024 корректна?', isValidDate(2024, 1, 29));
+console.log('29.02.2023 корректна?', isValidDate(2023, 1, 29));
+console.log('32.01.2024 корректна?', isValidDate(2024, 0, 32));
+
+// Получение дня текущего года
+function getDayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = date - start;
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.floor(diff / oneDay);
+}
+
+const currentDate = new Date();
+console.log('Текущий день года:', getDayOfYear(currentDate));</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Навигация по датам</div>
+                <div class="code-block">// День следующего или предыдущего месяца
+function getNextMonthSameDay(date) {
+    const result = new Date(date);
+    result.setMonth(result.getMonth() + 1);
+    
+    // Корректировка, если следующий месяц имеет меньше дней
+    if (result.getDate() !== date.getDate()) {
+        result.setDate(0); // Последний день предыдущего месяца
+    }
+    
+    return result;
+}
+
+function getPreviousMonthSameDay(date) {
+    const result = new Date(date);
+    result.setMonth(result.getMonth() - 1);
+    
+    // Корректировка, если предыдущий месяц имеет меньше дней
+    if (result.getDate() !== date.getDate()) {
+        result.setDate(0);
+    }
+    
+    return result;
+}
+
+const testDate = new Date(2024, 0, 31); // 31 января
+console.log('Исходная дата:', testDate.toLocaleDateString());
+console.log('Следующий месяц:', getNextMonthSameDay(testDate).toLocaleDateString());
+console.log('Предыдущий месяц:', getPreviousMonthSameDay(testDate).toLocaleDateString());
+
+// День следующего или предыдущего года
+function addYears(date, years) {
+    const result = new Date(date);
+    result.setFullYear(result.getFullYear() + years);
+    return result;
+}
+
+function subtractYears(date, years) {
+    return addYears(date, -years);
+}
+
+const today = new Date();
+console.log('Сегодня:', today.toLocaleDateString());
+console.log('Через год:', addYears(today, 1).toLocaleDateString());
+console.log('Год назад:', subtractYears(today, 1).toLocaleDateString());
+
+// Разность моментов в разных единицах
+function getTimeDifference(start, end) {
+    const diff = end - start;
+    
+    return {
+        milliseconds: diff,
+        seconds: Math.floor(diff / 1000),
+        minutes: Math.floor(diff / (1000 * 60)),
+        hours: Math.floor(diff / (1000 * 60 * 60)),
+        days: Math.floor(diff / (1000 * 60 * 60 * 24))
+    };
+}
+
+const start = new Date(2024, 0, 1);
+const end = new Date(2024, 0, 15);
+console.log('Разность 2 недель:', getTimeDifference(start, end));</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Моменты времени -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🕒</div>
+                <h2>МОМЕНТЫ ВРЕМЕНИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Работа с моментами времени дня</div>
+                <div class="code-block">// Момент времени дня
+function getTimeOfDay(date) {
+    const hours = date.getHours();
+    
+    if (hours >= 5 && hours < 12) return 'Утро';
+    if (hours >= 12 && hours < 17) return 'День';
+    if (hours >= 17 && hours < 22) return 'Вечер';
+    return 'Ночь';
+}
+
+const now = new Date();
+console.log('Сейчас:', getTimeOfDay(now));
+
+// Начало дня
+function getStartOfDay(date) {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    return start;
+}
+
+// Конец дня
+function getEndOfDay(date) {
+    const end = new Date(date);
+    end.setHours(23, 59, 59, 999);
+    return end;
+}
+
+const today = new Date();
+console.log('Начало сегодняшнего дня:', getStartOfDay(today));
+console.log('Конец сегодняшнего дня:', getEndOfDay(today));
+
+// Циклическая проверка моментов времени
+function isTimeInRange(startTime, endTime, checkTime) {
+    const start = new Date();
+    start.setHours(...startTime.split(':').map(Number), 0, 0);
+    
+    const end = new Date();
+    end.setHours(...endTime.split(':').map(Number), 0, 0);
+    
+    const check = new Date();
+    check.setHours(...checkTime.split(':').map(Number), 0, 0);
+    
+    return check >= start && check <= end;
+}
+
+console.log('14:30 в диапазоне 09:00-18:00?', isTimeInRange('09:00', '18:00', '14:30'));
+console.log('20:00 в диапазоне 09:00-18:00?', isTimeInRange('09:00', '18:00', '20:00'));
+
+// Практика на получение моментов времени
+function getNextHour(date) {
+    const next = new Date(date);
+    next.setHours(next.getHours() + 1, 0, 0, 0);
+    return next;
+}
+
+function getNextDay(date) {
+    const next = new Date(date);
+    next.setDate(next.getDate() + 1);
+    next.setHours(0, 0, 0, 0);
+    return next;
+}
+
+console.log('Следующий час:', getNextHour(new Date()));
+console.log('Следующий день:', getNextDay(new Date()));</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Сравнение дат -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚖️</div>
+                <h2>СРАВНЕНИЕ ДАТ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Сравнение дат различными способами</div>
+                <div class="code-block">// Строковое сравнение
+const dateStr1 = '2024-03-15';
+const dateStr2 = '2024-03-20';
+console.log('Строковое сравнение:', dateStr1 < dateStr2);
+
+// Сравнение даты без года
+function compareDatesWithoutYear(date1, date2) {
+    const d1 = new Date(2000, date1.getMonth(), date1.getDate());
+    const d2 = new Date(2000, date2.getMonth(), date2.getDate());
+    return d1 - d2;
+}
+
+const springDate = new Date(2024, 2, 21); // 21 марта
+const autumnDate = new Date(2024, 8, 23); // 23 сентября
+console.log('Сравнение без года:', compareDatesWithoutYear(springDate, autumnDate) > 0 ? 'Осень позже' : 'Весна раньше');
+
+// Попадание даты в промежуток
+function isDateInRange(date, start, end) {
+    return date >= start && date <= end;
+}
+
+const checkDate = new Date(2024, 5, 15);
+const rangeStart = new Date(2024, 5, 1);
+const rangeEnd = new Date(2024, 5, 30);
+console.log('Дата в промежутке:', isDateInRange(checkDate, rangeStart, rangeEnd));
+
+// Сравнение объектов с датой
+function areDatesEqual(date1, date2) {
+    return date1.getTime() === date2.getTime();
+}
+
+function areDatesSameDay(date1, date2) {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
+}
+
+const dateA = new Date(2024, 5, 15, 10, 30);
+const dateB = new Date(2024, 5, 15, 14, 45);
+const dateC = new Date(2024, 5, 16, 10, 30);
+
+console.log('dateA и dateB равны?', areDatesEqual(dateA, dateB));
+console.log('dateA и dateB один день?', areDatesSameDay(dateA, dateB));
+console.log('dateA и dateC один день?', areDatesSameDay(dateA, dateC));
+
+// Сравнение с учетом времени
+function compareDatesWithTime(date1, date2) {
+    if (date1 < date2) return -1;
+    if (date1 > date2) return 1;
+    return 0;
+}
+
+console.log('Сравнение dateA и dateB:', compareDatesWithTime(dateA, dateB));
+console.log('Сравнение dateA и dateC:', compareDatesWithTime(dateA, dateC));</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Работа со Временем &copy; 2025 | Tempus fugit</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Задача 1: Создание и форматирование дат
+        function runTask1() {
+            const now = new Date();
+            const daysOfWeek = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
+            
+            let output = '';
+            output += 'Текущая дата: ' + now + '\n';
+            output += 'Timestamp: ' + now.getTime() + '\n';
+            output += 'Год: ' + now.getFullYear() + '\n';
+            output += 'Месяц (0-11): ' + now.getMonth() + '\n';
+            output += 'День месяца: ' + now.getDate() + '\n';
+            output += 'День недели (0-6): ' + now.getDay() + '\n';
+            output += 'Часы: ' + now.getHours() + '\n';
+            output += 'Минуты: ' + now.getMinutes() + '\n';
+            output += 'Секунды: ' + now.getSeconds() + '\n\n';
+            output += 'Локализованная дата: ' + now.toLocaleDateString('ru-RU') + '\n';
+            output += 'Локализованное время: ' + now.toLocaleTimeString('ru-RU') + '\n';
+            output += 'Полная локализованная дата: ' + now.toLocaleString('ru-RU') + '\n\n';
+            output += 'Форматированная дата (ДД.ММ.ГГГГ): ' + formattedDate + '\n';
+            output += 'День недели: ' + daysOfWeek[now.getDay()] + '\n';
+            
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        // Задача 2: Вывод даты словом и установка времени
+        function runTask2() {
+            function getDateInWords(date) {
+                const months = [
+                    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+                ];
+                
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                
+                return `${day} ${month} ${year} года`;
+            }
+
+            const today = new Date();
+            const specificDate = new Date(2024, 5, 15, 14, 30, 0);
+            const timestamp = Date.now();
+            const customDate = new Date();
+            customDate.setFullYear(2025);
+            customDate.setMonth(11);
+            customDate.setDate(25);
+            customDate.setHours(20, 0, 0);
+            
+            let output = '';
+            output += 'Дата словами: ' + getDateInWords(today) + '\n\n';
+            output += 'Конкретная дата: ' + specificDate + '\n\n';
+            output += 'Текущий timestamp: ' + timestamp + '\n';
+            output += 'Дата из timestamp: ' + new Date(timestamp) + '\n\n';
+            output += 'Настроенная дата: ' + customDate + '\n';
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Задача 3: Разность между timestamp и объектами Date
+        function runTask3() {
+            function getDateDifference(startDate, endDate) {
+                const diffTime = Math.abs(endDate - startDate);
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffMonths = Math.floor(diffDays / 30);
+                const diffYears = Math.floor(diffMonths / 12);
+                
+                return {
+                    days: diffDays,
+                    months: diffMonths,
+                    years: diffYears,
+                    totalMilliseconds: diffTime
+                };
+            }
+
+            const date1 = new Date(2024, 0, 1);
+            const date2 = new Date(2024, 11, 31);
+            const diffMilliseconds = date2 - date1;
+            const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+            const autoCorrectDate = new Date(2024, 0, 32);
+            const birthday = new Date(1990, 5, 15);
+            const today = new Date();
+            
+            let output = '';
+            output += 'Разность в миллисекундах: ' + diffMilliseconds + '\n';
+            output += 'Разность в днях: ' + diffDays + '\n\n';
+            output += 'Автокорректировка даты: ' + autoCorrectDate + '\n\n';
+            output += 'Разность с днем рождения: ' + JSON.stringify(getDateDifference(birthday, today), null, 2) + '\n';
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        // Задача 4: Нахождение последнего дня месяца и високосные годы
+        function runTask4() {
+            function getLastDayOfMonth(year, month) {
+                return new Date(year, month + 1, 0).getDate();
+            }
+
+            function isLeapYear(year) {
+                return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            }
+
+            function isValidDate(year, month, day) {
+                const date = new Date(year, month, day);
+                return date.getFullYear() === year && 
+                       date.getMonth() === month && 
+                       date.getDate() === day;
+            }
+
+            function getDayOfYear(date) {
+                const start = new Date(date.getFullYear(), 0, 0);
+                const diff = date - start;
+                const oneDay = 1000 * 60 * 60 * 24;
+                return Math.floor(diff / oneDay);
+            }
+
+            const currentDate = new Date();
+            
+            let output = '';
+            output += 'Последний день февраля 2024: ' + getLastDayOfMonth(2024, 1) + '\n';
+            output += 'Последний день декабря 2024: ' + getLastDayOfMonth(2024, 11) + '\n\n';
+            output += '2024 високосный? ' + isLeapYear(2024) + '\n';
+            output += '2023 високосный? ' + isLeapYear(2023) + '\n';
+            output += '2000 високосный? ' + isLeapYear(2000) + '\n';
+            output += '1900 високосный? ' + isLeapYear(1900) + '\n\n';
+            output += '29.02.2024 корректна? ' + isValidDate(2024, 1, 29) + '\n';
+            output += '29.02.2023 корректна? ' + isValidDate(2023, 1, 29) + '\n';
+            output += '32.01.2024 корректна? ' + isValidDate(2024, 0, 32) + '\n\n';
+            output += 'Текущий день года: ' + getDayOfYear(currentDate) + '\n';
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Задача 5: Навигация по датам
+        function runTask5() {
+            function getNextMonthSameDay(date) {
+                const result = new Date(date);
+                result.setMonth(result.getMonth() + 1);
+                if (result.getDate() !== date.getDate()) {
+                    result.setDate(0);
+                }
+                return result;
+            }
+
+            function getPreviousMonthSameDay(date) {
+                const result = new Date(date);
+                result.setMonth(result.getMonth() - 1);
+                if (result.getDate() !== date.getDate()) {
+                    result.setDate(0);
+                }
+                return result;
+            }
+
+            function addYears(date, years) {
+                const result = new Date(date);
+                result.setFullYear(result.getFullYear() + years);
+                return result;
+            }
+
+            function subtractYears(date, years) {
+                return addYears(date, -years);
+            }
+
+            function getTimeDifference(start, end) {
+                const diff = end - start;
+                return {
+                    milliseconds: diff,
+                    seconds: Math.floor(diff / 1000),
+                    minutes: Math.floor(diff / (1000 * 60)),
+                    hours: Math.floor(diff / (1000 * 60 * 60)),
+                    days: Math.floor(diff / (1000 * 60 * 60 * 24))
+                };
+            }
+
+            const testDate = new Date(2024, 0, 31);
+            const today = new Date();
+            const start = new Date(2024, 0, 1);
+            const end = new Date(2024, 0, 15);
+            
+            let output = '';
+            output += 'Исходная дата: ' + testDate.toLocaleDateString() + '\n';
+            output += 'Следующий месяц: ' + getNextMonthSameDay(testDate).toLocaleDateString() + '\n';
+            output += 'Предыдущий месяц: ' + getPreviousMonthSameDay(testDate).toLocaleDateString() + '\n\n';
+            output += 'Сегодня: ' + today.toLocaleDateString() + '\n';
+            output += 'Через год: ' + addYears(today, 1).toLocaleDateString() + '\n';
+            output += 'Год назад: ' + subtractYears(today, 1).toLocaleDateString() + '\n\n';
+            output += 'Разность 2 недель: ' + JSON.stringify(getTimeDifference(start, end), null, 2) + '\n';
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        // Задача 6: Работа с моментами времени дня
+        function runTask6() {
+            function getTimeOfDay(date) {
+                const hours = date.getHours();
+                if (hours >= 5 && hours < 12) return 'Утро';
+                if (hours >= 12 && hours < 17) return 'День';
+                if (hours >= 17 && hours < 22) return 'Вечер';
+                return 'Ночь';
+            }
+
+            function getStartOfDay(date) {
+                const start = new Date(date);
+                start.setHours(0, 0, 0, 0);
+                return start;
+            }
+
+            function getEndOfDay(date) {
+                const end = new Date(date);
+                end.setHours(23, 59, 59, 999);
+                return end;
+            }
+
+            function isTimeInRange(startTime, endTime, checkTime) {
+                const start = new Date();
+                start.setHours(...startTime.split(':').map(Number), 0, 0);
+                const end = new Date();
+                end.setHours(...endTime.split(':').map(Number), 0, 0);
+                const check = new Date();
+                check.setHours(...checkTime.split(':').map(Number), 0, 0);
+                return check >= start && check <= end;
+            }
+
+            function getNextHour(date) {
+                const next = new Date(date);
+                next.setHours(next.getHours() + 1, 0, 0, 0);
+                return next;
+            }
+
+            function getNextDay(date) {
+                const next = new Date(date);
+                next.setDate(next.getDate() + 1);
+                next.setHours(0, 0, 0, 0);
+                return next;
+            }
+
+            const now = new Date();
+            const today = new Date();
+            
+            let output = '';
+            output += 'Сейчас: ' + getTimeOfDay(now) + '\n\n';
+            output += 'Начало сегодняшнего дня: ' + getStartOfDay(today) + '\n';
+            output += 'Конец сегодняшнего дня: ' + getEndOfDay(today) + '\n\n';
+            output += '14:30 в диапазоне 09:00-18:00? ' + isTimeInRange('09:00', '18:00', '14:30') + '\n';
+            output += '20:00 в диапазоне 09:00-18:00? ' + isTimeInRange('09:00', '18:00', '20:00') + '\n\n';
+            output += 'Следующий час: ' + getNextHour(new Date()) + '\n';
+            output += 'Следующий день: ' + getNextDay(new Date()) + '\n';
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Задача 7: Сравнение дат различными способами
+        function runTask7() {
+            function compareDatesWithoutYear(date1, date2) {
+                const d1 = new Date(2000, date1.getMonth(), date1.getDate());
+                const d2 = new Date(2000, date2.getMonth(), date2.getDate());
+                return d1 - d2;
+            }
+
+            function isDateInRange(date, start, end) {
+                return date >= start && date <= end;
+            }
+
+            function areDatesEqual(date1, date2) {
+                return date1.getTime() === date2.getTime();
+            }
+
+            function areDatesSameDay(date1, date2) {
+                return date1.getFullYear() === date2.getFullYear() &&
+                       date1.getMonth() === date2.getMonth() &&
+                       date1.getDate() === date2.getDate();
+            }
+
+            function compareDatesWithTime(date1, date2) {
+                if (date1 < date2) return -1;
+                if (date1 > date2) return 1;
+                return 0;
+            }
+
+            const dateStr1 = '2024-03-15';
+            const dateStr2 = '2024-03-20';
+            const springDate = new Date(2024, 2, 21);
+            const autumnDate = new Date(2024, 8, 23);
+            const checkDate = new Date(2024, 5, 15);
+            const rangeStart = new Date(2024, 5, 1);
+            const rangeEnd = new Date(2024, 5, 30);
+            const dateA = new Date(2024, 5, 15, 10, 30);
+            const dateB = new Date(2024, 5, 15, 14, 45);
+            const dateC = new Date(2024, 5, 16, 10, 30);
+            
+            let output = '';
+            output += 'Строковое сравнение: ' + (dateStr1 < dateStr2) + '\n\n';
+            output += 'Сравнение без года: ' + (compareDatesWithoutYear(springDate, autumnDate) > 0 ? 'Осень позже' : 'Весна раньше') + '\n\n';
+            output += 'Дата в промежутке: ' + isDateInRange(checkDate, rangeStart, rangeEnd) + '\n\n';
+            output += 'dateA и dateB равны? ' + areDatesEqual(dateA, dateB) + '\n';
+            output += 'dateA и dateB один день? ' + areDatesSameDay(dateA, dateB) + '\n';
+            output += 'dateA и dateC один день? ' + areDatesSameDay(dateA, dateC) + '\n\n';
+            output += 'Сравнение dateA и dateB: ' + compareDatesWithTime(dateA, dateB) + '\n';
+            output += 'Сравнение dateA и dateC: ' + compareDatesWithTime(dateA, dateC) + '\n';
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

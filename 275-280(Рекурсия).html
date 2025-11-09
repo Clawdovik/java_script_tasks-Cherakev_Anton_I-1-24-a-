@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Рекурсия</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - РЕКУРСИЯ</h1>
+        <p class="subtitle">Функция, вызывающая саму себя - мощный инструмент программирования</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Рекурсия - это техника программирования, когда функция вызывает саму себя для решения задачи.</p>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Основы рекурсии -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>ОСНОВЫ РЕКУРСИИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Простая рекурсия - обратный отсчет</div>
+                <div class="code-block">function countdown(n) {
+    // Базовый случай - условие выхода из рекурсии
+    if (n <= 0) {
+        console.log("Пуск!");
+        return;
+    }
+    
+    // Рекурсивный случай - функция вызывает саму себя
+    console.log(n);
+    countdown(n - 1);
+}
+
+countdown(5);</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Факториал через рекурсию</div>
+                <div class="code-block">function factorial(n) {
+    // Базовый случай: 0! = 1, 1! = 1
+    if (n === 0 || n === 1) {
+        return 1;
+    }
+    
+    // Рекурсивный случай: n! = n * (n-1)!
+    return n * factorial(n - 1);
+}
+
+console.log("Факториал 5:", factorial(5));
+console.log("Факториал 7:", factorial(7));
+console.log("Факториал 0:", factorial(0));</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Пример с параметром -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРИМЕР С ПАРАМЕТРОМ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Рекурсия с аккумулятором</div>
+                <div class="code-block">function sumRange(n, total = 0) {
+    if (n <= 0) {
+        return total;
+    }
+    console.log(`n=${n}, total=${total}`);
+    return sumRange(n - 1, total + n);
+}
+
+console.log("Сумма чисел от 1 до 5:", sumRange(5));</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Рекурсивное возведение в степень</div>
+                <div class="code-block">function power(base, exponent) {
+    // Базовый случай
+    if (exponent === 0) {
+        return 1;
+    }
+    if (exponent === 1) {
+        return base;
+    }
+    
+    // Рекурсивный случай
+    return base * power(base, exponent - 1);
+}
+
+console.log("2^5 =", power(2, 5));
+console.log("3^4 =", power(3, 4));
+console.log("5^0 =", power(5, 0));</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Сумма элементов массива при рекурсии -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">📊</div>
+                <h2>СУММА ЭЛЕМЕНТОВ МАССИВА ПРИ РЕКУРСИИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Сумма элементов массива</div>
+                <div class="code-block">function sumArray(arr) {
+    // Базовый случай: пустой массив
+    if (arr.length === 0) {
+        return 0;
+    }
+    
+    // Рекурсивный случай: первый элемент + сумма остальных
+    return arr[0] + sumArray(arr.slice(1));
+}
+
+let numbers = [1, 2, 3, 4, 5];
+console.log("Массив:", numbers);
+console.log("Сумма элементов:", sumArray(numbers));</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Сумма с индексами (без slice)</div>
+                <div class="code-block">function sumArrayIndex(arr, index = 0) {
+    // Базовый случай: дошли до конца массива
+    if (index >= arr.length) {
+        return 0;
+    }
+    
+    // Рекурсивный случай: текущий элемент + сумма остальных
+    return arr[index] + sumArrayIndex(arr, index + 1);
+}
+
+let nums = [10, 20, 30, 40];
+console.log("Массив:", nums);
+console.log("Сумма элементов:", sumArrayIndex(nums));</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Многомерные структуры -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎲</div>
+                <h2>МНОГОМЕРНЫЕ СТРУКТУРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Глубокое копирование объекта</div>
+                <div class="code-block">function deepCopy(obj) {
+    // Базовый случай: не объект или null
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+    
+    // Обработка массивов
+    if (Array.isArray(obj)) {
+        return obj.map(item => deepCopy(item));
+    }
+    
+    // Обработка объектов
+    let copy = {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            copy[key] = deepCopy(obj[key]);
+        }
+    }
+    return copy;
+}
+
+let original = {
+    name: "Иван",
+    age: 30,
+    hobbies: ["чтение", "программирование"],
+    address: {
+        city: "Москва",
+        street: "Ленина"
+    }
+};
+
+let copied = deepCopy(original);
+console.log("Оригинал:", original);
+console.log("Копия:", copied);
+console.log("Равны?", original === copied);</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Обход дерева</div>
+                <div class="code-block">// Древовидная структура
+let company = {
+    name: "CEO",
+    subordinates: [
+        {
+            name: "Менеджер отдела A",
+            subordinates: [
+                { name: "Разработчик 1", subordinates: [] },
+                { name: "Разработчик 2", subordinates: [] }
+            ]
+        },
+        {
+            name: "Менеджер отдела B",
+            subordinates: [
+                { name: "Дизайнер 1", subordinates: [] },
+                { 
+                    name: "Тимлид", 
+                    subordinates: [
+                        { name: "Тестировщик 1", subordinates: [] }
+                    ]
+                }
+            ]
+        }
+    ]
+};
+
+function traverseTree(node, level = 0) {
+    let indent = "  ".repeat(level);
+    console.log(indent + node.name);
+    
+    // Рекурсивно обходим всех подчиненных
+    node.subordinates.forEach(sub => {
+        traverseTree(sub, level + 1);
+    });
+}
+
+traverseTree(company);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Сумма элементов массива -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🧮</div>
+                <h2>СУММА ЭЛЕМЕНТОВ МАССИВА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Поиск максимального элемента</div>
+                <div class="code-block">function findMax(arr) {
+    // Базовый случай: один элемент
+    if (arr.length === 1) {
+        return arr[0];
+    }
+    
+    // Рекурсивный случай: сравниваем первый элемент с максимумом остальных
+    let maxOfRest = findMax(arr.slice(1));
+    return arr[0] > maxOfRest ? arr[0] : maxOfRest;
+}
+
+let testArray = [3, 7, 2, 9, 1, 8];
+console.log("Массив:", testArray);
+console.log("Максимальный элемент:", findMax(testArray));</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Фильтрация массива</div>
+                <div class="code-block">function filterArray(arr, predicate, index = 0, result = []) {
+    // Базовый случай: дошли до конца массива
+    if (index >= arr.length) {
+        return result;
+    }
+    
+    // Рекурсивный случай: добавляем элемент если он удовлетворяет условию
+    if (predicate(arr[index])) {
+        result.push(arr[index]);
+    }
+    
+    return filterArray(arr, predicate, index + 1, result);
+}
+
+let numbersToFilter = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+console.log("Исходный массив:", numbersToFilter);
+
+let evenNumbers = filterArray(numbersToFilter, n => n % 2 === 0);
+console.log("Четные числа:", evenNumbers);
+
+let greaterThan5 = filterArray(numbersToFilter, n => n > 5);
+console.log("Числа больше 5:", greaterThan5);</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Манипуляции со структурами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🏗️</div>
+                <h2>МАНИПУЛЯЦИИ СО СТРУКТУРАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Плоское представление массива</div>
+                <div class="code-block">function flattenArray(arr) {
+    let result = [];
+    
+    for (let item of arr) {
+        if (Array.isArray(item)) {
+            // Рекурсивно обрабатываем вложенные массивы
+            result = result.concat(flattenArray(item));
+        } else {
+            result.push(item);
+        }
+    }
+    
+    return result;
+}
+
+let nestedArray = [1, [2, 3], [4, [5, 6]], 7, [8, [9, [10]]]];
+console.log("Вложенный массив:", nestedArray);
+console.log("Плоский массив:", flattenArray(nestedArray));</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Поиск в глубину (DFS)</div>
+                <div class="code-block">// Граф в виде списка смежности
+let graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+};
+
+function dfs(graph, start, visited = new Set()) {
+    console.log("Посещаем узел:", start);
+    visited.add(start);
+    
+    // Рекурсивно посещаем всех соседей
+    for (let neighbor of graph[start]) {
+        if (!visited.has(neighbor)) {
+            dfs(graph, neighbor, visited);
+        }
+    }
+    
+    return visited;
+}
+
+console.log("Обход графа в глубину начиная с A:");
+dfs(graph, 'A');</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Числа Фибоначчи</div>
+                <div class="code-block">function fibonacci(n) {
+    // Базовые случаи
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    
+    // Рекурсивный случай
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Мемоизация для оптимизации
+function fibonacciMemo(n, memo = {}) {
+    if (n in memo) return memo[n];
+    
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    
+    memo[n] = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);
+    return memo[n];
+}
+
+console.log("Числа Фибоначчи (обычная рекурсия):");
+for (let i = 0; i <= 8; i++) {
+    console.log(`F(${i}) = ${fibonacci(i)}`);
+}
+
+console.log("\nЧисла Фибоначчи (с мемоизацией):");
+for (let i = 0; i <= 8; i++) {
+    console.log(`F(${i}) = ${fibonacciMemo(i)}`);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">💡</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Бинарный поиск</div>
+                <div class="code-block">function binarySearch(arr, target, left = 0, right = arr.length - 1) {
+    // Базовый случай: элемент не найден
+    if (left > right) {
+        return -1;
+    }
+    
+    // Находим середину
+    let mid = Math.floor((left + right) / 2);
+    
+    console.log(`Поиск в диапазоне [${left}, ${right}], середина: ${mid}`);
+    
+    // Базовый случай: элемент найден
+    if (arr[mid] === target) {
+        return mid;
+    }
+    
+    // Рекурсивный случай: ищем в левой или правой половине
+    if (arr[mid] > target) {
+        return binarySearch(arr, target, left, mid - 1);
+    } else {
+        return binarySearch(arr, target, mid + 1, right);
+    }
+}
+
+let sortedArray = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+let target = 13;
+
+console.log("Отсортированный массив:", sortedArray);
+console.log("Ищем элемент:", target);
+let index = binarySearch(sortedArray, target);
+console.log("Элемент найден на позиции:", index);</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Ханойская башня</div>
+                <div class="code-block">function hanoiTower(n, fromRod, toRod, auxRod) {
+    if (n === 1) {
+        console.log(`Переместить диск 1 с ${fromRod} на ${toRod}`);
+        return;
+    }
+    
+    // Перемещаем n-1 дисков на вспомогательный стержень
+    hanoiTower(n - 1, fromRod, auxRod, toRod);
+    
+    // Перемещаем самый большой диск на целевой стержень
+    console.log(`Переместить диск ${n} с ${fromRod} на ${toRod}`);
+    
+    // Перемещаем n-1 дисков с вспомогательного на целевой стержень
+    hanoiTower(n - 1, auxRod, toRod, fromRod);
+}
+
+console.log("Решение Ханойской башни для 3 дисков:");
+hanoiTower(3, 'A', 'C', 'B');</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Рекурсия &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Основы рекурсии
+        function runTask1() {
+            let output = "";
+            
+            function countdown(n) {
+                if (n <= 0) {
+                    output += "Пуск!\n";
+                    return;
+                }
+                output += n + "\n";
+                countdown(n - 1);
+            }
+            
+            countdown(5);
+            document.getElementById('output1').innerHTML = output;
+        }
+
+        function runTask2() {
+            let output = "";
+            
+            function factorial(n) {
+                if (n === 0 || n === 1) {
+                    return 1;
+                }
+                return n * factorial(n - 1);
+            }
+            
+            output += "Факториал 5: " + factorial(5) + "\n";
+            output += "Факториал 7: " + factorial(7) + "\n";
+            output += "Факториал 0: " + factorial(0) + "\n";
+            
+            document.getElementById('output2').innerHTML = output;
+        }
+
+        // Раздел 2: Пример с параметром
+        function runTask3() {
+            let output = "";
+            
+            function sumRange(n, total = 0) {
+                if (n <= 0) {
+                    return total;
+                }
+                output += `n=${n}, total=${total}\n`;
+                return sumRange(n - 1, total + n);
+            }
+            
+            let result = sumRange(5);
+            output += "Сумма чисел от 1 до 5: " + result + "\n";
+            
+            document.getElementById('output3').innerHTML = output;
+        }
+
+        function runTask4() {
+            let output = "";
+            
+            function power(base, exponent) {
+                if (exponent === 0) {
+                    return 1;
+                }
+                if (exponent === 1) {
+                    return base;
+                }
+                return base * power(base, exponent - 1);
+            }
+            
+            output += "2^5 = " + power(2, 5) + "\n";
+            output += "3^4 = " + power(3, 4) + "\n";
+            output += "5^0 = " + power(5, 0) + "\n";
+            
+            document.getElementById('output4').innerHTML = output;
+        }
+
+        // Раздел 3: Сумма элементов массива при рекурсии
+        function runTask5() {
+            let output = "";
+            
+            function sumArray(arr) {
+                if (arr.length === 0) {
+                    return 0;
+                }
+                return arr[0] + sumArray(arr.slice(1));
+            }
+            
+            let numbers = [1, 2, 3, 4, 5];
+            output += "Массив: " + JSON.stringify(numbers) + "\n";
+            output += "Сумма элементов: " + sumArray(numbers) + "\n";
+            
+            document.getElementById('output5').innerHTML = output;
+        }
+
+        function runTask6() {
+            let output = "";
+            
+            function sumArrayIndex(arr, index = 0) {
+                if (index >= arr.length) {
+                    return 0;
+                }
+                return arr[index] + sumArrayIndex(arr, index + 1);
+            }
+            
+            let nums = [10, 20, 30, 40];
+            output += "Массив: " + JSON.stringify(nums) + "\n";
+            output += "Сумма элементов: " + sumArrayIndex(nums) + "\n";
+            
+            document.getElementById('output6').innerHTML = output;
+        }
+
+        // Раздел 4: Многомерные структуры
+        function runTask7() {
+            let output = "";
+            
+            function deepCopy(obj) {
+                if (obj === null || typeof obj !== 'object') {
+                    return obj;
+                }
+                
+                if (Array.isArray(obj)) {
+                    return obj.map(item => deepCopy(item));
+                }
+                
+                let copy = {};
+                for (let key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        copy[key] = deepCopy(obj[key]);
+                    }
+                }
+                return copy;
+            }
+            
+            let original = {
+                name: "Иван",
+                age: 30,
+                hobbies: ["чтение", "программирование"],
+                address: {
+                    city: "Москва",
+                    street: "Ленина"
+                }
+            };
+            
+            let copied = deepCopy(original);
+            output += "Оригинал: " + JSON.stringify(original, null, 2) + "\n";
+            output += "Копия: " + JSON.stringify(copied, null, 2) + "\n";
+            output += "Равны? " + (original === copied) + "\n";
+            
+            document.getElementById('output7').innerHTML = output;
+        }
+
+        function runTask8() {
+            let output = "";
+            
+            let company = {
+                name: "CEO",
+                subordinates: [
+                    {
+                        name: "Менеджер отдела A",
+                        subordinates: [
+                            { name: "Разработчик 1", subordinates: [] },
+                            { name: "Разработчик 2", subordinates: [] }
+                        ]
+                    },
+                    {
+                        name: "Менеджер отдела B",
+                        subordinates: [
+                            { name: "Дизайнер 1", subordinates: [] },
+                            { 
+                                name: "Тимлид", 
+                                subordinates: [
+                                    { name: "Тестировщик 1", subordinates: [] }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            function traverseTree(node, level = 0) {
+                let indent = "  ".repeat(level);
+                output += indent + node.name + "\n";
+                
+                node.subordinates.forEach(sub => {
+                    traverseTree(sub, level + 1);
+                });
+            }
+            
+            traverseTree(company);
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        // Раздел 5: Сумма элементов массива
+        function runTask9() {
+            let output = "";
+            
+            function findMax(arr) {
+                if (arr.length === 1) {
+                    return arr[0];
+                }
+                
+                let maxOfRest = findMax(arr.slice(1));
+                return arr[0] > maxOfRest ? arr[0] : maxOfRest;
+            }
+            
+            let testArray = [3, 7, 2, 9, 1, 8];
+            output += "Массив: " + JSON.stringify(testArray) + "\n";
+            output += "Максимальный элемент: " + findMax(testArray) + "\n";
+            
+            document.getElementById('output9').innerHTML = output;
+        }
+
+        function runTask10() {
+            let output = "";
+            
+            function filterArray(arr, predicate, index = 0, result = []) {
+                if (index >= arr.length) {
+                    return result;
+                }
+                
+                if (predicate(arr[index])) {
+                    result.push(arr[index]);
+                }
+                
+                return filterArray(arr, predicate, index + 1, result);
+            }
+            
+            let numbersToFilter = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            output += "Исходный массив: " + JSON.stringify(numbersToFilter) + "\n";
+            
+            let evenNumbers = filterArray(numbersToFilter, n => n % 2 === 0);
+            output += "Четные числа: " + JSON.stringify(evenNumbers) + "\n";
+            
+            let greaterThan5 = filterArray(numbersToFilter, n => n > 5);
+            output += "Числа больше 5: " + JSON.stringify(greaterThan5) + "\n";
+            
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 6: Манипуляции со структурами
+        function runTask11() {
+            let output = "";
+            
+            function flattenArray(arr) {
+                let result = [];
+                
+                for (let item of arr) {
+                    if (Array.isArray(item)) {
+                        result = result.concat(flattenArray(item));
+                    } else {
+                        result.push(item);
+                    }
+                }
+                
+                return result;
+            }
+            
+            let nestedArray = [1, [2, 3], [4, [5, 6]], 7, [8, [9, [10]]]];
+            output += "Вложенный массив: " + JSON.stringify(nestedArray) + "\n";
+            output += "Плоский массив: " + JSON.stringify(flattenArray(nestedArray)) + "\n";
+            
+            document.getElementById('output11').innerHTML = output;
+        }
+
+        function runTask12() {
+            let output = "";
+            
+            let graph = {
+                'A': ['B', 'C'],
+                'B': ['A', 'D', 'E'],
+                'C': ['A', 'F'],
+                'D': ['B'],
+                'E': ['B', 'F'],
+                'F': ['C', 'E']
+            };
+            
+            function dfs(graph, start, visited = new Set()) {
+                output += "Посещаем узел: " + start + "\n";
+                visited.add(start);
+                
+                for (let neighbor of graph[start]) {
+                    if (!visited.has(neighbor)) {
+                        dfs(graph, neighbor, visited);
+                    }
+                }
+                
+                return visited;
+            }
+            
+            output += "Обход графа в глубину начиная с A:\n";
+            dfs(graph, 'A');
+            
+            document.getElementById('output12').innerHTML = output;
+        }
+
+        function runTask13() {
+            let output = "";
+            
+            function fibonacci(n) {
+                if (n === 0) return 0;
+                if (n === 1) return 1;
+                return fibonacci(n - 1) + fibonacci(n - 2);
+            }
+            
+            function fibonacciMemo(n, memo = {}) {
+                if (n in memo) return memo[n];
+                
+                if (n === 0) return 0;
+                if (n === 1) return 1;
+                
+                memo[n] = fibonacciMemo(n - 1, memo) + fibonacciMemo(n - 2, memo);
+                return memo[n];
+            }
+            
+            output += "Числа Фибоначчи (обычная рекурсия):\n";
+            for (let i = 0; i <= 8; i++) {
+                output += `F(${i}) = ${fibonacci(i)}\n`;
+            }
+            
+            output += "\nЧисла Фибоначчи (с мемоизацией):\n";
+            for (let i = 0; i <= 8; i++) {
+                output += `F(${i}) = ${fibonacciMemo(i)}\n`;
+            }
+            
+            document.getElementById('output13').innerHTML = output;
+        }
+
+        // Раздел 7: Практические задачи
+        function runTask14() {
+            let output = "";
+            
+            function binarySearch(arr, target, left = 0, right = arr.length - 1) {
+                if (left > right) {
+                    return -1;
+                }
+                
+                let mid = Math.floor((left + right) / 2);
+                
+                output += `Поиск в диапазоне [${left}, ${right}], середина: ${mid}\n`;
+                
+                if (arr[mid] === target) {
+                    return mid;
+                }
+                
+                if (arr[mid] > target) {
+                    return binarySearch(arr, target, left, mid - 1);
+                } else {
+                    return binarySearch(arr, target, mid + 1, right);
+                }
+            }
+            
+            let sortedArray = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+            let target = 13;
+            
+            output += "Отсортированный массив: " + JSON.stringify(sortedArray) + "\n";
+            output += "Ищем элемент: " + target + "\n";
+            let index = binarySearch(sortedArray, target);
+            output += "Элемент найден на позиции: " + index + "\n";
+            
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        function runTask15() {
+            let output = "";
+            
+            function hanoiTower(n, fromRod, toRod, auxRod) {
+                if (n === 1) {
+                    output += `Переместить диск 1 с ${fromRod} на ${toRod}\n`;
+                    return;
+                }
+                
+                hanoiTower(n - 1, fromRod, auxRod, toRod);
+                output += `Переместить диск ${n} с ${fromRod} на ${toRod}\n`;
+                hanoiTower(n - 1, auxRod, toRod, fromRod);
+            }
+            
+            output += "Решение Ханойской башни для 3 дисков:\n";
+            hanoiTower(3, 'A', 'C', 'B');
+            
+            document.getElementById('output15').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

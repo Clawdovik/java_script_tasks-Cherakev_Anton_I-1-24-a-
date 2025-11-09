@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Введение в DOM</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Элементы для демонстрации */
+        .demo-element {
+            background: #1a1a2a;
+            border: 1px solid #00ffcc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            color: #00ffcc;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .demo-box {
+            background: #0a0a12;
+            border: 1px solid #ff00ff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-box:hover {
+            background: #1a1a2a;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .demo-box.active {
+            background: #ff00ff;
+            color: #0a0a12;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        input, textarea, select {
+            background: #0a0a12;
+            border: 1px solid #00ccff;
+            color: #00ffcc;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ccff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - ВВЕДЕНИЕ В DOM</h1>
+        <p class="subtitle">Document Object Model - взаимодействие с HTML документами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Основы DOM -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🌐</div>
+                <h2>ОСНОВЫ DOM</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Получение DOM элементов</div>
+                <div class="code-block">// Различные способы получения DOM элементов
+function demonstrateElementSelection() {
+    console.log("=== Получение элементов по ID ===");
+    const header = document.getElementById('main-header');
+    console.log("header:", header);
+    console.log("header.textContent:", header?.textContent);
+    
+    console.log("\n=== Получение элементов по классу ===");
+    const demoElements = document.getElementsByClassName('demo-element');
+    console.log("demoElements:", demoElements);
+    console.log("Количество элементов:", demoElements.length);
+    
+    console.log("\n=== Получение элементов по тегу ===");
+    const paragraphs = document.getElementsByTagName('p');
+    console.log("paragraphs:", paragraphs);
+    console.log("Количество параграфов:", paragraphs.length);
+    
+    console.log("\n=== Современные методы ===");
+    const firstDemo = document.querySelector('.demo-element');
+    console.log("querySelector('.demo-element'):", firstDemo);
+    
+    const allDemos = document.querySelectorAll('.demo-element');
+    console.log("querySelectorAll('.demo-element'):", allDemos);
+    console.log("Количество:", allDemos.length);
+    
+    const container = document.querySelector('#demo-container');
+    console.log("querySelector('#demo-container'):", container);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+                
+                <!-- Демонстрационные элементы -->
+                <div id="demo-container">
+                    <h2 id="main-header">Главный заголовок</h2>
+                    <p class="demo-element">Первый элемент</p>
+                    <p class="demo-element">Второй элемент</p>
+                    <div class="demo-element">Третий элемент</div>
+                </div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Сложные селекторы DOM элемента</div>
+                <div class="code-block">// Сложные CSS селекторы в DOM
+function demonstrateComplexSelectors() {
+    console.log("=== Комбинации селекторов ===");
+    
+    // Элемент с несколькими классами
+    const multiClass = document.querySelector('.demo-box.active');
+    console.log(".demo-box.active:", multiClass);
+    
+    // Дочерние элементы
+    const directChildren = document.querySelectorAll('#complex-demo > .child');
+    console.log("#complex-demo > .child:", directChildren);
+    
+    // Потомки
+    const descendants = document.querySelectorAll('#complex-demo .descendant');
+    console.log("#complex-demo .descendant:", descendants);
+    
+    // Соседние элементы
+    const adjacent = document.querySelector('.target + .sibling');
+    console.log(".target + .sibling:", adjacent);
+    
+    // Псевдоклассы
+    const firstChild = document.querySelector('.child:first-child');
+    console.log(".child:first-child:", firstChild);
+    
+    const lastChild = document.querySelector('.child:last-child');
+    console.log(".child:last-child:", lastChild);
+    
+    const evenChildren = document.querySelectorAll('.child:nth-child(even)');
+    console.log(".child:nth-child(even):", evenChildren);
+    
+    console.log("\n=== Атрибутные селекторы ===");
+    const withDataAttr = document.querySelector('[data-custom]');
+    console.log('[data-custom]:', withDataAttr);
+    
+    const exactValue = document.querySelector('[data-type="special"]');
+    console.log('[data-type="special"]:', exactValue);
+    
+    const containsValue = document.querySelector('[data-info*="test"]');
+    console.log('[data-info*="test"]:', containsValue);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+                
+                <!-- Демонстрационная структура для сложных селекторов -->
+                <div id="complex-demo">
+                    <div class="child target">Целевой элемент</div>
+                    <div class="child sibling" data-custom="true">Соседний элемент</div>
+                    <div class="child">
+                        <div class="descendant" data-type="special">Потомок 1</div>
+                    </div>
+                    <div class="child">
+                        <div class="descendant" data-info="test-value">Потомок 2</div>
+                    </div>
+                    <div class="child">Последний ребенок</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Обработчики событий -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ОБРАБОТЧИКИ СОБЫТИЙ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Привязывание обработчиков</div>
+                <div class="code-block">// Различные способы привязки обработчиков событий
+function demonstrateEventHandlers() {
+    console.log("=== Обработчики одного события ===");
+    
+    const button1 = document.getElementById('btn1');
+    const button2 = document.getElementById('btn2');
+    const button3 = document.getElementById('btn3');
+    
+    // 1. HTML атрибут (уже в разметке)
+    console.log("Кнопка 1: обработчик через HTML атрибут");
+    
+    // 2. Свойство элемента
+    button2.onclick = function() {
+        console.log("Кнопка 2: обработчик через свойство элемента");
+        updateOutput("Кнопка 2 нажата!");
+    };
+    
+    // 3. addEventListener (рекомендуемый способ)
+    button3.addEventListener('click', function() {
+        console.log("Кнопка 3: обработчик через addEventListener");
+        updateOutput("Кнопка 3 нажата!");
+    });
+    
+    // Несколько обработчиков на одном элементе
+    button3.addEventListener('click', function() {
+        console.log("Второй обработчик для кнопки 3");
+    });
+    
+    console.log("\n=== Обработчики разных событий ===");
+    
+    const multiEvent = document.getElementById('multi-event');
+    
+    multiEvent.addEventListener('mouseover', function() {
+        console.log("Мышь над элементом");
+        this.style.backgroundColor = '#ff00ff';
+    });
+    
+    multiEvent.addEventListener('mouseout', function() {
+        console.log("Мышь покинула элемент");
+        this.style.backgroundColor = '#0a0a12';
+    });
+    
+    multiEvent.addEventListener('dblclick', function() {
+        console.log("Двойной клик!");
+        updateOutput("Двойной клик на многофункциональном элементе!");
+    });
+}
+
+function updateOutput(message) {
+    const output = document.getElementById('output3');
+    output.innerHTML += message + '\n';
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+                
+                <!-- Демонстрационные кнопки -->
+                <div class="btn-group">
+                    <button id="btn1" onclick="console.log('HTML обработчик')">Кнопка 1 (HTML)</button>
+                    <button id="btn2">Кнопка 2 (свойство)</button>
+                    <button id="btn3">Кнопка 3 (addEventListener)</button>
+                </div>
+                <div id="multi-event" class="demo-box">Многофункциональный элемент</div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Один обработчик к элементам</div>
+                <div class="code-block">// Делегирование событий и один обработчик для группы
+function demonstrateEventDelegation() {
+    console.log("=== Один обработчик для группы элементов ===");
+    
+    const container = document.getElementById('group-container');
+    
+    // Один обработчик для всех кнопок в контейнере
+    container.addEventListener('click', function(event) {
+        // Проверяем, была ли нажата кнопка
+        if (event.target.tagName === 'BUTTON') {
+            const button = event.target;
+            const buttonText = button.textContent;
+            const buttonId = button.id;
+            
+            console.log(`Нажата кнопка: ${buttonText} (ID: ${buttonId})`);
+            
+            // Добавляем визуальную обратную связь
+            button.classList.add('active');
+            setTimeout(() => {
+                button.classList.remove('active');
+            }, 300);
+            
+            updateGroupOutput(`Нажата: ${buttonText}`);
+        }
+    });
+    
+    console.log("=== Именованные обработчики в цикле ===");
+    
+    const namedButtons = document.querySelectorAll('.named-btn');
+    
+    // Именованный обработчик
+    function handleNamedButtonClick(event) {
+        const button = event.target;
+        console.log(`Именованный обработчик: ${button.textContent}`);
+        updateGroupOutput(`Именованный: ${button.textContent}`);
+    }
+    
+    // Привязываем один именованный обработчик ко всем кнопкам
+    namedButtons.forEach(button => {
+        button.addEventListener('click', handleNamedButtonClick);
+    });
+    
+    console.log("=== Анонимные обработчики в цикле ===");
+    
+    const anonymousButtons = document.querySelectorAll('.anonymous-btn');
+    
+    // Анонимные обработчики в цикле (проблематично для удаления)
+    anonymousButtons.forEach((button, index) => {
+        button.addEventListener('click', function() {
+            console.log(`Анонимный обработчик ${index + 1}: ${this.textContent}`);
+            updateGroupOutput(`Анонимный ${index + 1}: ${this.textContent}`);
+        });
+    });
+}
+
+function updateGroupOutput(message) {
+    const output = document.getElementById('output4');
+    output.innerHTML += message + '\n';
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+                
+                <!-- Демонстрационные группы кнопок -->
+                <h4>Группа с делегированием событий:</h4>
+                <div id="group-container" class="demo-container">
+                    <button class="group-btn" id="btn-a">Кнопка A</button>
+                    <button class="group-btn" id="btn-b">Кнопка B</button>
+                    <button class="group-btn" id="btn-c">Кнопка C</button>
+                </div>
+
+                <h4>Именованные обработчики:</h4>
+                <div class="demo-container">
+                    <button class="named-btn">Именованный 1</button>
+                    <button class="named-btn">Именованный 2</button>
+                    <button class="named-btn">Именованный 3</button>
+                </div>
+
+                <h4>Анонимные обработчики:</h4>
+                <div class="demo-container">
+                    <button class="anonymous-btn">Анонимный 1</button>
+                    <button class="anonymous-btn">Анонимный 2</button>
+                    <button class="anonymous-btn">Анонимный 3</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Работа с содержимым и атрибутами -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔧</div>
+                <h2>РАБОТА С СОДЕРЖИМЫМ И АТРИБУТАМИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Текст и HTML элемента</div>
+                <div class="code-block">// Работа с текстовым содержимым и HTML
+function demonstrateContentManipulation() {
+    console.log("=== Текст элемента ===");
+    
+    const textDemo = document.getElementById('text-demo');
+    
+    console.log("textContent:", textDemo.textContent);
+    console.log("innerText:", textDemo.innerText);
+    
+    // Изменение текстового содержимого
+    textDemo.textContent = "Измененный текстовый контент!";
+    console.log("После textContent:", textDemo.textContent);
+    
+    console.log("\n=== HTML код элемента ===");
+    
+    const htmlDemo = document.getElementById('html-demo');
+    
+    console.log("innerHTML до:", htmlDemo.innerHTML);
+    
+    // Изменение HTML содержимого
+    htmlDemo.innerHTML = '<strong>Жирный текст</strong> и <em>курсив</em>';
+    console.log("innerHTML после:", htmlDemo.innerHTML);
+    
+    console.log("\n=== Безопасное добавление HTML ===");
+    
+    const safeDemo = document.getElementById('safe-demo');
+    const userInput = "Пример текста с <strong>HTML тегами</strong>";
+    
+    // Безопасный способ
+    safeDemo.textContent = userInput;
+    console.log("Безопасное содержимое:", safeDemo.textContent);
+    
+    console.log("\n=== Создание элементов ===");
+    
+    const container = document.getElementById('dynamic-container');
+    
+    // Создание элемента
+    const newElement = document.createElement('div');
+    newElement.className = 'dynamic-element';
+    newElement.textContent = 'Динамически созданный элемент';
+    
+    // Добавление в DOM
+    container.appendChild(newElement);
+    console.log("Добавлен новый элемент");
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+                
+                <!-- Демонстрационные элементы для работы с содержимым -->
+                <div id="text-demo" class="demo-element">Исходный текстовый контент</div>
+                <div id="html-demo" class="demo-element">Исходный <span>HTML</span> контент</div>
+                <div id="safe-demo" class="demo-element">Безопасная зона</div>
+                <div id="dynamic-container" class="demo-element"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Атрибуты тегов и свойства</div>
+                <div class="code-block">// Работа с атрибутами и свойствами
+function demonstrateAttributes() {
+    console.log("=== Атрибуты тегов как свойства ===");
+    
+    const link = document.getElementById('test-link');
+    
+    console.log("Атрибуты через свойства:");
+    console.log("link.href:", link.href);
+    console.log("link.id:", link.id);
+    console.log("link.className:", link.className);
+    
+    console.log("\n=== Методы для работы с атрибутами ===");
+    
+    console.log("getAttribute('data-custom'):", link.getAttribute('data-custom'));
+    console.log("hasAttribute('target'):", link.hasAttribute('target'));
+    
+    // Установка атрибутов
+    link.setAttribute('data-modified', 'true');
+    console.log("После setAttribute:", link.getAttribute('data-modified'));
+    
+    console.log("\n=== Работа с текстовыми полями ===");
+    
+    const textInput = document.getElementById('text-input');
+    const emailInput = document.getElementById('email-input');
+    
+    console.log("textInput.value:", textInput.value);
+    console.log("textInput.type:", textInput.type);
+    console.log("textInput.placeholder:", textInput.placeholder);
+    
+    // Изменение значения
+    textInput.value = "Новое значение";
+    console.log("После изменения value:", textInput.value);
+    
+    console.log("\n=== Фокус текстовых полей ===");
+    
+    textInput.addEventListener('focus', function() {
+        console.log("Текстовое поле получило фокус");
+        this.style.borderColor = '#00ffcc';
+    });
+    
+    textInput.addEventListener('blur', function() {
+        console.log("Текстовое поле потеряло фокус");
+        this.style.borderColor = '#00ccff';
+    });
+    
+    console.log("\n=== Атрибуты-исключения ===");
+    
+    const checkbox = document.getElementById('test-checkbox');
+    
+    console.log("checkbox.checked:", checkbox.checked);
+    console.log("getAttribute('checked'):", checkbox.getAttribute('checked'));
+    
+    // Для булевых атрибутов используем свойства, не setAttribute
+    checkbox.checked = true;
+    console.log("После checkbox.checked = true:", checkbox.checked);
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+                
+                <!-- Демонстрационные элементы для работы с атрибутами -->
+                <a id="test-link" href="#demo" class="demo-link" data-custom="value" target="_blank">Тестовая ссылка</a>
+                
+                <div class="input-group">
+                    <input type="text" id="text-input" placeholder="Введите текст">
+                    <input type="email" id="email-input" placeholder="Введите email">
+                    <label>
+                        <input type="checkbox" id="test-checkbox"> Чекбокс
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Продвинутые техники -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2>ПРОДВИНУТЫЕ ТЕХНИКИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Цепочки методов и объект this</div>
+                <div class="code-block">// Цепочки методов и работа с this
+function demonstrateChainingAndThis() {
+    console.log("=== Цепочки методов и свойств ===");
+    
+    const element = document.getElementById('chain-demo');
+    
+    // Цепочка методов
+    element.style.color = '#ff00ff';
+    element.style.backgroundColor = '#1a1a2a';
+    element.style.padding = '10px';
+    
+    console.log("Применены стили через цепочку");
+    
+    console.log("\n=== Преимущества и недостатки цепочек ===");
+    
+    // Преимущество: компактность
+    const chainElement = document.getElementById('chain-demo');
+    chainElement.classList.add('styled');
+    chainElement.setAttribute('data-modified', 'true');
+    
+    // Недостаток: сложность отладки
+    try {
+        const nonexistent = document.getElementById('nonexistent');
+        if (nonexistent) {
+            nonexistent.classList.add('test');
+            nonexistent.setAttribute('test', 'value');
+        }
+    } catch (error) {
+        console.log("Ошибка в цепочке:", error.message);
+    }
+    
+    console.log("\n=== Объект this в обработчиках ===");
+    
+    const thisButton = document.getElementById('this-demo');
+    
+    // Обычная функция - this ссылается на элемент
+    thisButton.addEventListener('click', function() {
+        console.log("this в обычной функции:", this);
+        console.log("this.textContent:", this.textContent);
+        this.style.backgroundColor = '#ff00ff';
+    });
+    
+    // Стрелочная функция - this наследуется из внешней области
+    thisButton.addEventListener('dblclick', () => {
+        console.log("this в стрелочной функции:", this); // window или undefined
+        // this.style.backgroundColor = '#00ffcc'; // Ошибка!
+    });
+    
+    console.log("\n=== Преимущество this ===");
+    
+    const buttons = document.querySelectorAll('.this-btn');
+    
+    // Без this - нужно использовать event.target
+    buttons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            console.log("Без this:", event.target.textContent);
+        });
+    });
+    
+    // С this - проще и понятнее
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            console.log("С this:", this.textContent);
+            this.classList.toggle('active');
+        });
+    });
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+                
+                <!-- Демонстрационные элементы для цепочек и this -->
+                <div id="chain-demo" class="demo-element">Демонстрация цепочек методов</div>
+                <button id="this-demo" class="demo-btn">Тестировать this</button>
+                <div class="demo-container">
+                    <button class="this-btn">Кнопка 1</button>
+                    <button class="this-btn">Кнопка 2</button>
+                    <button class="this-btn">Кнопка 3</button>
+                </div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Отвязывание обработчиков событий</div>
+                <div class="code-block">// Отвязывание обработчиков событий
+function demonstrateEventRemoval() {
+    console.log("=== Отвязывание обработчиков событий ===");
+    
+    const removableBtn = document.getElementById('removable-btn');
+    const toggleBtn = document.getElementById('toggle-handler');
+    
+    // Именованный обработчик для отвязывания
+    function removableHandler() {
+        console.log("Именованный обработчик выполнен");
+        updateRemovalOutput("Обработчик сработал!");
+    }
+    
+    // Привязываем обработчик
+    removableBtn.addEventListener('click', removableHandler);
+    console.log("Обработчик привязан");
+    
+    // Отвязывание по клику на другую кнопку
+    toggleBtn.addEventListener('click', function() {
+        if (removableBtn.hasAttribute('data-handler-removed')) {
+            // Повторно привязываем
+            removableBtn.addEventListener('click', removableHandler);
+            removableBtn.removeAttribute('data-handler-removed');
+            toggleBtn.textContent = "Отвязать обработчик";
+            console.log("Обработчик привязан");
+            updateRemovalOutput("Обработчик привязан");
+        } else {
+            // Отвязываем
+            removableBtn.removeEventListener('click', removableHandler);
+            removableBtn.setAttribute('data-handler-removed', 'true');
+            toggleBtn.textContent = "Привязать обработчик";
+            console.log("Обработчик отвязан");
+            updateRemovalOutput("Обработчик отвязан");
+        }
+    });
+    
+    console.log("\n=== Отвязывание обработчиков в цикле ===");
+    
+    const loopButtons = document.querySelectorAll('.loop-btn');
+    
+    // Именованный обработчик для отвязывания в цикле
+    function loopHandler() {
+        console.log("Обработчик цикла:", this.textContent);
+    }
+    
+    // Привязываем ко всем кнопкам
+    loopButtons.forEach(button => {
+        button.addEventListener('click', loopHandler);
+    });
+    
+    console.log("Обработчики привязаны к", loopButtons.length, "кнопкам");
+    
+    // Отвязывание всех обработчиков
+    document.getElementById('remove-loop').addEventListener('click', function() {
+        loopButtons.forEach(button => {
+            button.removeEventListener('click', loopHandler);
+        });
+        console.log("Все обработчики цикла отвязаны");
+        updateRemovalOutput("Обработчики цикла отвязаны");
+    });
+}
+
+function updateRemovalOutput(message) {
+    const output = document.getElementById('output8');
+    output.innerHTML += message + '\n';
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+                
+                <!-- Демонстрационные элементы для отвязывания обработчиков -->
+                <div class="btn-group">
+                    <button id="removable-btn">Кнопка с отвязываемым обработчиком</button>
+                    <button id="toggle-handler">Отвязать обработчик</button>
+                </div>
+
+                <h4>Обработчики в цикле:</h4>
+                <div class="demo-container">
+                    <button class="loop-btn">Цикл 1</button>
+                    <button class="loop-btn">Цикл 2</button>
+                    <button class="loop-btn">Цикл 3</button>
+                </div>
+                <button id="remove-loop">Отвязать обработчики цикла</button>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Практика и отладка -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2>ПРАКТИКА И ОТЛАДКА</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Советы по написанию кода</div>
+                <div class="code-block">// Советы и лучшие практики работы с DOM
+function demonstrateBestPractices() {
+    console.log("=== СОВЕТЫ ПО НАПИСАНИЮ КОДА ===");
+    
+    console.log("1. Всегда используйте addEventListener вместо onclick");
+    console.log("2. Используйте именованные функции для обработчиков, которые нужно отвязывать");
+    console.log("3. Для делегирования событий используйте event.target и event.currentTarget");
+    console.log("4. Проверяйте существование элементов перед работой с ними");
+    console.log("5. Используйте textContent вместо innerHTML для безопасного добавления текста");
+    console.log("6. Кэшируйте часто используемые DOM элементы в переменные");
+    console.log("7. Избегайте частых операций с DOM в циклах");
+    console.log("8. Используйте классы для изменения стилей вместо прямого style");
+    console.log("9. Удаляйте обработчики событий, когда они больше не нужны");
+    console.log("10. Используйте dataset для хранения пользовательских данных");
+    
+    console.log("\n=== Примеры хорошего кода ===");
+    
+    // Хорошо: кэширование элементов
+    const container = document.getElementById('best-practices');
+    const buttons = container.querySelectorAll('.best-btn');
+    
+    // Хорошо: именованные функции
+    function handleBestButtonClick() {
+        console.log("Хороший обработчик:", this.textContent);
+    }
+    
+    // Хорошо: привязка обработчиков
+    buttons.forEach(button => {
+        button.addEventListener('click', handleBestButtonClick);
+    });
+    
+    // Хорошо: делегирование событий
+    container.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delegated')) {
+            console.log("Делегирование:", event.target.textContent);
+        }
+    });
+    
+    console.log("\n=== Распространенные ошибки ===");
+    
+    // Плохо: частые DOM операции в цикле
+    const badExample = document.getElementById('bad-example');
+    if (badExample) {
+        for (let i = 0; i < 100; i++) {
+            // Плохо: каждую итерацию обращаемся к DOM
+            badExample.innerHTML += '<div>' + i + '</div>';
+        }
+    }
+    
+    // Лучше: накапливать строку и один раз добавить
+    let html = '';
+    for (let i = 0; i < 100; i++) {
+        html += '<div>' + i + '</div>';
+    }
+    if (badExample) {
+        badExample.innerHTML = html;
+    }
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+                
+                <!-- Демонстрационные элементы для лучших практик -->
+                <div id="best-practices" class="demo-container">
+                    <button class="best-btn">Лучшая кнопка 1</button>
+                    <button class="best-btn">Лучшая кнопка 2</button>
+                    <button class="delegated">Делегированная кнопка</button>
+                </div>
+                <div id="bad-example" class="demo-element"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Практика на поиск ошибок</div>
+                <div class="code-block">// Поиск и исправление распространенных ошибок
+function demonstrateErrorFinding() {
+    console.log("=== ПРАКТИКА НА ПОИСК ОШИБОК ===");
+    
+    console.log("Найдите и исправьте ошибки в следующих примерах:");
+    
+    console.log("\n--- Ошибка 1: Работа с несуществующим элементом ---");
+    console.log("Плохой код: document.getElementById('nonexistent').style.color = 'red';");
+    console.log("Решение: Проверять существование элемента");
+    
+    const element1 = document.getElementById('nonexistent');
+    if (element1) {
+        element1.style.color = 'red';
+    } else {
+        console.log("Элемент не найден - это нормально!");
+    }
+    
+    console.log("\n--- Ошибка 2: Неправильное использование this в стрелочных функциях ---");
+    console.log("Плохой код: button.addEventListener('click', () => { this.style.color = 'red'; });");
+    console.log("Решение: Использовать обычные функции или event.target");
+    
+    const button2 = document.getElementById('error-button');
+    button2.addEventListener('click', function() {
+        this.style.color = '#ff00ff';
+    });
+    
+    console.log("\n--- Ошибка 3: Попытка отвязать анонимный обработчик ---");
+    console.log("Плохой код: element.removeEventListener('click', function() { ... });");
+    console.log("Решение: Использовать именованные функции");
+    
+    function namedHandler() {
+        console.log("Этот обработчик можно отвязать");
+    }
+    
+    const button3 = document.getElementById('error-button');
+    button3.addEventListener('click', namedHandler);
+    
+    console.log("\n--- Ошибка 4: XSS уязвимость через innerHTML ---");
+    console.log("Плохой код: element.innerHTML = userInput;");
+    console.log("Решение: Использовать textContent или санитизацию");
+    
+    const safeElement = document.getElementById('safe-output');
+    const userInput = "Пример пользовательского ввода";
+    
+    // Безопасно:
+    safeElement.textContent = userInput;
+    
+    console.log("\n--- Ошибка 5: Частые операции с DOM в цикле ---");
+    console.log("Плохой код: for(let i=0; i<1000; i++) { container.innerHTML += '<div>' + i + '</div>'; }");
+    console.log("Решение: Накопить строку и один раз добавить");
+    
+    const container = document.getElementById('optimized-container');
+    let html = '';
+    for (let i = 0; i < 10; i++) {
+        html += '<div class="optimized">Оптимизированный элемент ' + i + '</div>';
+    }
+    container.innerHTML = html;
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+                
+                <!-- Демонстрационные элементы для поиска ошибок -->
+                <button id="error-button">Кнопка для тестирования ошибок</button>
+                <div id="safe-output" class="demo-element">Безопасный вывод</div>
+                <div id="optimized-container" class="demo-element"></div>
+            </div>
+        </div>
+
+        <!-- Практикум -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИКУМ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">★</span> Итоговый практикум</div>
+                <div class="code-block">// ИТОГОВЫЙ ПРАКТИКУМ
+// Создайте интерактивное приложение, используя все изученные техники
+
+class DOMPracticeApp {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        console.log("=== ИТОГОВЫЙ ПРАКТИКУМ ===");
+        console.log("Создаем интерактивное приложение...");
+        
+        this.createUI();
+        this.bindEvents();
+        this.demoFeatures();
+    }
+    
+    createUI() {
+        const container = document.getElementById('practice-container');
+        
+        container.innerHTML = `
+            <div class="practice-header">
+                <h3>Практикум по DOM</h3>
+                <p>Применяем все изученные техники</p>
+            </div>
+            
+            <div class="practice-controls">
+                <button id="add-item">Добавить элемент</button>
+                <button id="remove-item">Удалить элемент</button>
+                <button id="toggle-theme">Сменить тему</button>
+                <input type="text" id="item-text" placeholder="Текст нового элемента">
+            </div>
+            
+            <div id="items-container" class="practice-items">
+                <div class="practice-item" data-id="1">Элемент 1</div>
+                <div class="practice-item" data-id="2">Элемент 2</div>
+            </div>
+            
+            <div id="practice-output" class="practice-output"></div>
+        `;
+    }
+    
+    bindEvents() {
+        // Делегирование событий для элементов
+        document.getElementById('items-container').addEventListener('click', (event) => {
+            if (event.target.classList.contains('practice-item')) {
+                this.handleItemClick(event.target);
+            }
+        });
+        
+        // Обработчики кнопок
+        document.getElementById('add-item').addEventListener('click', () => {
+            this.addItem();
+        });
+        
+        document.getElementById('remove-item').addEventListener('click', () => {
+            this.removeLastItem();
+        });
+        
+        document.getElementById('toggle-theme').addEventListener('click', () => {
+            this.toggleTheme();
+        });
+        
+        // Обработчик ввода
+        document.getElementById('item-text').addEventListener('input', (event) => {
+            this.updateButtonState(event.target.value);
+        });
+        
+        document.getElementById('item-text').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                this.addItem();
+            }
+        });
+    }
+    
+    handleItemClick(item) {
+        const itemId = item.getAttribute('data-id');
+        const itemText = item.textContent;
+        
+        this.log(`Клик по элементу: ${itemText} (ID: ${itemId})`);
+        
+        // Переключаем класс
+        item.classList.toggle('active');
+        
+        // Обновляем данные
+        item.setAttribute('data-clicked', 'true');
+        item.textContent = `${itemText} [клик]`;
+        
+        // Через секунду возвращаем исходный текст
+        setTimeout(() => {
+            item.textContent = itemText;
+        }, 1000);
+    }
+    
+    addItem() {
+        const input = document.getElementById('item-text');
+        const text = input.value.trim();
+        
+        if (!text) {
+            this.log("Ошибка: введите текст элемента");
+            return;
+        }
+        
+        const container = document.getElementById('items-container');
+        const items = container.querySelectorAll('.practice-item');
+        const newId = items.length + 1;
+        
+        const newItem = document.createElement('div');
+        newItem.className = 'practice-item';
+        newItem.setAttribute('data-id', newId.toString());
+        newItem.textContent = text;
+        
+        container.appendChild(newItem);
+        
+        this.log(`Добавлен новый элемент: "${text}"`);
+        input.value = '';
+        this.updateButtonState('');
+    }
+    
+    removeLastItem() {
+        const container = document.getElementById('items-container');
+        const items = container.querySelectorAll('.practice-item');
+        
+        if (items.length > 0) {
+            const lastItem = items[items.length - 1];
+            const text = lastItem.textContent;
+            
+            container.removeChild(lastItem);
+            this.log(`Удален элемент: "${text}"`);
+        } else {
+            this.log("Нет элементов для удаления");
+        }
+    }
+    
+    toggleTheme() {
+        const container = document.getElementById('practice-container');
+        container.classList.toggle('dark-theme');
+        
+        const isDark = container.classList.contains('dark-theme');
+        this.log(`Тема изменена: ${isDark ? 'темная' : 'светлая'}`);
+    }
+    
+    updateButtonState(text) {
+        const addButton = document.getElementById('add-item');
+        addButton.disabled = !text.trim();
+    }
+    
+    log(message) {
+        const output = document.getElementById('practice-output');
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `[${timestamp}] ${message}\n`;
+        output.scrollTop = output.scrollHeight;
+        
+        // Также выводим в консоль
+        console.log(message);
+    }
+    
+    demoFeatures() {
+        console.log("\n=== Демонстрация возможностей ===");
+        console.log("• Делегирование событий");
+        console.log("• Динамическое создание элементов");
+        console.log("• Работа с атрибутами и классами");
+        console.log("• Обработка пользовательского ввода");
+        console.log("• Таймеры и асинхронные операции");
+        console.log("• Манипуляции с DOM деревом");
+    }
+}
+
+// Запуск приложения
+function startPractice() {
+    new DOMPracticeApp();
+}</div>
+                <div class="btn-group">
+                    <button onclick="startPractice()">ЗАПУСТИТЬ ПРАКТИКУМ</button>
+                    <button class="secondary" onclick="clearPractice()">ОЧИСТИТЬ</button>
+                </div>
+                
+                <!-- Контейнер для практикума -->
+                <div id="practice-container" class="practice-app"></div>
+                
+                <style>
+                    .practice-app {
+                        border: 2px solid #ffcc00;
+                        border-radius: 8px;
+                        padding: 20px;
+                        margin: 20px 0;
+                        background: #1a1a2a;
+                        box-shadow: 0 0 15px #ffcc00;
+                    }
+                    
+                    .practice-header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                        padding-bottom: 15px;
+                        border-bottom: 1px solid #ffcc00;
+                    }
+                    
+                    .practice-header h3 {
+                        color: #ffcc00;
+                        text-shadow: 0 0 10px #ffcc00;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .practice-controls {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 10px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .practice-controls input {
+                        grid-column: 1 / -1;
+                    }
+                    
+                    .practice-items {
+                        display: grid;
+                        gap: 10px;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .practice-item {
+                        background: #0a0a12;
+                        border: 1px solid #00ffcc;
+                        padding: 15px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-align: center;
+                    }
+                    
+                    .practice-item:hover {
+                        background: #1a1a2a;
+                        box-shadow: 0 0 10px #00ffcc;
+                    }
+                    
+                    .practice-item.active {
+                        background: #00ffcc;
+                        color: #0a0a12;
+                        box-shadow: 0 0 15px #00ffcc;
+                    }
+                    
+                    .practice-output {
+                        background: #000;
+                        border: 1px solid #ff00ff;
+                        border-radius: 5px;
+                        padding: 15px;
+                        max-height: 200px;
+                        overflow-y: auto;
+                        font-family: 'Courier New', monospace;
+                        color: #ff00ff;
+                    }
+                    
+                    .practice-app.dark-theme {
+                        background: #000;
+                        border-color: #666;
+                    }
+                    
+                    .practice-app.dark-theme .practice-item {
+                        background: #333;
+                        border-color: #666;
+                        color: #ccc;
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .practice-controls {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>NEON PUNK JAVASCRIPT - ВВЕДЕНИЕ В DOM</p>
+        <p>Практическое руководство по работе с Document Object Model</p>
+    </footer>
+
+    <script>
+        // ОПРЕДЕЛЕНИЯ ФУНКЦИЙ ДЛЯ ВСЕХ ЗАДАЧ
+        
+        // Задача 1: Получение DOM элементов
+        function demonstrateElementSelection() {
+            console.log("=== Получение элементов по ID ===");
+            const header = document.getElementById('main-header');
+            console.log("header:", header);
+            console.log("header.textContent:", header?.textContent);
+            
+            console.log("\n=== Получение элементов по классу ===");
+            const demoElements = document.getElementsByClassName('demo-element');
+            console.log("demoElements:", demoElements);
+            console.log("Количество элементов:", demoElements.length);
+            
+            console.log("\n=== Получение элементов по тегу ===");
+            const paragraphs = document.getElementsByTagName('p');
+            console.log("paragraphs:", paragraphs);
+            console.log("Количество параграфов:", paragraphs.length);
+            
+            console.log("\n=== Современные методы ===");
+            const firstDemo = document.querySelector('.demo-element');
+            console.log("querySelector('.demo-element'):", firstDemo);
+            
+            const allDemos = document.querySelectorAll('.demo-element');
+            console.log("querySelectorAll('.demo-element'):", allDemos);
+            console.log("Количество:", allDemos.length);
+            
+            const container = document.querySelector('#demo-container');
+            console.log("querySelector('#demo-container'):", container);
+        }
+
+        // Задача 2: Сложные селекторы
+        function demonstrateComplexSelectors() {
+            console.log("=== Комбинации селекторов ===");
+            
+            // Элемент с несколькими классами
+            const multiClass = document.querySelector('.demo-box.active');
+            console.log(".demo-box.active:", multiClass);
+            
+            // Дочерние элементы
+            const directChildren = document.querySelectorAll('#complex-demo > .child');
+            console.log("#complex-demo > .child:", directChildren);
+            
+            // Потомки
+            const descendants = document.querySelectorAll('#complex-demo .descendant');
+            console.log("#complex-demo .descendant:", descendants);
+            
+            // Соседние элементы
+            const adjacent = document.querySelector('.target + .sibling');
+            console.log(".target + .sibling:", adjacent);
+            
+            // Псевдоклассы
+            const firstChild = document.querySelector('.child:first-child');
+            console.log(".child:first-child:", firstChild);
+            
+            const lastChild = document.querySelector('.child:last-child');
+            console.log(".child:last-child:", lastChild);
+            
+            const evenChildren = document.querySelectorAll('.child:nth-child(even)');
+            console.log(".child:nth-child(even):", evenChildren);
+            
+            console.log("\n=== Атрибутные селекторы ===");
+            const withDataAttr = document.querySelector('[data-custom]');
+            console.log('[data-custom]:', withDataAttr);
+            
+            const exactValue = document.querySelector('[data-type="special"]');
+            console.log('[data-type="special"]:', exactValue);
+            
+            const containsValue = document.querySelector('[data-info*="test"]');
+            console.log('[data-info*="test"]:', containsValue);
+        }
+
+        // Задача 3: Привязывание обработчиков
+        function demonstrateEventHandlers() {
+            console.log("=== Обработчики одного события ===");
+            
+            const button1 = document.getElementById('btn1');
+            const button2 = document.getElementById('btn2');
+            const button3 = document.getElementById('btn3');
+            
+            // 1. HTML атрибут (уже в разметке)
+            console.log("Кнопка 1: обработчик через HTML атрибут");
+            
+            // 2. Свойство элемента
+            button2.onclick = function() {
+                console.log("Кнопка 2: обработчик через свойство элемента");
+                updateOutput("Кнопка 2 нажата!");
+            };
+            
+            // 3. addEventListener (рекомендуемый способ)
+            button3.addEventListener('click', function() {
+                console.log("Кнопка 3: обработчик через addEventListener");
+                updateOutput("Кнопка 3 нажата!");
+            });
+            
+            // Несколько обработчиков на одном элементе
+            button3.addEventListener('click', function() {
+                console.log("Второй обработчик для кнопки 3");
+            });
+            
+            console.log("\n=== Обработчики разных событий ===");
+            
+            const multiEvent = document.getElementById('multi-event');
+            
+            multiEvent.addEventListener('mouseover', function() {
+                console.log("Мышь над элементом");
+                this.style.backgroundColor = '#ff00ff';
+            });
+            
+            multiEvent.addEventListener('mouseout', function() {
+                console.log("Мышь покинула элемент");
+                this.style.backgroundColor = '#0a0a12';
+            });
+            
+            multiEvent.addEventListener('dblclick', function() {
+                console.log("Двойной клик!");
+                updateOutput("Двойной клик на многофункциональном элементе!");
+            });
+        }
+
+        function updateOutput(message) {
+            const output = document.getElementById('output3');
+            output.innerHTML += message + '\n';
+        }
+
+        // Задача 4: Один обработчик к элементам
+        function demonstrateEventDelegation() {
+            console.log("=== Один обработчик для группы элементов ===");
+            
+            const container = document.getElementById('group-container');
+            
+            // Один обработчик для всех кнопок в контейнере
+            container.addEventListener('click', function(event) {
+                // Проверяем, была ли нажата кнопка
+                if (event.target.tagName === 'BUTTON') {
+                    const button = event.target;
+                    const buttonText = button.textContent;
+                    const buttonId = button.id;
+                    
+                    console.log(`Нажата кнопка: ${buttonText} (ID: ${buttonId})`);
+                    
+                    // Добавляем визуальную обратную связь
+                    button.classList.add('active');
+                    setTimeout(() => {
+                        button.classList.remove('active');
+                    }, 300);
+                    
+                    updateGroupOutput(`Нажата: ${buttonText}`);
+                }
+            });
+            
+            console.log("=== Именованные обработчики в цикле ===");
+            
+            const namedButtons = document.querySelectorAll('.named-btn');
+            
+            // Именованный обработчик
+            function handleNamedButtonClick(event) {
+                const button = event.target;
+                console.log(`Именованный обработчик: ${button.textContent}`);
+                updateGroupOutput(`Именованный: ${button.textContent}`);
+            }
+            
+            // Привязываем один именованный обработчик ко всем кнопкам
+            namedButtons.forEach(button => {
+                button.addEventListener('click', handleNamedButtonClick);
+            });
+            
+            console.log("=== Анонимные обработчики в цикле ===");
+            
+            const anonymousButtons = document.querySelectorAll('.anonymous-btn');
+            
+            // Анонимные обработчики в цикле (проблематично для удаления)
+            anonymousButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    console.log(`Анонимный обработчик ${index + 1}: ${this.textContent}`);
+                    updateGroupOutput(`Анонимный ${index + 1}: ${this.textContent}`);
+                });
+            });
+        }
+
+        function updateGroupOutput(message) {
+            const output = document.getElementById('output4');
+            output.innerHTML += message + '\n';
+        }
+
+        // Задача 5: Текст и HTML элемента
+        function demonstrateContentManipulation() {
+            console.log("=== Текст элемента ===");
+            
+            const textDemo = document.getElementById('text-demo');
+            
+            console.log("textContent:", textDemo.textContent);
+            console.log("innerText:", textDemo.innerText);
+            
+            // Изменение текстового содержимого
+            textDemo.textContent = "Измененный текстовый контент!";
+            console.log("После textContent:", textDemo.textContent);
+            
+            console.log("\n=== HTML код элемента ===");
+            
+            const htmlDemo = document.getElementById('html-demo');
+            
+            console.log("innerHTML до:", htmlDemo.innerHTML);
+            
+            // Изменение HTML содержимого
+            htmlDemo.innerHTML = '<strong>Жирный текст</strong> и <em>курсив</em>';
+            console.log("innerHTML после:", htmlDemo.innerHTML);
+            
+            console.log("\n=== Безопасное добавление HTML ===");
+            
+            const safeDemo = document.getElementById('safe-demo');
+            const userInput = "Пример текста с <strong>HTML тегами</strong>";
+            
+            // Безопасный способ
+            safeDemo.textContent = userInput;
+            console.log("Безопасное содержимое:", safeDemo.textContent);
+            
+            console.log("\n=== Создание элементов ===");
+            
+            const container = document.getElementById('dynamic-container');
+            
+            // Создание элемента
+            const newElement = document.createElement('div');
+            newElement.className = 'dynamic-element';
+            newElement.textContent = 'Динамически созданный элемент';
+            
+            // Добавление в DOM
+            container.appendChild(newElement);
+            console.log("Добавлен новый элемент");
+        }
+
+        // Задача 6: Атрибуты тегов и свойства
+        function demonstrateAttributes() {
+            console.log("=== Атрибуты тегов как свойства ===");
+            
+            const link = document.getElementById('test-link');
+            
+            console.log("Атрибуты через свойства:");
+            console.log("link.href:", link.href);
+            console.log("link.id:", link.id);
+            console.log("link.className:", link.className);
+            
+            console.log("\n=== Методы для работы с атрибутами ===");
+            
+            console.log("getAttribute('data-custom'):", link.getAttribute('data-custom'));
+            console.log("hasAttribute('target'):", link.hasAttribute('target'));
+            
+            // Установка атрибутов
+            link.setAttribute('data-modified', 'true');
+            console.log("После setAttribute:", link.getAttribute('data-modified'));
+            
+            console.log("\n=== Работа с текстовыми полями ===");
+            
+            const textInput = document.getElementById('text-input');
+            const emailInput = document.getElementById('email-input');
+            
+            console.log("textInput.value:", textInput.value);
+            console.log("textInput.type:", textInput.type);
+            console.log("textInput.placeholder:", textInput.placeholder);
+            
+            // Изменение значения
+            textInput.value = "Новое значение";
+            console.log("После изменения value:", textInput.value);
+            
+            console.log("\n=== Фокус текстовых полей ===");
+            
+            textInput.addEventListener('focus', function() {
+                console.log("Текстовое поле получило фокус");
+                this.style.borderColor = '#00ffcc';
+            });
+            
+            textInput.addEventListener('blur', function() {
+                console.log("Текстовое поле потеряло фокус");
+                this.style.borderColor = '#00ccff';
+            });
+            
+            console.log("\n=== Атрибуты-исключения ===");
+            
+            const checkbox = document.getElementById('test-checkbox');
+            
+            console.log("checkbox.checked:", checkbox.checked);
+            console.log("getAttribute('checked'):", checkbox.getAttribute('checked'));
+            
+            // Для булевых атрибутов используем свойства, не setAttribute
+            checkbox.checked = true;
+            console.log("После checkbox.checked = true:", checkbox.checked);
+        }
+
+        // Задача 7: Цепочки методов и объект this
+        function demonstrateChainingAndThis() {
+            console.log("=== Цепочки методов и свойств ===");
+            
+            const element = document.getElementById('chain-demo');
+            
+            // Цепочка методов
+            element.style.color = '#ff00ff';
+            element.style.backgroundColor = '#1a1a2a';
+            element.style.padding = '10px';
+            
+            console.log("Применены стили через цепочку");
+            
+            console.log("\n=== Преимущества и недостатки цепочек ===");
+            
+            // Преимущество: компактность
+            const chainElement = document.getElementById('chain-demo');
+            chainElement.classList.add('styled');
+            chainElement.setAttribute('data-modified', 'true');
+            
+            // Недостаток: сложность отладки
+            try {
+                const nonexistent = document.getElementById('nonexistent');
+                if (nonexistent) {
+                    nonexistent.classList.add('test');
+                    nonexistent.setAttribute('test', 'value');
+                }
+            } catch (error) {
+                console.log("Ошибка в цепочке:", error.message);
+            }
+            
+            console.log("\n=== Объект this в обработчиках ===");
+            
+            const thisButton = document.getElementById('this-demo');
+            
+            // Обычная функция - this ссылается на элемент
+            thisButton.addEventListener('click', function() {
+                console.log("this в обычной функции:", this);
+                console.log("this.textContent:", this.textContent);
+                this.style.backgroundColor = '#ff00ff';
+            });
+            
+            // Стрелочная функция - this наследуется из внешней области
+            thisButton.addEventListener('dblclick', () => {
+                console.log("this в стрелочной функции:", this); // window или undefined
+                // this.style.backgroundColor = '#00ffcc'; // Ошибка!
+            });
+            
+            console.log("\n=== Преимущество this ===");
+            
+            const buttons = document.querySelectorAll('.this-btn');
+            
+            // Без this - нужно использовать event.target
+            buttons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    console.log("Без this:", event.target.textContent);
+                });
+            });
+            
+            // С this - проще и понятнее
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    console.log("С this:", this.textContent);
+                    this.classList.toggle('active');
+                });
+            });
+        }
+
+        // Задача 8: Отвязывание обработчиков событий
+        function demonstrateEventRemoval() {
+            console.log("=== Отвязывание обработчиков событий ===");
+            
+            const removableBtn = document.getElementById('removable-btn');
+            const toggleBtn = document.getElementById('toggle-handler');
+            
+            // Именованный обработчик для отвязывания
+            function removableHandler() {
+                console.log("Именованный обработчик выполнен");
+                updateRemovalOutput("Обработчик сработал!");
+            }
+            
+            // Привязываем обработчик
+            removableBtn.addEventListener('click', removableHandler);
+            console.log("Обработчик привязан");
+            
+            // Отвязывание по клику на другую кнопку
+            toggleBtn.addEventListener('click', function() {
+                if (removableBtn.hasAttribute('data-handler-removed')) {
+                    // Повторно привязываем
+                    removableBtn.addEventListener('click', removableHandler);
+                    removableBtn.removeAttribute('data-handler-removed');
+                    toggleBtn.textContent = "Отвязать обработчик";
+                    console.log("Обработчик привязан");
+                    updateRemovalOutput("Обработчик привязан");
+                } else {
+                    // Отвязываем
+                    removableBtn.removeEventListener('click', removableHandler);
+                    removableBtn.setAttribute('data-handler-removed', 'true');
+                    toggleBtn.textContent = "Привязать обработчик";
+                    console.log("Обработчик отвязан");
+                    updateRemovalOutput("Обработчик отвязан");
+                }
+            });
+            
+            console.log("\n=== Отвязывание обработчиков в цикле ===");
+            
+            const loopButtons = document.querySelectorAll('.loop-btn');
+            
+            // Именованный обработчик для отвязывания в цикле
+            function loopHandler() {
+                console.log("Обработчик цикла:", this.textContent);
+            }
+            
+            // Привязываем ко всем кнопкам
+            loopButtons.forEach(button => {
+                button.addEventListener('click', loopHandler);
+            });
+            
+            console.log("Обработчики привязаны к", loopButtons.length, "кнопкам");
+            
+            // Отвязывание всех обработчиков
+            document.getElementById('remove-loop').addEventListener('click', function() {
+                loopButtons.forEach(button => {
+                    button.removeEventListener('click', loopHandler);
+                });
+                console.log("Все обработчики цикла отвязаны");
+                updateRemovalOutput("Обработчики цикла отвязаны");
+            });
+        }
+
+        function updateRemovalOutput(message) {
+            const output = document.getElementById('output8');
+            output.innerHTML += message + '\n';
+        }
+
+        // Задача 9: Советы по написанию кода
+        function demonstrateBestPractices() {
+            console.log("=== СОВЕТЫ ПО НАПИСАНИЮ КОДА ===");
+            
+            console.log("1. Всегда используйте addEventListener вместо onclick");
+            console.log("2. Используйте именованные функции для обработчиков, которые нужно отвязывать");
+            console.log("3. Для делегирования событий используйте event.target и event.currentTarget");
+            console.log("4. Проверяйте существование элементов перед работой с ними");
+            console.log("5. Используйте textContent вместо innerHTML для безопасного добавления текста");
+            console.log("6. Кэшируйте часто используемые DOM элементы в переменные");
+            console.log("7. Избегайте частых операций с DOM в циклах");
+            console.log("8. Используйте классы для изменения стилей вместо прямого style");
+            console.log("9. Удаляйте обработчики событий, когда они больше не нужны");
+            console.log("10. Используйте dataset для хранения пользовательских данных");
+            
+            console.log("\n=== Примеры хорошего кода ===");
+            
+            // Хорошо: кэширование элементов
+            const container = document.getElementById('best-practices');
+            const buttons = container.querySelectorAll('.best-btn');
+            
+            // Хорошо: именованные функции
+            function handleBestButtonClick() {
+                console.log("Хороший обработчик:", this.textContent);
+            }
+            
+            // Хорошо: привязка обработчиков
+            buttons.forEach(button => {
+                button.addEventListener('click', handleBestButtonClick);
+            });
+            
+            // Хорошо: делегирование событий
+            container.addEventListener('click', function(event) {
+                if (event.target.classList.contains('delegated')) {
+                    console.log("Делегирование:", event.target.textContent);
+                }
+            });
+            
+            console.log("\n=== Распространенные ошибки ===");
+            
+            // Плохо: частые DOM операции в цикле
+            const badExample = document.getElementById('bad-example');
+            if (badExample) {
+                for (let i = 0; i < 100; i++) {
+                    // Плохо: каждую итерацию обращаемся к DOM
+                    badExample.innerHTML += '<div>' + i + '</div>';
+                }
+            }
+            
+            // Лучше: накапливать строку и один раз добавить
+            let html = '';
+            for (let i = 0; i < 100; i++) {
+                html += '<div>' + i + '</div>';
+            }
+            if (badExample) {
+                badExample.innerHTML = html;
+            }
+        }
+
+        // Задача 10: Практика на поиск ошибок
+        function demonstrateErrorFinding() {
+            console.log("=== ПРАКТИКА НА ПОИСК ОШИБОК ===");
+            
+            console.log("Найдите и исправьте ошибки в следующих примерах:");
+            
+            console.log("\n--- Ошибка 1: Работа с несуществующим элементом ---");
+            console.log("Плохой код: document.getElementById('nonexistent').style.color = 'red';");
+            console.log("Решение: Проверять существование элемента");
+            
+            const element1 = document.getElementById('nonexistent');
+            if (element1) {
+                element1.style.color = 'red';
+            } else {
+                console.log("Элемент не найден - это нормально!");
+            }
+            
+            console.log("\n--- Ошибка 2: Неправильное использование this в стрелочных функциях ---");
+            console.log("Плохой код: button.addEventListener('click', () => { this.style.color = 'red'; });");
+            console.log("Решение: Использовать обычные функции или event.target");
+            
+            const button2 = document.getElementById('error-button');
+            button2.addEventListener('click', function() {
+                this.style.color = '#ff00ff';
+            });
+            
+            console.log("\n--- Ошибка 3: Попытка отвязать анонимный обработчик ---");
+            console.log("Плохой код: element.removeEventListener('click', function() { ... });");
+            console.log("Решение: Использовать именованные функции");
+            
+            function namedHandler() {
+                console.log("Этот обработчик можно отвязать");
+            }
+            
+            const button3 = document.getElementById('error-button');
+            button3.addEventListener('click', namedHandler);
+            
+            console.log("\n--- Ошибка 4: XSS уязвимость через innerHTML ---");
+            console.log("Плохой код: element.innerHTML = userInput;");
+            console.log("Решение: Использовать textContent или санитизацию");
+            
+            const safeElement = document.getElementById('safe-output');
+            const userInput = "Пример пользовательского ввода";
+            
+            // Безопасно:
+            safeElement.textContent = userInput;
+            
+            console.log("\n--- Ошибка 5: Частые операции с DOM в цикле ---");
+            console.log("Плохой код: for(let i=0; i<1000; i++) { container.innerHTML += '<div>' + i + '</div>'; }");
+            console.log("Решение: Накопить строку и один раз добавить");
+            
+            const container = document.getElementById('optimized-container');
+            let html = '';
+            for (let i = 0; i < 10; i++) {
+                html += '<div class="optimized">Оптимизированный элемент ' + i + '</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        // ФУНКЦИИ ВЫПОЛНЕНИЯ ЗАДАЧ
+        
+        // Задача 1: Получение DOM элементов
+        function runTask1() {
+            const output = document.getElementById('output1');
+            output.innerHTML = '';
+            
+            // Сохраняем оригинальный console.log
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateElementSelection();
+            
+            // Восстанавливаем console.log
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 2: Сложные селекторы
+        function runTask2() {
+            const output = document.getElementById('output2');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateComplexSelectors();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 3: Привязывание обработчиков
+        function runTask3() {
+            const output = document.getElementById('output3');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateEventHandlers();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 4: Один обработчик к элементам
+        function runTask4() {
+            const output = document.getElementById('output4');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateEventDelegation();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 5: Текст и HTML элемента
+        function runTask5() {
+            const output = document.getElementById('output5');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateContentManipulation();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 6: Атрибуты тегов и свойства
+        function runTask6() {
+            const output = document.getElementById('output6');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateAttributes();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 7: Цепочки методов и объект this
+        function runTask7() {
+            const output = document.getElementById('output7');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateChainingAndThis();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 8: Отвязывание обработчиков событий
+        function runTask8() {
+            const output = document.getElementById('output8');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateEventRemoval();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 9: Советы по написанию кода
+        function runTask9() {
+            const output = document.getElementById('output9');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateBestPractices();
+            console.log = originalConsoleLog;
+        }
+        
+        // Задача 10: Практика на поиск ошибок
+        function runTask10() {
+            const output = document.getElementById('output10');
+            output.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(...args) {
+                originalConsoleLog.apply(console, args);
+                output.innerHTML += args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ') + '\n';
+            };
+            
+            demonstrateErrorFinding();
+            console.log = originalConsoleLog;
+        }
+        
+        // Очистка вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+        
+        // Очистка практикума
+        function clearPractice() {
+            const container = document.getElementById('practice-container');
+            container.innerHTML = '';
+        }
+        
+        // Инициализация обработчиков после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация задачи 3
+            const button2 = document.getElementById('btn2');
+            const button3 = document.getElementById('btn3');
+            const multiEvent = document.getElementById('multi-event');
+            
+            if (button2) {
+                button2.onclick = function() {
+                    console.log("Кнопка 2: обработчик через свойство элемента");
+                    const output = document.getElementById('output3');
+                    output.innerHTML += "Кнопка 2 нажата!\n";
+                };
+            }
+            
+            if (button3) {
+                button3.addEventListener('click', function() {
+                    console.log("Кнопка 3: обработчик через addEventListener");
+                    const output = document.getElementById('output3');
+                    output.innerHTML += "Кнопка 3 нажата!\n";
+                });
+                
+                button3.addEventListener('click', function() {
+                    console.log("Второй обработчик для кнопки 3");
+                });
+            }
+            
+            if (multiEvent) {
+                multiEvent.addEventListener('mouseover', function() {
+                    console.log("Мышь над элементом");
+                    this.style.backgroundColor = '#ff00ff';
+                });
+                
+                multiEvent.addEventListener('mouseout', function() {
+                    console.log("Мышь покинула элемент");
+                    this.style.backgroundColor = '#0a0a12';
+                });
+                
+                multiEvent.addEventListener('dblclick', function() {
+                    console.log("Двойной клик!");
+                    const output = document.getElementById('output3');
+                    output.innerHTML += "Двойной клик на многофункциональном элементе!\n";
+                });
+            }
+        });
+    </script>
+</body>
+</html>

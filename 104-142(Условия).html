@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Punk JavaScript - Условия и Операторы</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #0a0a12;
+            color: #00ffcc;
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        /* Стили заголовка */
+        header {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px #ffcc00;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #1a1a2a;
+            border: 2px solid #00ccff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 0 15px #00ccff;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 40px;
+            border: 1px solid #ff00ff;
+            border-radius: 6px;
+            padding: 20px;
+            background: rgba(10, 10, 18, 0.7);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ff00ff;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+            font-size: 1.8rem;
+        }
+
+        /* Задачи */
+        .task {
+            background-color: #0a0a12;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #00ffcc;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            box-shadow: 0 0 20px #00ffcc;
+            transform: translateY(-2px);
+        }
+
+        .task-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #00ccff;
+            text-shadow: 0 0 5px #00ccff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .task-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #ff00ff;
+            color: #0a0a12;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .code-block {
+            background-color: #000;
+            border: 1px solid #ffcc00;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            color: #ffcc00;
+            box-shadow: 0 0 10px #ffcc00;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff00ff, #00ccff);
+            color: #0a0a12;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        button:hover {
+            box-shadow: 0 0 20px #00ccff, 0 0 30px #ff00ff;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: linear-gradient(45deg, #ffcc00, #00ffcc);
+            box-shadow: 0 0 10px #ffcc00;
+        }
+
+        .output {
+            background-color: #000;
+            border: 1px solid #00ffcc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 20px;
+            font-family: 'Courier New', monospace;
+            color: #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+            white-space: pre-wrap;
+        }
+
+        /* Примечание */
+        .note {
+            background-color: rgba(255, 0, 255, 0.1);
+            border: 1px solid #ff00ff;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .note-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* Подвал */
+        footer {
+            background: linear-gradient(90deg, #0a0a12, #1a1a2a, #0a0a12);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 15px #ff00ff;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #ffcc00;
+        }
+
+        /* Анимации */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 15px currentColor, 0 0 20px currentColor; }
+            100% { text-shadow: 0 0 5px currentColor; }
+        }
+
+        h1, h2, .task-title, .section-icon {
+            animation: glow 2s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>NEON PUNK JAVASCRIPT - УСЛОВИЯ И ОПЕРАТОРЫ</h1>
+        <p class="subtitle">Vita brevis, ars longa - Практика работы с условиями и операторами</p>
+    </header>
+
+    <div class="container">
+        <div class="note">
+            <div class="note-title">ПРИМЕЧАНИЕ</div>
+            <p>Для выполнения задания нажмите кнопку "ВЫПОЛНИТЬ". Чтобы очистить результат, нажмите "ОЧИСТИТЬ".</p>
+        </div>
+
+        <!-- Раздел 1: Базовые условия if-else -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>БАЗОВЫЕ УСЛОВИЯ IF-ELSE</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">1</span> Простые сравнения</div>
+                <div class="code-block">let test = 8;
+if (test > 10) {
+    console.log('Верно');
+} else {
+    console.log('Неверно');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask1()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output1')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output1"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">2</span> Проверка на равенство</div>
+                <div class="code-block">let test1 = 0;
+if (test1 == 0) {
+    console.log('верно');
+} else {
+    console.log('неверно');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask2()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output2')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output2"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">3</span> Проверка на неравенство</div>
+                <div class="code-block">let test2 = 1;
+if (test2 != 0) {
+    console.log('верно');
+} else {
+    console.log('неверно');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask3()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output3')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output3"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 2: Логические операторы -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>ЛОГИЧЕСКИЕ ОПЕРАТОРЫ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">4</span> Логическое И (&&)</div>
+                <div class="code-block">let num = 6;
+if (num > 0 && num < 5) {
+    console.log(num);
+} else {
+    console.log('Условие не выполняется');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask4()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output4')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output4"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">5</span> Логическое ИЛИ (||)</div>
+                <div class="code-block">let num = 6;
+if (num <= 0 || num >= 5) {
+    console.log(num);
+} else {
+    console.log('Условие не выполняется');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask5()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output5')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output5"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">6</span> Оператор отрицания (!)</div>
+                <div class="code-block">let num = 6;
+if (!(num > 0 && num < 5)) {
+    console.log(num);
+} else {
+    console.log('Условие не выполняется');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask6()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output6')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output6"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 3: Switch-case -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔄</div>
+                <h2>КОНСТРУКЦИЯ SWITCH-CASE</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">7</span> Времена года</div>
+                <div class="code-block">let num1 = 3;
+switch (num1) {
+    case 1:
+        console.log('зима');
+        break;
+    case 2:
+        console.log('весна');
+        break;
+    case 3:
+        console.log('лето');
+        break;
+    case 4:
+        console.log('осень');
+        break;
+    default:
+        console.log('неизвестное время года');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask7()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output7')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output7"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 4: Сравнения и преобразования -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🔍</div>
+                <h2>СРАВНЕНИЯ И ПРЕОБРАЗОВАНИЯ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">8</span> Сравнение чисел</div>
+                <div class="code-block">let a = 1;
+let b = 1;
+console.log(a == b);
+let result = a == b;
+console.log(result);</div>
+                <div class="btn-group">
+                    <button onclick="runTask8()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output8')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output8"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">9</span> Строгое сравнение (===)</div>
+                <div class="code-block">let num1 = '2';
+if (num1 === 2) {
+    console.log('Совпадает по значению и типу');
+} else {
+    console.log('Не совпадает по типу');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask9()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output9')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output9"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">10</span> Нюансы сравнения</div>
+                <div class="code-block">console.log("0 == '':", 0 == '');
+console.log("0 == '0':", 0 == '0');
+console.log("0 === '0':", 0 === '0');</div>
+                <div class="btn-group">
+                    <button onclick="runTask10()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output10')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output10"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 5: Практические задачи -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2>ПРАКТИЧЕСКИЕ ЗАДАЧИ</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">11</span> Определение поры года</div>
+                <div class="code-block">let month = 1;
+if (month === 12 || month > 0 && month <= 2) {
+    console.log('Зима');
+} else if (month >= 9 && month <= 11) {
+    console.log('Осень');
+} else if (month >= 6 && month <= 8) {
+    console.log('Лето');
+} else if (month >= 3 && month <= 5) {
+    console.log('Весна');
+} else {
+    console.log('Неверный месяц');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask11()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output11')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output11"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">12</span> Проверка первого символа</div>
+                <div class="code-block">let str2 = 'abcde';
+if (str2[0] === 'a') {
+    console.log('да');
+} else {
+    console.log('нет');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask12()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output12')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output12"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">13</span> Сумма цифр числа</div>
+                <div class="code-block">let num4 = 123;
+if (String(num4).length === 3) {
+    let sum = Number(String(num4)[0]) + Number(String(num4)[1]) + Number(String(num4)[2]);
+    console.log('Сумма цифр: ' + sum);
+} else {
+    console.log('Число не трехзначное');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask13()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output13')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output13"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">14</span> Счастливый билет</div>
+                <div class="code-block">let num5 = 113321;
+let sum51 = Number(String(num5)[0]) + Number(String(num5)[1]) + Number(String(num5)[2]);
+let sum52 = Number(String(num5)[3]) + Number(String(num5)[4]) + Number(String(num5)[5]);
+
+if (sum51 === sum52) {
+    console.log('да - билет счастливый!');
+} else {
+    console.log('нет');
+}</div>
+                <div class="btn-group">
+                    <button onclick="runTask14()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output14')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output14"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 6: Тернарный оператор -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">❓</div>
+                <h2>ТЕРНАРНЫЙ ОПЕРАТОР</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">15</span> Базовый тернарный оператор</div>
+                <div class="code-block">let age = 17;
+let adult = age >= 18 ? true : false;
+console.log('Совершеннолетний:', adult);</div>
+                <div class="btn-group">
+                    <button onclick="runTask15()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output15')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output15"></div>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">16</span> Практическое применение</div>
+                <div class="code-block">let num = 1;
+let result = num >= 0 ? 1 : -1;
+console.log('Результат:', result);</div>
+                <div class="btn-group">
+                    <button onclick="runTask16()">ВЫПОЛНИТЬ</button>
+                    <button class="secondary" onclick="clearOutput('output16')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output16"></div>
+            </div>
+        </div>
+
+        <!-- Раздел 7: Функция confirm -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon">💬</div>
+                <h2>ФУНКЦИЯ CONFIRM</h2>
+            </div>
+            
+            <div class="task">
+                <div class="task-title"><span class="task-counter">17</span> Проверка возраста</div>
+                <div class="code-block">// В реальном сценарии будет использоваться confirm
+// Для демонстрации используем симуляцию
+
+let question = true; // Симуляция ответа "Да" в confirm
+let result = question ? 
+    'Добро пожаловать на сайт для взрослых' : 
+    'Доступ запрещен!';
+console.log(result);</div>
+                <div class="btn-group">
+                    <button onclick="runTask17()">ВЫПОЛНИТЬ (Да)</button>
+                    <button class="secondary" onclick="runTask17No()">ВЫПОЛНИТЬ (Нет)</button>
+                    <button class="secondary" onclick="clearOutput('output17')">ОЧИСТИТЬ</button>
+                </div>
+                <div class="output" id="output17"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Neon Punk JavaScript - Условия и Операторы &copy; 2025 | Создано в стиле ретро-футуризма</p>
+    </footer>
+
+    <script>
+        // Общая функция для очистки вывода
+        function clearOutput(outputId) {
+            document.getElementById(outputId).innerHTML = '';
+        }
+
+        // Раздел 1: Базовые условия if-else
+        function runTask1() {
+            let test = 8;
+            let result = test > 10 ? 'Верно' : 'Неверно';
+            document.getElementById('output1').innerHTML = `test = ${test}\nРезультат: ${result}`;
+        }
+
+        function runTask2() {
+            let test1 = 0;
+            let result = test1 == 0 ? 'верно' : 'неверно';
+            document.getElementById('output2').innerHTML = `test1 = ${test1}\nРезультат: ${result}`;
+        }
+
+        function runTask3() {
+            let test2 = 1;
+            let result = test2 != 0 ? 'верно' : 'неверно';
+            document.getElementById('output3').innerHTML = `test2 = ${test2}\nРезультат: ${result}`;
+        }
+
+        // Раздел 2: Логические операторы
+        function runTask4() {
+            let num = 6;
+            let result = num > 0 && num < 5 ? num : 'Условие не выполняется';
+            document.getElementById('output4').innerHTML = `num = ${num}\nРезультат: ${result}`;
+        }
+
+        function runTask5() {
+            let num = 6;
+            let result = num <= 0 || num >= 5 ? num : 'Условие не выполняется';
+            document.getElementById('output5').innerHTML = `num = ${num}\nРезультат: ${result}`;
+        }
+
+        function runTask6() {
+            let num = 6;
+            let result = !(num > 0 && num < 5) ? num : 'Условие не выполняется';
+            document.getElementById('output6').innerHTML = `num = ${num}\nРезультат: ${result}`;
+        }
+
+        // Раздел 3: Switch-case
+        function runTask7() {
+            let num1 = 3;
+            let season;
+            switch (num1) {
+                case 1:
+                    season = 'зима';
+                    break;
+                case 2:
+                    season = 'весна';
+                    break;
+                case 3:
+                    season = 'лето';
+                    break;
+                case 4:
+                    season = 'осень';
+                    break;
+                default:
+                    season = 'неизвестное время года';
+            }
+            document.getElementById('output7').innerHTML = `num1 = ${num1}\nВремя года: ${season}`;
+        }
+
+        // Раздел 4: Сравнения и преобразования
+        function runTask8() {
+            let a = 1;
+            let b = 1;
+            let comparison1 = a == b;
+            let result = a == b;
+            let output = `a = ${a}, b = ${b}\n`;
+            output += `a == b: ${comparison1}\n`;
+            output += `result = a == b: ${result}`;
+            document.getElementById('output8').innerHTML = output;
+        }
+
+        function runTask9() {
+            let num1 = '2';
+            let result = num1 === 2 ? 'Совпадает по значению и типу' : 'Не совпадает по типу';
+            document.getElementById('output9').innerHTML = `num1 = '${num1}' (тип: ${typeof num1})\nРезультат: ${result}`;
+        }
+
+        function runTask10() {
+            let output = "0 == '': " + (0 == '') + "\n";
+            output += "0 == '0': " + (0 == '0') + "\n";
+            output += "0 === '0': " + (0 === '0');
+            document.getElementById('output10').innerHTML = output;
+        }
+
+        // Раздел 5: Практические задачи
+        function runTask11() {
+            let month = 1;
+            let season;
+            if (month === 12 || month > 0 && month <= 2) {
+                season = 'Зима';
+            } else if (month >= 9 && month <= 11) {
+                season = 'Осень';
+            } else if (month >= 6 && month <= 8) {
+                season = 'Лето';
+            } else if (month >= 3 && month <= 5) {
+                season = 'Весна';
+            } else {
+                season = 'Неверный месяц';
+            }
+            document.getElementById('output11').innerHTML = `Месяц: ${month}\nПора года: ${season}`;
+        }
+
+        function runTask12() {
+            let str2 = 'abcde';
+            let result = str2[0] === 'a' ? 'да' : 'нет';
+            document.getElementById('output12').innerHTML = `Строка: "${str2}"\nПервый символ 'a'? ${result}`;
+        }
+
+        function runTask13() {
+            let num4 = 123;
+            if (String(num4).length === 3) {
+                let sum = Number(String(num4)[0]) + Number(String(num4)[1]) + Number(String(num4)[2]);
+                document.getElementById('output13').innerHTML = `Число: ${num4}\nСумма цифр: ${sum}`;
+            } else {
+                document.getElementById('output13').innerHTML = `Число ${num4} не трехзначное`;
+            }
+        }
+
+        function runTask14() {
+            let num5 = 113321;
+            let sum51 = Number(String(num5)[0]) + Number(String(num5)[1]) + Number(String(num5)[2]);
+            let sum52 = Number(String(num5)[3]) + Number(String(num5)[4]) + Number(String(num5)[5]);
+            let result = sum51 === sum52 ? 'да - билет счастливый!' : 'нет';
+            
+            let output = `Билет: ${num5}\n`;
+            output += `Сумма первых трех цифр: ${sum51}\n`;
+            output += `Сумма вторых трех цифр: ${sum52}\n`;
+            output += `Результат: ${result}`;
+            document.getElementById('output14').innerHTML = output;
+        }
+
+        // Раздел 6: Тернарный оператор
+        function runTask15() {
+            let age = 17;
+            let adult = age >= 18 ? true : false;
+            document.getElementById('output15').innerHTML = `Возраст: ${age}\nСовершеннолетний: ${adult}`;
+        }
+
+        function runTask16() {
+            let num = 1;
+            let result = num >= 0 ? 1 : -1;
+            document.getElementById('output16').innerHTML = `Число: ${num}\nРезультат: ${result}`;
+        }
+
+        // Раздел 7: Функция confirm
+        function runTask17() {
+            let question = true;
+            let result = question ? 'Добро пожаловать на сайт для взрослых' : 'Доступ запрещен!';
+            document.getElementById('output17').innerHTML = `Ответ пользователя: Да\nРезультат: ${result}`;
+        }
+
+        function runTask17No() {
+            let question = false;
+            let result = question ? 'Добро пожаловать на сайт для взрослых' : 'Доступ запрещен!';
+            document.getElementById('output17').innerHTML = `Ответ пользователя: Нет\nРезультат: ${result}`;
+        }
+    </script>
+</body>
+</html>
