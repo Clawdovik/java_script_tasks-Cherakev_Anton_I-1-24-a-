@@ -1,0 +1,2791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Задачник: Cyber-Code</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+<header>
+    <h1><span class="section-icon">👾</span> Задачник JavaScript</h1>
+    <p class="subtitle">Практические задачи по ключевым темам</p>
+    <div class="nav-dropdown">
+    <label for="topic-select">Перейти к теме:</label>
+    <select id="topic-select" onchange="jumpToSection(this)">
+        <option value="">-- Выберите тему --</option>
+        <option value="theme-variables">1. Переменные</option>
+        <option value="theme-data-types">2. Типы данных</option>
+        <option value="theme-operators">3. Операторы</option>
+        <option value="theme-conditionals">4. Условия (if/else)</option>
+        <option value="theme-switch">5. switch</option>
+        <option value="theme-for-loops">6. Циклы (for)</option>
+        <option value="theme-while-loops">7. Циклы (while/do...while)</option>
+        <option value="theme-user-functions">8. Функции</option>
+        <option value="theme-function-vars">9. Переменные функций</option>
+        <option value="theme-function-types">10. Типы функций</option>
+        <option value="theme-nested-functions">11. Вложенные функции</option>
+        <option value="theme-closures">12. Замыкания</option>
+        <option value="theme-iife">13. IIFE</option>
+        <option value="theme-recursion">14. Рекурсия</option>
+        <option value="theme-iteration-methods">15. Перебирающие методы</option>
+        <option value="theme-spread-operator">16. Оператор spread</option>
+        <option value="theme-rest-operator">17. Оператор rest</option>
+        <option value="theme-destructuring">18. Деструктуризация</option>
+        <option value="theme-time">19. Время</option>
+        <option value="theme-dom-intro">20. Введение в DOM</option>
+        <option value="theme-attributes">21. Атрибуты</option>
+        <option value="theme-styling">22. Стилизация</option>
+        <option value="theme-searching">23. Поиск</option>
+        <option value="theme-nodes">24. Узлы</option>
+        <option value="theme-event-handlers">25. Обработчики событий</option>
+        <option value="theme-async">26. Асинхронность</option>
+        <option value="theme-classes">27. Классы</option>
+        <option value="theme-conclusion">28. Заключение</option>
+    </select>
+</div>
+</header>
+
+
+<div class="container">
+
+<section id="theme-osnovy" class="section">
+    <div class="section-header">
+        <span class="section-icon">💡</span>
+        <h2>1. Основы</h2>
+    </div>
+
+    <div class="task" id="task-1-1">
+        <div class="task-title">
+            <span class="task-counter">1.1</span>
+            Вывод простого текста
+        </div>
+
+        <p>
+            Используйте функцию **<code>console.log()</code>**, чтобы вывести в консоль (и в блок вывода ниже) текст: **"Cyber-Code, начинаем!"**.
+        </p>
+
+        <textarea id="code-input-1-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// console.log('...');
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('1-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-1-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-1-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-1-1" class="code-block" style="display: none;">
+            console.log("Cyber-Code, начинаем!");
+        </div>
+    </div>
+
+    <div class="task" id="task-1-2">
+        <div class="task-title">
+            <span class="task-counter">1.2</span>
+            Использование переменной
+        </div>
+
+        <p>
+            Создайте переменную с именем **<code>username</code>** и присвойте ей строковое значение **"Neo"**. Затем выведите в консоль строку, используя конкатенацию: **"Привет, " + username**.
+        </p>
+
+        <textarea id="code-input-1-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// let username = ...
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('1-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-1-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-1-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-1-2" class="code-block" style="display: none;">
+            let username = "Neo";
+            console.log("Привет, " + username);
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-arrays" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔗</span>
+        <h2>2. Массивы</h2>
+    </div>
+
+    <div class="task" id="task-2-1">
+        <div class="task-title">
+            <span class="task-counter">2.1</span>
+            Доступ к элементу по индексу
+        </div>
+
+        <p>
+            Создайте массив с именем **<code>cypher</code>**, содержащий строки: **<code>"Red"</code>**, **<code>"Pill"</code>**, **<code>"Blue"</code>**. Выведите в консоль только второй элемент этого массива, используя его индекс.
+        </p>
+
+        <textarea id="code-input-2-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// Массивы используют квадратные скобки []
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('2-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-2-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-2-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-2-1" class="code-block" style="display: none;">
+            let cypher = ["Red", "Pill", "Blue"];
+            // Второй элемент имеет индекс 1
+            console.log(cypher[1]);
+        </div>
+    </div>
+
+    <div class="task" id="task-2-2">
+        <div class="task-title">
+            <span class="task-counter">2.2</span>
+            Добавление элемента в конец
+        </div>
+
+        <p>
+            Дан массив **<code>agents = ["Smith", "Jones"]</code>**. Используйте метод **<code>push()</code>**, чтобы добавить в конец массива имя **<code>"Brown"</code>**. После этого выведите весь массив **<code>agents</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-2-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+let agents = ["Smith", "Jones"];
+// agents.push(...)
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('2-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-2-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-2-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-2-2" class="code-block" style="display: none;">
+            let agents = ["Smith", "Jones"];
+            agents.push("Brown");
+            console.log(agents); // Должно вывести ["Smith", "Jones", "Brown"]
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-objects" class="section">
+    <div class="section-header">
+        <span class="section-icon">🧱</span>
+        <h2>3. Объекты</h2>
+    </div>
+
+    <div class="task" id="task-3-1">
+        <div class="task-title">
+            <span class="task-counter">3.1</span>
+            Доступ через точку
+        </div>
+
+        <p>
+            Создайте объект **<code>hero</code>**, который описывает персонажа и имеет два свойства: **<code>name</code>** со значением **<code>"Trinity"</code>** и **<code>role</code>** со значением **<code>"Hacker"</code>**. Выведите в консоль только значение свойства **<code>name</code>**, используя синтаксис через точку.
+        </p>
+
+        <textarea id="code-input-3-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// Объекты используют фигурные скобки {}
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('3-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-3-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-3-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-3-1" class="code-block" style="display: none;">
+            let hero = {
+                name: "Trinity",
+                role: "Hacker"
+            };
+            console.log(hero.name);
+        </div>
+    </div>
+
+    <div class="task" id="task-3-2">
+        <div class="task-title">
+            <span class="task-counter">3.2</span>
+            Доступ через скобки
+        </div>
+
+        <p>
+            Используйте тот же объект **<code>hero</code>** из предыдущей задачи. Создайте переменную **<code>keyName</code>** со значением **<code>"role"</code>**. Выведите в консоль значение свойства, используя переменную **<code>keyName</code>** в квадратных скобках.
+        </p>
+
+        <textarea id="code-input-3-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+let hero = {
+    name: "Trinity",
+    role: "Hacker"
+};
+// let keyName = ...
+// console.log(hero[...])
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('3-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-3-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-3-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-3-2" class="code-block" style="display: none;">
+            let hero = {
+                name: "Trinity",
+                role: "Hacker"
+            };
+            let keyName = "role";
+            // Используем скобки для доступа к свойству по переменной
+            console.log(hero[keyName]); // Выведет "Hacker"
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-usloviya" class="section">
+    <div class="section-header">
+        <span class="section-icon">🚦</span>
+        <h2>4. Условия</h2>
+    </div>
+
+    <div class="task" id="task-4-1">
+        <div class="task-title">
+            <span class="task-counter">4.1</span>
+            Проверка доступа
+        </div>
+
+        <p>
+            Дана переменная **<code>accessCode = 404</code>**. Напишите конструкцию **<code>if...else</code>**: если значение **<code>accessCode</code>** равно **<code>404</code>**, выведите в консоль **"Доступ запрещен."**. В противном случае (для любого другого кода), выведите **"Доступ разрешен."**.
+        </p>
+
+        <textarea id="code-input-4-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let accessCode = 404;
+
+// if (...) {
+//     ...
+// } else {
+//     ...
+// }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('4-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-4-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-4-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-4-1" class="code-block" style="display: none;">
+            let accessCode = 404;
+
+            if (accessCode === 404) {
+                console.log("Доступ запрещен.");
+            } else {
+                console.log("Доступ разрешен.");
+            }
+        </div>
+    </div>
+
+    <div class="task" id="task-4-2">
+        <div class="task-title">
+            <span class="task-counter">4.2</span>
+            Определение уровня
+        </div>
+
+        <p>
+            Дана переменная **<code>score = 92</code>**. Напишите конструкцию **<code>if...else if...else</code>** для определения уровня:
+            <ul>
+                <li>Если **<code>score &gt; 90</code>**, вывести **"Уровень: Мастер"**.</li>
+                <li>Если **<code>score &gt; 70</code>**, вывести **"Уровень: Эксперт"**.</li>
+                <li>Иначе (в остальных случаях), вывести **"Уровень: Новичок"**.</li>
+            </ul>
+            Проверьте код со значением **<code>score = 92</code>**.
+        </p>
+
+        <textarea id="code-input-4-2" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+let score = 92;
+
+// if (...) {
+//     ...
+// } else if (...) {
+//     ...
+// } else {
+//     ...
+// }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('4-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-4-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-4-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-4-2" class="code-block" style="display: none;">
+            let score = 92;
+
+            if (score > 90) {
+                console.log("Уровень: Мастер");
+            } else if (score > 70) {
+                console.log("Уровень: Эксперт");
+            } else {
+                console.log("Уровень: Новичок");
+            }
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-tsikly" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔄</span>
+        <h2>5. Циклы</h2>
+    </div>
+
+    <div class="task" id="task-5-1">
+        <div class="task-title">
+            <span class="task-counter">5.1</span>
+            Счетчик активации
+        </div>
+
+        <p>
+            Напишите цикл **<code>for</code>**, который считает от **1** до **5** включительно. На каждой итерации цикла выводите в консоль строку: **"Активация: [число]"**.
+        </p>
+
+        <textarea id="code-input-5-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+// for (let i = ...; i <= ...; i++) {
+//     console.log(...)
+// }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('5-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-5-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-5-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-5-1" class="code-block" style="display: none;">
+            for (let i = 1; i <= 5; i++) {
+                console.log("Активация: " + i);
+            }
+        </div>
+    </div>
+
+    <div class="task" id="task-5-2">
+        <div class="task-title">
+            <span class="task-counter">5.2</span>
+            Ожидание загрузки
+        </div>
+
+        <p>
+            Дана переменная **<code>loadProgress = 0</code>**. Напишите цикл **<code>while</code>**, который будет выполняться, пока **<code>loadProgress</code>** меньше **100**. Внутри цикла увеличивайте **<code>loadProgress</code>** на **20** и выводите в консоль его текущее значение.
+        </p>
+
+        <textarea id="code-input-5-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+let loadProgress = 0;
+
+// while (...) {
+//     loadProgress = ...
+//     console.log(...)
+// }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('5-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-5-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-5-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-5-2" class="code-block" style="display: none;">
+            let loadProgress = 0;
+
+            while (loadProgress < 100) {
+                loadProgress += 20; // Сокращенная запись для loadProgress = loadProgress + 20
+                console.log("Загружено: " + loadProgress + "%");
+            }
+            console.log("Загрузка завершена.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-mnogomernost" class="section">
+    <div class="section-header">
+        <span class="section-icon">🧩</span>
+        <h2>6. Многомерность</h2>
+    </div>
+
+    <div class="task" id="task-6-1">
+        <div class="task-title">
+            <span class="task-counter">6.1</span>
+            Координаты матрицы
+        </div>
+
+        <p>
+            Дана многомерная матрица **<code>grid</code>**, представляющая игровое поле.
+            <pre>[
+    ['X', 'O', 'X'],
+    ['O', 'X', 'O'],
+    ['X', 'O', 'X']
+]</pre>
+            Ваша задача — вывести в консоль элемент, находящийся во **второй строке** и **третьем столбце** (это 'O').
+        </p>
+
+        <textarea id="code-input-6-1" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+let grid = [
+    ['X', 'O', 'X'],
+    ['O', 'X', 'O'],
+    ['X', 'O', 'X']
+];
+
+// grid[строка][столбец]
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('6-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-6-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-6-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-6-1" class="code-block" style="display: none;">
+            let grid = [
+                ['X', 'O', 'X'],
+                ['O', 'X', 'O'],
+                ['X', 'O', 'X']
+            ];
+
+            // Вторая строка - индекс 1. Третий столбец - индекс 2.
+            console.log(grid[1][2]); // Выведет 'O'
+        </div>
+    </div>
+
+    <div class="task" id="task-6-2">
+        <div class="task-title">
+            <span class="task-counter">6.2</span>
+            Вложенные данные
+        </div>
+
+        <p>
+            Дан объект **<code>userProfile</code>** с вложенными данными о местоположении.
+            <pre>{
+    id: 101,
+    location: {
+        city: 'Zion',
+        status: 'Hidden'
+    }
+}</pre>
+            Выведите в консоль только значение свойства **<code>city</code>** (должно получиться 'Zion'), используя точечную нотацию для доступа к вложенным свойствам.
+        </p>
+
+        <textarea id="code-input-6-2" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+let userProfile = {
+    id: 101,
+    location: {
+        city: 'Zion',
+        status: 'Hidden'
+    }
+};
+
+// userProfile.внешнееСвойство.внутреннееСвойство
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('6-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-6-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-6-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-6-2" class="code-block" style="display: none;">
+            let userProfile = {
+                id: 101,
+                location: {
+                    city: 'Zion',
+                    status: 'Hidden'
+                }
+            };
+            // Сначала обращаемся к 'location', затем к 'city'
+            console.log(userProfile.location.city); // Выведет 'Zion'
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-methods" class="section">
+    <div class="section-header">
+        <span class="section-icon">🛠️</span>
+        <h2>7. Стандартные методы</h2>
+    </div>
+
+    <div class="task" id="task-7-1">
+        <div class="task-title">
+            <span class="task-counter">7.1</span>
+            Перевод в верхний регистр
+        </div>
+
+        <p>
+            Дана строка **<code>message = "wake up, neo"</code>**. Используйте строковый метод **<code>toUpperCase()</code>**, чтобы перевести всю строку в верхний регистр. Выведите полученный результат в консоль.
+        </p>
+
+        <textarea id="code-input-7-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+let message = "wake up, neo";
+
+// message.toUpperCase()
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('7-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-7-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-7-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-7-1" class="code-block" style="display: none;">
+            let message = "wake up, neo";
+            let upperCaseMessage = message.toUpperCase();
+            console.log(upperCaseMessage); // Выведет "WAKE UP, NEO"
+        </div>
+    </div>
+
+    <div class="task" id="task-7-2">
+        <div class="task-title">
+            <span class="task-counter">7.2</span>
+            Сборка пароля
+        </div>
+
+        <p>
+            Дан массив символов **<code>parts = ['0', '1', 'M', 'A', 'T', 'R', 'I', 'X']</code>**. Используйте метод **<code>join()</code>**, чтобы объединить все элементы массива в одну строку без разделителей. Выведите итоговую строку в консоль.
+        </p>
+
+        <textarea id="code-input-7-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let parts = ['0', '1', 'M', 'A', 'T', 'R', 'I', 'X'];
+
+// parts.join(...)
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('7-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-7-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-7-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-7-2" class="code-block" style="display: none;">
+            let parts = ['0', '1', 'M', 'A', 'T', 'R', 'I', 'X'];
+            // Пустая строка в качестве разделителя объединит элементы без пробелов
+            let password = parts.join("");
+            console.log(password); // Выведет "01MATRIX"
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-user-functions" class="section">
+    <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <h2>8. Пользовательские функции</h2>
+    </div>
+
+    <div class="task" id="task-8-1">
+        <div class="task-title">
+            <span class="task-counter">8.1</span>
+            Функция приветствия
+        </div>
+
+        <p>
+            Создайте функцию с именем **<code>greetUser</code>**. Внутри этой функции используйте **<code>console.log()</code>** для вывода текста **"Система активирована. Добро пожаловать!"**. Затем вызовите эту функцию.
+        </p>
+
+        <textarea id="code-input-8-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+// function greetUser() {
+//     ...
+// }
+// greetUser();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('8-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-8-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-8-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-8-1" class="code-block" style="display: none;">
+            function greetUser() {
+                console.log("Система активирована. Добро пожаловать!");
+            }
+            greetUser();
+        </div>
+    </div>
+
+    <div class="task" id="task-8-2">
+        <div class="task-title">
+            <span class="task-counter">8.2</span>
+            Расчет энергии
+        </div>
+
+        <p>
+            Создайте функцию **<code>calculateEnergy</code>**, которая принимает один аргумент — **<code>level</code>** (число). Функция должна возвращать (используя **<code>return</code>**) результат умножения **<code>level</code>** на **10**.
+            Вызовите функцию с аргументом **<code>5</code>** и выведите полученное значение в консоль.
+        </p>
+
+        <textarea id="code-input-8-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+// function calculateEnergy(level) {
+//     return ...
+// }
+// console.log(calculateEnergy(5));
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('8-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-8-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-8-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-8-2" class="code-block" style="display: none;">
+            function calculateEnergy(level) {
+                return level * 10;
+            }
+            
+            // Вызов функции и вывод результата
+            let result = calculateEnergy(5);
+            console.log("Полученная энергия: " + result); // Выведет 50
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-function-vars" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔭</span>
+        <h2>9. Переменные функций</h2>
+    </div>
+
+    <div class="task" id="task-9-1">
+        <div class="task-title">
+            <span class="task-counter">9.1</span>
+            Локальные данные
+        </div>
+
+        <p>
+            Создайте функцию **<code>getData</code>**. Внутри нее объявите переменную **<code>secretKey</code>** с помощью **<code>let</code>** и присвойте ей значение **<code>"Alpha-303"</code>**. Внутри функции выведите значение **<code>secretKey</code>** в консоль.
+            <br><br>
+            После вызова функции попытайтесь вывести **<code>secretKey</code>** еще раз, но уже **снаружи** функции, чтобы увидеть, что происходит (ожидайте ошибку).
+        </p>
+
+        <textarea id="code-input-9-1" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+function getData() {
+    let secretKey = "Alpha-303";
+    console.log("Внутри функции:", secretKey);
+}
+
+getData();
+
+// Попытка доступа снаружи:
+// console.log("Снаружи функции:", secretKey);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('9-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-9-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-9-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-9-1" class="code-block" style="display: none;">
+            function getData() {
+                let secretKey = "Alpha-303";
+                console.log("Внутри функции:", secretKey);
+            }
+            
+            getData(); // Выведет "Внутри функции: Alpha-303"
+            
+            // Закомментировано, так как это вызовет ReferenceError
+            // console.log("Снаружи функции:", secretKey);
+        </div>
+    </div>
+
+    <div class="task" id="task-9-2">
+        <div class="task-title">
+            <span class="task-counter">9.2</span>
+            Поднятие функции
+        </div>
+
+        <p>
+            Напишите код, в котором вы сначала **вызываете** функцию **<code>sayHello</code>**, а только потом ее **объявляете** (используя <code>function sayHello() {...}</code>). Это продемонстрирует явление **Hoisting** (поднятие). Функция должна выводить в консоль **"Hoisting сработал!"**.
+        </p>
+
+        <textarea id="code-input-9-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+
+// 1. Сначала вызов
+// sayHello(); 
+
+// 2. Затем объявление
+// function sayHello() {
+//     ...
+// }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('9-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-9-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-9-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-9-2" class="code-block" style="display: none;">
+            // Вызов функции до ее объявления, что возможно благодаря Hoisting
+            sayHello(); 
+
+            function sayHello() {
+                console.log("Hoisting сработал!");
+            }
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-function-types" class="section">
+    <div class="section-header">
+        <span class="section-icon">➡️</span>
+        <h2>10. Типы функций</h2>
+    </div>
+
+    <div class="task" id="task-10-1">
+        <div class="task-title">
+            <span class="task-counter">10.1</span>
+            Функциональное выражение
+        </div>
+
+        <p>
+            Объявите функцию с именем **<code>checkStatus</code>** как **функциональное выражение** (Function Expression). Эта функция должна принимать один аргумент — **<code>isOnline</code>** (булево значение). Если **<code>isOnline</code>** равно **<code>true</code>**, функция должна вывести **"Статус: Онлайн"**, иначе — **"Статус: Офлайн"**.
+            Вызовите функцию с аргументом **<code>true</code>**.
+        </p>
+
+        <textarea id="code-input-10-1" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+// const checkStatus = function(...) { ... }
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('10-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-10-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-10-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-10-1" class="code-block" style="display: none;">
+            // Function Expression
+            const checkStatus = function(isOnline) {
+                if (isOnline) {
+                    console.log("Статус: Онлайн");
+                } else {
+                    console.log("Статус: Офлайн");
+                }
+            };
+
+            checkStatus(true);
+        </div>
+    </div>
+
+    <div class="task" id="task-10-2">
+        <div class="task-title">
+            <span class="task-counter">10.2</span>
+            Стрелочная функция
+        </div>
+
+        <p>
+            Объявите функцию с именем **<code>getMultiplier</code>** как **стрелочную функцию** (Arrow Function). Она должна принимать один аргумент **<code>x</code>** и возвращать (неявно, если возможно) результат: **<code>x * 2</code>**.
+            Вызовите функцию с аргументом **<code>7</code>** и выведите результат в консоль.
+        </p>
+
+        <textarea id="code-input-10-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+// const getMultiplier = x => x * 2;
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('10-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-10-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-10-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-10-2" class="code-block" style="display: none;">
+            // Arrow Function с неявным возвратом
+            const getMultiplier = x => x * 2;
+            
+            console.log(getMultiplier(7)); // Выведет 14
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-nested-functions" class="section">
+    <div class="section-header">
+        <span class="section-icon">📦</span>
+        <h2>11. Вложенные функции</h2>
+    </div>
+
+    <div class="task" id="task-11-1">
+        <div class="task-title">
+            <span class="task-counter">11.1</span>
+            Доступ к внешней переменной
+        </div>
+
+        <p>
+            Создайте внешнюю функцию **<code>outerFunction</code>**, которая объявляет локальную переменную **<code>source = "Server 1"</code>**.
+            Внутри **<code>outerFunction</code>** объявите вложенную функцию **<code>logSource</code>**, которая просто выводит в консоль значение переменной **<code>source</code>**.
+            Вызовите **<code>logSource()</code>** внутри **<code>outerFunction</code>**. Затем вызовите **<code>outerFunction()</code>**.
+        </p>
+
+        <textarea id="code-input-11-1" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+function outerFunction() {
+    let source = "Server 1";
+
+    function logSource() {
+        // console.log(source)
+    }
+    
+    // logSource();
+}
+// outerFunction();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('11-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-11-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-11-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-11-1" class="code-block" style="display: none;">
+            function outerFunction() {
+                let source = "Server 1";
+                console.log("Внешняя функция запущена.");
+
+                function logSource() {
+                    // Вложенная функция имеет доступ к переменной внешней функции
+                    console.log("Получен доступ к источнику:", source);
+                }
+                
+                logSource(); 
+            }
+
+            outerFunction();
+        </div>
+    </div>
+
+    <div class="task" id="task-11-2">
+        <div class="task-title">
+            <span class="task-counter">11.2</span>
+            Функция-фабрика (возврат функции)
+        </div>
+
+        <p>
+            Создайте внешнюю функцию **<code>createGreeter(name)</code>**, которая принимает аргумент **<code>name</code>**.
+            Внутри нее объявите и **верните** (используя <code>return</code>) вложенную функцию, которая при вызове выводит в консоль: **"Hello, [name]!"**.
+            Сохраните результат вызова **<code>createGreeter('Morpheus')</code>** в переменную **<code>greetMorpheus</code>**. Затем вызовите **<code>greetMorpheus()</code>**.
+        </p>
+
+        <textarea id="code-input-11-2" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+function createGreeter(name) {
+    // Верните вложенную функцию, которая "запоминает" 'name'
+    // return function() {
+    //     ...
+    // };
+}
+
+// const greetMorpheus = createGreeter('Morpheus');
+// greetMorpheus();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('11-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-11-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-11-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-11-2" class="code-block" style="display: none;">
+            function createGreeter(name) {
+                // Вложенная функция "запоминает" переменную 'name', даже после завершения внешней функции
+                return function() {
+                    console.log("Hello, " + name + "!");
+                };
+            }
+
+            const greetMorpheus = createGreeter('Morpheus');
+            const greetTrinity = createGreeter('Trinity');
+            
+            greetMorpheus(); // Hello, Morpheus!
+            greetTrinity();  // Hello, Trinity!
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-closures" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔒</span>
+        <h2>12. Замыкания</h2>
+    </div>
+
+    <div class="task" id="task-12-1">
+        <div class="task-title">
+            <span class="task-counter">12.1</span>
+            Персональный счетчик
+        </div>
+
+        <p>
+            Создайте функцию **<code>createCounter</code>**, которая объявляет переменную **<code>count = 0</code>** и **возвращает** вложенную функцию.
+            Возвращаемая вложенная функция должна увеличивать **<code>count</code>** на 1 и выводить его значение в консоль.
+            <br><br>
+            Сохраните результат вызова **<code>createCounter()</code>** в переменную **<code>agentCount</code>**. Вызовите **<code>agentCount()</code>** три раза подряд.
+        </p>
+
+        <textarea id="code-input-12-1" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+function createCounter() {
+    let count = 0; // Переменная, которую запомнит замыкание
+
+    return function() {
+        // count++;
+        // console.log(count);
+    };
+}
+
+// const agentCount = createCounter();
+// agentCount();
+// agentCount();
+// agentCount();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('12-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-12-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-12-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-12-1" class="code-block" style="display: none;">
+            function createCounter() {
+                let count = 0; 
+                
+                return function() {
+                    count++;
+                    console.log(count); // Замыкание сохраняет 'count'
+                };
+            }
+
+            const agentCount = createCounter();
+            
+            agentCount(); // 1
+            agentCount(); // 2
+            agentCount(); // 3
+        </div>
+    </div>
+
+    <div class="task" id="task-12-2">
+        <div class="task-title">
+            <span class="task-counter">12.2</span>
+            Генератор уникальных ID
+        </div>
+
+        <p>
+            Создайте функцию **<code>idGenerator(prefix)</code>**, которая принимает префикс (строку, например, **<code>"USER-"</code>**) и возвращает вложенную функцию.
+            Внешняя функция должна объявить переменную **<code>lastId = 0</code>**.
+            Вложенная функция должна увеличивать **<code>lastId</code>** на 1 и возвращать строку-ID в формате: **"Префикс" + "Новый ID"**.
+            <br><br>
+            Создайте генератор: **<code>let generateId = idGenerator('UNIT-')</code>**. Вызовите **<code>generateId()</code>** два раза и выведите результаты в консоль.
+        </p>
+
+        <textarea id="code-input-12-2" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+function idGenerator(prefix) {
+    let lastId = 0;
+    
+    return function() {
+        // lastId++;
+        // return prefix + lastId;
+    };
+}
+
+// let generateId = idGenerator('UNIT-');
+// console.log(generateId());
+// console.log(generateId());
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('12-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-12-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-12-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-12-2" class="code-block" style="display: none;">
+            function idGenerator(prefix) {
+                let lastId = 0;
+                
+                return function() {
+                    lastId++;
+                    return prefix + lastId;
+                };
+            }
+
+            let generateUserId = idGenerator('USER-');
+            let generateUnitId = idGenerator('UNIT-');
+
+            console.log(generateUserId()); // USER-1
+            console.log(generateUnitId()); // UNIT-1
+            console.log(generateUserId()); // USER-2 (счетчик для USER- свой)
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-iife" class="section">
+    <div class="section-header">
+        <span class="section-icon">🚀</span>
+        <h2>13. IIFE</h2>
+    </div>
+
+    <div class="task" id="task-13-1">
+        <div class="task-title">
+            <span class="task-counter">13.1</span>
+            Сокрытие области видимости
+        </div>
+
+        <p>
+            Создайте **Immediately Invoked Function Expression (IIFE)**. Внутри него объявите переменную **<code>secretCode = "01101001"</code>**. Выведите **<code>secretCode</code>** в консоль внутри IIFE.
+            <br><br>
+            В конце кода попытайтесь получить доступ к **<code>secretCode</code>** снаружи (ожидайте ошибку), чтобы продемонстрировать сокрытие области видимости.
+        </p>
+
+        <textarea id="code-input-13-1" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+// (function() {
+//     let secretCode = "..."
+//     console.log('Доступ изнутри:', secretCode);
+// })(); 
+
+// console.log('Доступ снаружи:', secretCode); // Ошибка
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('13-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-13-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-13-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-13-1" class="code-block" style="display: none;">
+            (function() {
+                let secretCode = "01101001";
+                console.log('Доступ изнутри:', secretCode);
+            })(); 
+
+            // Попытка доступа к переменной, объявленной внутри IIFE, приведет к ReferenceError, 
+            // так как переменная secretCode осталась в локальной области видимости IIFE.
+            // console.log('Доступ снаружи:', secretCode); 
+        </div>
+    </div>
+
+    <div class="task" id="task-13-2">
+        <div class="task-title">
+            <span class="task-counter">13.2</span>
+            Инициализация переменной
+        </div>
+
+        <p>
+            Используйте IIFE, чтобы вычислить итоговое значение для константы **<code>MAX_POWER</code>**. IIFE должен выполнить расчет: **(10 \* 5) + 50** и **вернуть** этот результат.
+            Присвойте возвращенное значение константе **<code>MAX_POWER</code>**. Выведите итоговое значение **<code>MAX_POWER</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-13-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+// const MAX_POWER = (function() {
+//     let initial = ...;
+//     return ...;
+// })();
+
+// console.log(MAX_POWER);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('13-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-13-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-13-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-13-2" class="code-block" style="display: none;">
+            const MAX_POWER = (function() {
+                let initialBase = 10;
+                let multiplier = 5;
+                let constantBoost = 50;
+
+                // Возвращаем результат расчета, который будет присвоен MAX_POWER
+                return (initialBase * multiplier) + constantBoost; 
+            })();
+
+            console.log("Итоговая мощность:", MAX_POWER); // Выведет 100
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-recursion" class="section">
+    <div class="section-header">
+        <span class="section-icon">🌀</span>
+        <h2>14. Рекурсия</h2>
+    </div>
+
+    <div class="task" id="task-14-1">
+        <div class="task-title">
+            <span class="task-counter">14.1</span>
+            Вычисление факториала
+        </div>
+
+        <p>
+            Создайте функцию **<code>factorial(n)</code>**, которая рекурсивно вычисляет **факториал** числа **<code>n</code>**. Факториал <code>n</code> (обозначается как <code>n!</code>) — это произведение всех целых чисел от 1 до <code>n</code>.
+            <br><br>
+            **Базовый случай (условие остановки):** Если <code>n</code> равно **<code>0</code>** или **<code>1</code>**, функция должна вернуть **<code>1</code>**.
+            <br>
+            **Рекурсивный шаг:** Иначе, функция должна вернуть **<code>n * factorial(n - 1)</code>**.
+            <br><br>
+            Вызовите функцию для числа **<code>4</code>** (4! = 24) и выведите результат в консоль.
+        </p>
+
+        <textarea id="code-input-14-1" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+function factorial(n) {
+    if (n === 0 || n === 1) {
+        // Базовый случай
+        return 1;
+    } else {
+        // Рекурсивный шаг
+        // return ...
+    }
+}
+
+// console.log(factorial(4));
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('14-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-14-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-14-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-14-1" class="code-block" style="display: none;">
+            function factorial(n) {
+                if (n === 0 || n === 1) {
+                    return 1;
+                } else {
+                    return n * factorial(n - 1);
+                }
+            }
+
+            console.log("Факториал 4:", factorial(4)); // Выведет 24
+        </div>
+    </div>
+
+    <div class="task" id="task-14-2">
+        <div class="task-title">
+            <span class="task-counter">14.2</span>
+            Обход массива
+        </div>
+
+        <p>
+            Создайте функцию **<code>recursiveLog(arr, index)</code>**, которая рекурсивно выводит элементы массива. Дан массив **<code>data = ['A', 'B', 'C']</code>**.
+            <br><br>
+            **Базовый случай:** Функция должна остановиться, когда **<code>index</code>** достигнет длины массива.
+            <br>
+            **Рекурсивный шаг:** Вывести элемент по текущему **<code>index</code>**, а затем вызвать себя для **<code>index + 1</code>**. Начните с **<code>index = 0</code>**.
+        </p>
+
+        <textarea id="code-input-14-2" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+let data = ['A', 'B', 'C'];
+
+function recursiveLog(arr, index) {
+    if (index >= arr.length) {
+        return; // Условие остановки
+    }
+    
+    // console.log(arr[index]);
+    // recursiveLog(arr, index + 1);
+}
+
+// recursiveLog(data, 0);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('14-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-14-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-14-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-14-2" class="code-block" style="display: none;">
+            let data = ['A', 'B', 'C'];
+
+            function recursiveLog(arr, index) {
+                if (index >= arr.length) {
+                    return; 
+                }
+                
+                console.log("Элемент:", arr[index]);
+                recursiveLog(arr, index + 1);
+            }
+
+            recursiveLog(data, 0);
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-iteration-methods" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔄</span>
+        <h2>15. Перебирающие методы</h2>
+    </div>
+
+    <div class="task" id="task-15-1">
+        <div class="task-title">
+            <span class="task-counter">15.1</span>
+            Логирование задач
+        </div>
+
+        <p>
+            Дан массив задач **<code>tasks = ['Scan', 'Repair', 'Deploy']</code>**. Используйте метод **<code>forEach</code>** для того, чтобы вывести в консоль каждый элемент массива с префиксом: **"Задача: [Элемент]"**.
+        </p>
+
+        <textarea id="code-input-15-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let tasks = ['Scan', 'Repair', 'Deploy'];
+
+// tasks.forEach(task => {
+//     console.log(...)
+// });
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('15-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-15-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-15-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-15-1" class="code-block" style="display: none;">
+            let tasks = ['Scan', 'Repair', 'Deploy'];
+
+            tasks.forEach(task => {
+                console.log("Задача: " + task);
+            });
+        </div>
+    </div>
+
+    <div class="task" id="task-15-2">
+        <div class="task-title">
+            <span class="task-counter">15.2</span>
+            Увеличение уровня
+        </div>
+
+        <p>
+            Дан массив числовых уровней **<code>levels = [10, 20, 30]</code>**. Используйте метод **<code>map</code>**, чтобы создать новый массив **<code>boostedLevels</code>**, где каждый уровень будет увеличен на **5**.
+            Выведите новый массив **<code>boostedLevels</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-15-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let levels = [10, 20, 30];
+
+// const boostedLevels = levels.map(level => {
+//     return ...
+// });
+
+// console.log(boostedLevels);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('15-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-15-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-15-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-15-2" class="code-block" style="display: none;">
+            let levels = [10, 20, 30];
+
+            // map возвращает новый массив, трансформируя каждый элемент
+            const boostedLevels = levels.map(level => {
+                return level + 5;
+            });
+
+            console.log(boostedLevels); // Выведет [15, 25, 35]
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-spread-operator" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔭</span>
+        <h2>16. Оператор spread</h2>
+    </div>
+
+    <div class="task" id="task-16-1">
+        <div class="task-title">
+            <span class="task-counter">16.1</span>
+            Объединение массивов
+        </div>
+
+        <p>
+            Даны два массива: **<code>agents = ['Smith', 'Brown']</code>** и **<code>heroes = ['Neo', 'Trinity']</code>**.
+            Используйте **оператор spread (`...`)**, чтобы создать новый массив **<code>characters</code>**, объединив в нем сначала элементы **<code>agents</code>**, а затем элементы **<code>heroes</code>**. Выведите **<code>characters</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-16-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let agents = ['Smith', 'Brown'];
+let heroes = ['Neo', 'Trinity'];
+
+// const characters = [...arr1, ...arr2];
+
+// console.log(characters);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('16-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-16-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-16-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-16-1" class="code-block" style="display: none;">
+            let agents = ['Smith', 'Brown'];
+            let heroes = ['Neo', 'Trinity'];
+
+            // Оператор spread 'раскрывает' элементы массивов
+            const characters = [...agents, ...heroes];
+
+            console.log(characters); // Выведет ["Smith", "Brown", "Neo", "Trinity"]
+        </div>
+    </div>
+
+    <div class="task" id="task-16-2">
+        <div class="task-title">
+            <span class="task-counter">16.2</span>
+            Копирование и добавление свойств объекта
+        </div>
+
+        <p>
+            Дан объект **<code>baseConfig = { protocol: 'HTTP', port: 80 }</code>**.
+            Используйте **оператор spread (`...`)** внутри литерала нового объекта **<code>secureConfig</code>**, чтобы скопировать свойства из **<code>baseConfig</code>**, а затем добавить новое свойство: **<code>protocol: 'HTTPS'</code>** (перезаписывая старое) и **<code>secure: true</code>**.
+            Выведите **<code>secureConfig</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-16-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+let baseConfig = { protocol: 'HTTP', port: 80 };
+
+// const secureConfig = {
+//     ...baseConfig,
+//     protocol: '...',
+//     secure: ...
+// };
+
+// console.log(secureConfig);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('16-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-16-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-16-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-16-2" class="code-block" style="display: none;">
+            let baseConfig = { protocol: 'HTTP', port: 80 };
+
+            // Свойства baseConfig раскрываются первыми, а затем переопределяются
+            const secureConfig = {
+                ...baseConfig,
+                protocol: 'HTTPS', // Перезаписывает 'HTTP'
+                secure: true
+            };
+
+            console.log(secureConfig); 
+            // Выведет { protocol: 'HTTPS', port: 80, secure: true }
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-rest-operator" class="section">
+    <div class="section-header">
+        <span class="section-icon">🧺</span>
+        <h2>17. Оператор rest</h2>
+    </div>
+
+    <div class="task" id="task-17-1">
+        <div class="task-title">
+            <span class="task-counter">17.1</span>
+            Сбор аргументов функции
+        </div>
+
+        <p>
+            Создайте функцию **<code>logSquad(leader, ...members)</code>**, которая принимает первый аргумент как **<code>leader</code>**, а все остальные аргументы собирает в массив **<code>members</code>** с помощью оператора rest.
+            Функция должна вывести в консоль сначала имя лидера, а затем весь массив **<code>members</code>**.
+            <br><br>
+            Вызовите ее так: **<code>logSquad('Neo', 'Trinity', 'Morpheus', 'Tank')</code>**.
+        </p>
+
+        <textarea id="code-input-17-1" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+function logSquad(leader, ...members) {
+    // console.log('Лидер:', leader);
+    // console.log('Команда:', members);
+}
+
+// logSquad('Neo', 'Trinity', 'Morpheus', 'Tank');
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('17-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-17-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-17-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-17-1" class="code-block" style="display: none;">
+            function logSquad(leader, ...members) {
+                console.log('Лидер:', leader); // 'Neo'
+                console.log('Команда:', members); // ['Trinity', 'Morpheus', 'Tank']
+            }
+
+            logSquad('Neo', 'Trinity', 'Morpheus', 'Tank');
+        </div>
+    </div>
+
+    <div class="task" id="task-17-2">
+        <div class="task-title">
+            <span class="task-counter">17.2</span>
+            Деструктуризация с rest
+        </div>
+
+        <p>
+            Дан объект **<code>userData = { id: 1, name: 'Agent Smith', status: 'Hostile', level: 99 }</code>**.
+            Используйте **деструктуризацию объекта** с оператором rest, чтобы извлечь свойства **<code>id</code>** и **<code>name</code>** в отдельные переменные, а все остальные свойства собрать в новый объект **<code>details</code>** с помощью оператора rest.
+            Выведите **<code>details</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-17-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+let userData = { id: 1, name: 'Agent Smith', status: 'Hostile', level: 99 };
+
+// const { id, name, ...details } = userData;
+
+// console.log(details);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('17-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-17-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-17-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-17-2" class="code-block" style="display: none;">
+            let userData = { id: 1, name: 'Agent Smith', status: 'Hostile', level: 99 };
+
+            // id и name извлекаются, остальные свойства собираются в объект details
+            const { id, name, ...details } = userData;
+
+            console.log(details); // Выведет { status: 'Hostile', level: 99 }
+            // console.log(id); // 1
+            // console.log(name); // Agent Smith
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-destructuring" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔗</span>
+        <h2>18. Деструктуризация</h2>
+    </div>
+
+    <div class="task" id="task-18-1">
+        <div class="task-title">
+            <span class="task-counter">18.1</span>
+            Извлечение данных из массива
+        </div>
+
+        <p>
+            Дан массив координат **<code>coords = [100, 50, 75]</code>**. Используйте **деструктуризацию массива**, чтобы извлечь только значение **X (первый элемент)** и значение **Z (третий элемент)** в переменные **<code>x</code>** и **<code>z</code>**. Значение Y (второй элемент) пропустите.
+            <br><br>
+            Выведите **<code>x</code>** и **<code>z</code>** в консоль (каждый с новой строки).
+        </p>
+
+        <textarea id="code-input-18-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let coords = [100, 50, 75];
+
+// const [x, , z] = ...
+
+// console.log(x);
+// console.log(z);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('18-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-18-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-18-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-18-1" class="code-block" style="display: none;">
+            let coords = [100, 50, 75];
+
+            // Запятая используется для пропуска второго элемента
+            const [x, , z] = coords;
+
+            console.log(x); // 100
+            console.log(z); // 75
+        </div>
+    </div>
+
+    <div class="task" id="task-18-2">
+        <div class="task-title">
+            <span class="task-counter">18.2</span>
+            Переименование свойств объекта
+        </div>
+
+        <p>
+            Дан объект **<code>user = { name: 'Neo', level: 99 }</code>**. Используйте **деструктуризацию объекта**, чтобы извлечь свойство **<code>name</code>** и сохранить его в переменную с другим именем — **<code>heroName</code>**. Свойство **<code>level</code>** извлекать не нужно.
+            <br><br>
+            Выведите значение **<code>heroName</code>** в консоль.
+        </p>
+
+        <textarea id="code-input-18-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+let user = { name: 'Neo', level: 99 };
+
+// const { name: heroName } = ...
+
+// console.log(heroName);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('18-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-18-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-18-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-18-2" class="code-block" style="display: none;">
+            let user = { name: 'Neo', level: 99 };
+
+            // Синтаксис 'name: heroName' извлекает 'name' и переименовывает переменную в 'heroName'
+            const { name: heroName } = user;
+
+            console.log(heroName); // Neo
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-time" class="section">
+    <div class="section-header">
+        <span class="section-icon">⏰</span>
+        <h2>19. Время</h2>
+    </div>
+
+    <div class="task" id="task-19-1">
+        <div class="task-title">
+            <span class="task-counter">19.1</span>
+            Текущий год
+        </div>
+
+        <p>
+            Создайте новый объект даты с именем **<code>now</code>** (без аргументов). Используйте метод **<code>getFullYear()</code>**, чтобы получить текущий год. Выведите текущий год в консоль.
+        </p>
+
+        <textarea id="code-input-19-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// const now = new Date();
+// console.log(now.getFullYear());
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('19-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-19-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-19-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-19-1" class="code-block" style="display: none;">
+            const now = new Date();
+            console.log("Текущий год:", now.getFullYear());
+        </div>
+    </div>
+
+    <div class="task" id="task-19-2">
+        <div class="task-title">
+            <span class="task-counter">19.2</span>
+            Дата события
+        </div>
+
+        <p>
+            Создайте новый объект даты **<code>eventDate</code>**, представляющий дату выхода "Матрицы" в США: **31 марта 1999 года**. (Помните, что месяцы в JavaScript начинаются с 0, поэтому март — это 2).
+            <br>
+            Используйте метод **<code>toLocaleDateString('ru-RU')</code>** для красивого форматирования даты и выведите результат в консоль.
+        </p>
+
+        <textarea id="code-input-19-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+// Месяцы: 0=Январь, 1=Февраль, 2=Март, ...
+// const eventDate = new Date(Год, Месяц, День); 
+
+// console.log(eventDate.toLocaleDateString('ru-RU'));
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('19-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-19-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-19-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-19-2" class="code-block" style="display: none;">
+            // 1999, Март (индекс 2), 31-й день
+            const eventDate = new Date(1999, 2, 31); 
+            
+            console.log("Дата выхода 'Матрицы':", eventDate.toLocaleDateString('ru-RU'));
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-dom-intro" class="section">
+    <div class="section-header">
+        <span class="section-icon">🌐</span>
+        <h2>20. Введение в DOM</h2>
+    </div>
+
+    <div class="note">
+        <p class="note-title">Результат DOM-операций</p>
+        <div id="dom-result" style="padding: 10px; border: 1px dashed #ffcc00; color: #ffcc00; min-height: 25px;">
+            Здесь появится текст, измененный через DOM.
+        </div>
+    </div>
+
+    <div class="task" id="task-20-1">
+        <div class="task-title">
+            <span class="task-counter">20.1</span>
+            Изменение текста элемента
+        </div>
+
+        <p>
+            Используйте метод **<code>document.getElementById()</code>** для получения ссылки на элемент с ID **<code>dom-result</code>** (элемент, который находится выше).
+            Затем измените его текстовое содержимое (свойство **<code>textContent</code>**) на **"DOM: Успешное подключение!"**.
+        </p>
+
+        <textarea id="code-input-20-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// const resultElement = document.getElementById('dom-result');
+// resultElement.textContent = ...
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('20-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-20-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-20-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-20-1" class="code-block" style="display: none;">
+            const resultElement = document.getElementById('dom-result');
+            // Изменяем текст элемента напрямую
+            resultElement.textContent = "DOM: Успешное подключение!";
+        </div>
+    </div>
+
+    <div class="task" id="task-20-2">
+        <div class="task-title">
+            <span class="task-counter">20.2</span>
+            Проверка типа элемента
+        </div>
+
+        <p>
+            Получите ссылку на элемент с ID **<code>dom-result</code>** (как в предыдущей задаче).
+            Используйте его свойство **<code>tagName</code>**, чтобы узнать имя его HTML-тега (например, 'DIV'). Выведите имя тега в консоль.
+        </p>
+
+        <textarea id="code-input-20-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// const element = document.getElementById('dom-result');
+// console.log(element.tagName);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('20-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-20-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-20-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-20-2" class="code-block" style="display: none;">
+            const element = document.getElementById('dom-result');
+            // tagName всегда возвращает имя тега в верхнем регистре
+            console.log(element.tagName);
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-attributes" class="section">
+    <div class="section-header">
+        <span class="section-icon">🏷️</span>
+        <h2>21. Атрибуты</h2>
+    </div>
+
+    <div class="task" id="task-21-1">
+        <div class="task-title">
+            <span class="task-counter">21.1</span>
+            Получение кастомного атрибута
+        </div>
+
+        <p>
+            Дан элемент **<code>#data-element</code>** с кастомным атрибутом **<code>data-mission="active"</code>**.
+            <br>
+            Получите ссылку на этот элемент, а затем используйте метод **<code>getAttribute('data-mission')</code>** для получения значения атрибута. Выведите полученное значение в консоль.
+        </p>
+        
+        <div id="data-element" data-mission="active" style="padding: 10px; border: 1px dashed #ff00ff; color: #ff00ff; margin: 10px 0;">
+            Тестовый элемент для работы с атрибутами.
+        </div>
+
+        <textarea id="code-input-21-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+const element = document.getElementById('data-element');
+// const missionStatus = element.getAttribute(...)
+// console.log(missionStatus);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('21-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-21-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-21-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-21-1" class="code-block" style="display: none;">
+            const element = document.getElementById('data-element');
+            const missionStatus = element.getAttribute('data-mission');
+            console.log("Статус миссии:", missionStatus); // Выведет "active"
+        </div>
+    </div>
+
+    <div class="task" id="task-21-2">
+        <div class="task-title">
+            <span class="task-counter">21.2</span>
+            Установка атрибута
+        </div>
+
+        <p>
+            Дан элемент **<code>#agent-link</code>**. Сейчас его атрибут **<code>href</code>** пуст.
+            <br>
+            Используйте метод **<code>setAttribute()</code>**, чтобы установить атрибут **<code>href</code>** на значение **<code>"https://matrix.com"</code>**.
+            <br>
+            После выполнения кода проверьте, что ссылка в тестовом элементе изменилась (наведите на нее курсор).
+        </p>
+
+        <a id="agent-link" href="#" style="color: #ffcc00; text-decoration: underline; margin: 10px 0; display: inline-block;">
+            Тестовая ссылка
+        </a>
+
+        <textarea id="code-input-21-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+const linkElement = document.getElementById('agent-link');
+
+// linkElement.setAttribute('href', '...');
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('21-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-21-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-21-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-21-2" class="code-block" style="display: none;">
+            const linkElement = document.getElementById('agent-link');
+            // Устанавливаем новый атрибут href
+            linkElement.setAttribute('href', 'https://matrix.com');
+            linkElement.textContent = "Ссылка изменена на: https://matrix.com"; 
+            console.log("Атрибут href установлен.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-attributes" class="section">
+    <div class="section-header">
+        <span class="section-icon">🏷️</span>
+        <h2>21. Атрибуты</h2>
+    </div>
+
+    <div class="task" id="task-21-1">
+        <div class="task-title">
+            <span class="task-counter">21.1</span>
+            Получение кастомного атрибута
+        </div>
+
+        <p>
+            Дан элемент **<code>#data-element</code>** с кастомным атрибутом **<code>data-mission="active"</code>**.
+            <br>
+            Получите ссылку на этот элемент, а затем используйте метод **<code>getAttribute('data-mission')</code>** для получения значения атрибута. Выведите полученное значение в консоль.
+        </p>
+        
+        <div id="data-element" data-mission="active" style="padding: 10px; border: 1px dashed #ff00ff; color: #ff00ff; margin: 10px 0;">
+            Тестовый элемент для работы с атрибутами.
+        </div>
+
+        <textarea id="code-input-21-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+const element = document.getElementById('data-element');
+// const missionStatus = element.getAttribute(...)
+// console.log(missionStatus);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('21-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-21-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-21-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-21-1" class="code-block" style="display: none;">
+            const element = document.getElementById('data-element');
+            const missionStatus = element.getAttribute('data-mission');
+            console.log("Статус миссии:", missionStatus); // Выведет "active"
+        </div>
+    </div>
+
+    <div class="task" id="task-21-2">
+        <div class="task-title">
+            <span class="task-counter">21.2</span>
+            Установка атрибута
+        </div>
+
+        <p>
+            Дан элемент **<code>#agent-link</code>**. Сейчас его атрибут **<code>href</code>** пуст.
+            <br>
+            Используйте метод **<code>setAttribute()</code>**, чтобы установить атрибут **<code>href</code>** на значение **<code>"https://matrix.com"</code>**.
+            <br>
+            После выполнения кода проверьте, что ссылка в тестовом элементе изменилась (наведите на нее курсор).
+        </p>
+
+        <a id="agent-link" href="#" style="color: #ffcc00; text-decoration: underline; margin: 10px 0; display: inline-block;">
+            Тестовая ссылка
+        </a>
+
+        <textarea id="code-input-21-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+const linkElement = document.getElementById('agent-link');
+
+// linkElement.setAttribute('href', '...');
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('21-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-21-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-21-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-21-2" class="code-block" style="display: none;">
+            const linkElement = document.getElementById('agent-link');
+            // Устанавливаем новый атрибут href
+            linkElement.setAttribute('href', 'https://matrix.com');
+            linkElement.textContent = "Ссылка изменена на: https://matrix.com"; 
+            console.log("Атрибут href установлен.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-styling" class="section">
+    <div class="section-header">
+        <span class="section-icon">🎨</span>
+        <h2>22. Стилизация</h2>
+    </div>
+
+    <div id="style-box" style="padding: 20px; border: 2px solid #00ffcc; background-color: #1a1a2a; color: #fff; margin: 10px 0; text-align: center;">
+        Элемент для стилизации
+    </div>
+
+    <div class="task" id="task-22-1">
+        <div class="task-title">
+            <span class="task-counter">22.1</span>
+            Изменение цвета
+        </div>
+
+        <p>
+            Получите ссылку на элемент **<code>#style-box</code>**. Используйте свойство **<code>.style</code>**, чтобы изменить **цвет текста** (<code>color</code>) этого элемента на **<code>'#ff00ff'</code>** (фиолетовый).
+        </p>
+
+        <textarea id="code-input-22-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+const box = document.getElementById('style-box');
+// box.style.color = '...';
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('22-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-22-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-22-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-22-1" class="code-block" style="display: none;">
+            const box = document.getElementById('style-box');
+            box.style.color = '#ff00ff';
+            console.log("Цвет текста изменен на #ff00ff.");
+        </div>
+    </div>
+
+    <div class="task" id="task-22-2">
+        <div class="task-title">
+            <span class="task-counter">22.2</span>
+            Изменение фона и размера
+        </div>
+
+        <p>
+            Получите ссылку на элемент **<code>#style-box</code>**. Измените его:
+            <ul>
+                <li>**Фон** (<code>backgroundColor</code>) на **<code>'#ffcc00'</code>** (желтый).</li>
+                <li>**Шрифт** (<code>fontSize</code>) на **<code>'24px'</code>**.</li>
+            </ul>
+            Обратите внимание на использование **camelCase** для CSS-свойств, содержащих дефис.
+        </p>
+
+        <textarea id="code-input-22-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+const box = document.getElementById('style-box');
+// box.style.backgroundColor = '...';
+// box.style.fontSize = '...';
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('22-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-22-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-22-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-22-2" class="code-block" style="display: none;">
+            const box = document.getElementById('style-box');
+            box.style.backgroundColor = '#ffcc00'; 
+            box.style.fontSize = '24px';
+            console.log("Фон и размер шрифта изменены.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-searching" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔍</span>
+        <h2>23. Поиск</h2>
+    </div>
+
+    <div class="search-container" style="border: 1px dashed #00ff00; padding: 15px; margin: 10px 0; color: #00ff00;">
+        <p id="first-target" class="target-item status-active">Цель 1 (Активная)</p>
+        <p class="target-item status-inactive">Цель 2</p>
+        <p class="target-item status-inactive">Цель 3</p>
+    </div>
+
+    <div class="task" id="task-23-1">
+        <div class="task-title">
+            <span class="task-counter">23.1</span>
+            Поиск с помощью querySelector
+        </div>
+
+        <p>
+            Найдите **первый** элемент, который имеет класс **<code>status-active</code>**, используя метод **<code>document.querySelector()</code>**.
+            <br>
+            Измените текстовое содержимое найденного элемента (свойство **<code>textContent</code>**) на **"Активировано!"**.
+        </p>
+
+        <textarea id="code-input-23-1" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// const active = document.querySelector('.status-active');
+// active.textContent = '...';
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('23-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-23-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-23-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-23-1" class="code-block" style="display: none;">
+            const active = document.querySelector('.status-active');
+            active.textContent = 'Активировано!';
+            console.log("Элемент активирован.");
+        </div>
+    </div>
+
+    <div class="task" id="task-23-2">
+        <div class="task-title">
+            <span class="task-counter">23.2</span>
+            Поиск всех элементов с классом
+        </div>
+
+        <p>
+            Найдите **все** элементы, которые имеют класс **<code>target-item</code>**, используя метод **<code>document.querySelectorAll()</code>**.
+            <br>
+            Полученный результат (NodeList) сохраните в переменную **<code>allTargets</code>**. Выведите в консоль **количество** найденных элементов, используя свойство **<code>.length</code>**.
+        </p>
+
+        <textarea id="code-input-23-2" class="code-block" rows="6">
+// Напишите ваш JavaScript код здесь:
+// const allTargets = document.querySelectorAll('.target-item');
+// console.log(allTargets.length);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('23-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-23-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-23-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-23-2" class="code-block" style="display: none;">
+            const allTargets = document.querySelectorAll('.target-item');
+            console.log("Найдено целей:", allTargets.length); // Выведет 3
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-nodes" class="section">
+    <div class="section-header">
+        <span class="section-icon">🌲</span>
+        <h2>24. Узлы (Навигация)</h2>
+    </div>
+
+    <div id="parent-node" style="border: 2px solid #ffcc00; padding: 15px; margin: 10px 0;">
+        <p>Родительский контейнер</p>
+        <div id="target-child-1" class="node-item" style="padding: 5px; border: 1px dashed #00ffcc; margin: 5px 0;">
+            Дочерний элемент 1 (Текущий узел)
+        </div>
+        <div id="target-child-2" class="node-item" style="padding: 5px; border: 1px dashed #ff00ff; margin: 5px 0;">
+            Дочерний элемент 2 (Соседний узел)
+        </div>
+    </div>
+
+    <div class="task" id="task-24-1">
+        <div class="task-title">
+            <span class="task-counter">24.1</span>
+            Получение родителя
+        </div>
+
+        <p>
+            Получите ссылку на элемент **<code>#target-child-1</code>**.
+            Используйте свойство **<code>.parentElement</code>**, чтобы получить ссылку на его родительский элемент.
+            Измените **цвет фона** родительского элемента на **<code>'#1a1a2a'</code>**.
+        </p>
+
+        <textarea id="code-input-24-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+const child = document.getElementById('target-child-1');
+// const parent = child.parentElement;
+// parent.style.backgroundColor = '...';
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('24-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-24-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-24-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-24-1" class="code-block" style="display: none;">
+            const child = document.getElementById('target-child-1');
+            const parent = child.parentElement;
+            parent.style.backgroundColor = '#1a1a2a'; 
+            console.log("Фон родительского узла изменен.");
+        </div>
+    </div>
+
+    <div class="task" id="task-24-2">
+        <div class="task-title">
+            <span class="task-counter">24.2</span>
+            Получение следующего соседа
+        </div>
+
+        <p>
+            Получите ссылку на элемент **<code>#target-child-1</code>**.
+            Используйте свойство **<code>.nextElementSibling</code>**, чтобы получить ссылку на его **следующий элемент-сосед** (**<code>#target-child-2</code>**).
+            Измените **цвет текста** соседнего элемента на **<code>'#ffcc00'</code>**.
+        </p>
+
+        <textarea id="code-input-24-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+const child1 = document.getElementById('target-child-1');
+// const child2 = child1.nextElementSibling;
+// child2.style.color = '...';
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('24-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-24-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-24-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-24-2" class="code-block" style="display: none;">
+            const child1 = document.getElementById('target-child-1');
+            const child2 = child1.nextElementSibling;
+            child2.style.color = '#ffcc00';
+            console.log("Цвет следующего соседа изменен.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-event-handlers" class="section">
+    <div class="section-header">
+        <span class="section-icon">🔔</span>
+        <h2>25. Обработчики событий</h2>
+    </div>
+
+    <button id="click-button" class="btn">Нажмите, чтобы запустить</button>
+    <div id="hover-box" style="padding: 15px; border: 2px solid #ff00ff; background-color: #1a1a2a; color: #fff; margin: 10px 0; text-align: center;">
+        Наведите мышь сюда
+    </div>
+
+    <div class="task" id="task-25-1">
+        <div class="task-title">
+            <span class="task-counter">25.1</span>
+            Событие click
+        </div>
+
+        <p>
+            Получите ссылку на кнопку **<code>#click-button</code>**.
+            Используйте метод **<code>.addEventListener('click', ...)</code>**, чтобы назначить обработчик.
+            Внутри функции-обработчика выведите в консоль сообщение **"Команда выполнена!"**.
+        </p>
+
+        <textarea id="code-input-25-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+const button = document.getElementById('click-button');
+
+// button.addEventListener('click', function() {
+//     console.log('...');
+// });
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('25-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-25-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-25-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-25-1" class="code-block" style="display: none;">
+            const button = document.getElementById('click-button');
+            
+            button.addEventListener('click', function() {
+                console.log("Команда выполнена!");
+            });
+            
+            console.log("Обработчик 'click' установлен.");
+        </div>
+    </div>
+
+    <div class="task" id="task-25-2">
+        <div class="task-title">
+            <span class="task-counter">25.2</span>
+            Событие mouseover
+        </div>
+
+        <p>
+            Получите ссылку на элемент **<code>#hover-box</code>**.
+            Используйте **<code>.addEventListener('mouseover', ...)</code>**, чтобы при наведении мыши (mouseover) изменить цвет фона элемента на **<code>'#330033'</code>** (темно-фиолетовый).
+        </p>
+
+        <textarea id="code-input-25-2" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+const hoverBox = document.getElementById('hover-box');
+
+// hoverBox.addEventListener('mouseover', function() {
+//     hoverBox.style.backgroundColor = '...';
+// });
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('25-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-25-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-25-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-25-2" class="code-block" style="display: none;">
+            const hoverBox = document.getElementById('hover-box');
+
+            hoverBox.addEventListener('mouseover', function() {
+                hoverBox.style.backgroundColor = '#330033';
+            });
+            
+            console.log("Обработчик 'mouseover' установлен.");
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-async" class="section">
+    <div class="section-header">
+        <span class="section-icon">⏳</span>
+        <h2>26. Асинхронность</h2>
+    </div>
+
+    <div class="task" id="task-26-1">
+        <div class="task-title">
+            <span class="task-counter">26.1</span>
+            Задержка выполнения
+        </div>
+
+        <p>
+            Используйте функцию **<code>setTimeout()</code>**, чтобы отложить вывод сообщения **"Сообщение получено!"** в консоль на **2000 миллисекунд (2 секунды)**.
+            <br><br>
+            После запуска кода подождите 2 секунды, чтобы увидеть вывод в блоке результата.
+        </p>
+
+        <textarea id="code-input-26-1" class="code-block" rows="8">
+// Напишите ваш JavaScript код здесь:
+console.log("Отправка сообщения...");
+
+// setTimeout(() => {
+//     console.log("...");
+// }, 2000);
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('26-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-26-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-26-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-26-1" class="code-block" style="display: none;">
+            console.log("Отправка сообщения...");
+
+            setTimeout(() => {
+                console.log("Сообщение получено!");
+            }, 2000); // 2000ms = 2 секунды
+        </div>
+    </div>
+
+    <div class="task" id="task-26-2">
+        <div class="task-title">
+            <span class="task-counter">26.2</span>
+            Синхронный vs Асинхронный
+        </div>
+
+        <p>
+            Напишите код, который демонстрирует, что асинхронные операции не блокируют синхронный поток:
+            <ol>
+                <li>Выведите в консоль: **<code>1. Синхронный старт</code>**.</li>
+                <li>Используйте **<code>setTimeout</code>** для вывода: **<code>2. Асинхронное действие (задержка 0мс)</code>**.</li>
+                <li>Выведите в консоль: **<code>3. Синхронный финиш</code>**.</li>
+            </ol>
+            Результат должен быть: **1, 3, а затем 2**, что показывает, что даже с нулевой задержкой асинхронный код выполняется в конце.
+        </p>
+
+        <textarea id="code-input-26-2" class="code-block" rows="10">
+// Напишите ваш JavaScript код здесь:
+// 1. console.log('...');
+// 2. setTimeout(() => {
+//     console.log('...');
+// }, 0); 
+// 3. console.log('...');
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('26-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-26-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-26-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-26-2" class="code-block" style="display: none;">
+            // 1. Запускается сразу
+            console.log('1. Синхронный старт'); 
+
+            // 2. Добавляется в очередь задач и будет выполнен после основного кода
+            setTimeout(() => {
+                console.log('2. Асинхронное действие (задержка 0мс)');
+            }, 0); 
+
+            // 3. Запускается сразу, перед setTimeout
+            console.log('3. Синхронный финиш');
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-classes" class="section">
+    <div class="section-header">
+        <span class="section-icon">🧱</span>
+        <h2>27. Классы</h2>
+    </div>
+
+    <div class="task" id="task-27-1">
+        <div class="task-title">
+            <span class="task-counter">27.1</span>
+            Создание базового класса
+        </div>
+
+        <p>
+            Создайте класс **<code>Agent</code>** с:
+            <ol>
+                <li>**Конструктором** (<code>constructor</code>), который принимает **<code>name</code>** и сохраняет его как свойство (<code>this.name = name</code>).</li>
+                <li>**Методом** **<code>greet()</code>**, который выводит в консоль: **"Привет, я [name]!"**.</li>
+            </ol>
+            Создайте новый объект (экземпляр) **<code>new Agent('Smith')</code>** и вызовите его метод **<code>greet()</code>**.
+        </p>
+
+        <textarea id="code-input-27-1" class="code-block" rows="12">
+// Напишите ваш JavaScript код здесь:
+// class Agent {
+//     constructor(name) {
+//         this.name = name;
+//     }
+//     greet() {
+//         // console.log(...)
+//     }
+// }
+// const agent = new Agent('Smith');
+// agent.greet();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('27-1')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-27-1')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-27-1" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-27-1" class="code-block" style="display: none;">
+            class Agent {
+                constructor(name) {
+                    this.name = name;
+                }
+                
+                greet() {
+                    console.log("Привет, я " + this.name + "!");
+                }
+            }
+
+            const agent = new Agent('Smith');
+            agent.greet();
+        </div>
+    </div>
+
+    <div class="task" id="task-27-2">
+        <div class="task-title">
+            <span class="task-counter">27.2</span>
+            Наследование класса
+        </div>
+
+        <p>
+            Используйте класс **<code>Agent</code>** из предыдущей задачи (для удобства он повторен в поле ввода).
+            Создайте новый класс **<code>SpecialAgent</code>**, который **наследуется** от **<code>Agent</code>** с помощью **<code>extends</code>**.
+            <br>
+            В конструкторе **<code>SpecialAgent</code>** примите **<code>name</code>** и **<code>rank</code>**. Обязательно вызовите **<code>super(name)</code>** в начале конструктора, чтобы инициализировать родительский класс.
+            <br>
+            Создайте объект **<code>const neo = new SpecialAgent('Neo', 'The One')</code>** и вызовите его унаследованный метод **<code>neo.greet()</code>**.
+        </p>
+
+        <textarea id="code-input-27-2" class="code-block" rows="16">
+// Напишите ваш JavaScript код здесь:
+
+class Agent {
+    constructor(name) { this.name = name; }
+    greet() { console.log("Привет, я " + this.name + "!"); }
+}
+
+// class SpecialAgent extends Agent {
+//     constructor(name, rank) {
+//         super(...); // Обязательный вызов родительского конструктора
+//         this.rank = rank;
+//     }
+// }
+
+// const neo = new SpecialAgent('Neo', 'The One');
+// neo.greet();
+        </textarea>
+
+        <div class="btn-group">
+            <button onclick="runCode('27-2')">Запустить код</button>
+            <button class="secondary" onclick="toggleSolution('solution-27-2')">Показать/Скрыть решение</button>
+        </div>
+
+        <div id="output-27-2" class="output">
+            Здесь будет результат выполнения кода.
+        </div>
+
+        <div id="solution-27-2" class="code-block" style="display: none;">
+            class Agent {
+                constructor(name) { this.name = name; }
+                greet() { console.log("Привет, я " + this.name + "!"); }
+            }
+
+            class SpecialAgent extends Agent {
+                constructor(name, rank) {
+                    // Вызов конструктора родительского класса
+                    super(name); 
+                    this.rank = rank;
+                }
+            }
+
+            const neo = new SpecialAgent('Neo', 'The One');
+            neo.greet(); // Унаследованный метод
+        </div>
+    </div>
+
+</section>
+
+
+
+<section id="theme-conclusion" class="section" style="border: 2px solid #ffcc00;">
+    <div class="section-header">
+        <span class="section-icon">✅</span>
+        <h2>28. Учебный план завершен!</h2>
+    </div>
+
+    <p style="font-size: 1.2rem; color: #00ffcc; text-align: center; margin-bottom: 25px; text-shadow: 0 0 5px #00ffcc;">
+        Поздравляем! Вы прошли весь основной курс JavaScript и успешно выполнили 54 практические задачи.
+    </p>
+
+    <div style="border: 1px solid #ff00ff; padding: 15px; margin-top: 20px;">
+        <h3 style="color: #ff00ff; margin-bottom: 15px;">Пройденные темы:</h3>
+        <ul style="list-style-type: '⚡ '; margin-left: 20px; columns: 3;">
+            <li>1. Переменные</li>
+            <li>2. Типы данных</li>
+            <li>3. Операторы</li>
+            <li>4. Условия (if/else)</li>
+            <li>5. switch</li>
+            <li>6. Циклы (for)</li>
+            <li>7. Циклы (while/do...while)</li>
+            <li>8. Функции</li>
+            <li>9. Стрелочные функции</li>
+            <li>10. Объекты</li>
+            <li>11. Вложенные функции</li>
+            <li>12. Замыкания</li>
+            <li>13. IIFE</li>
+            <li>14. Рекурсия</li>
+            <li>15. Перебирающие методы</li>
+            <li>16. Оператор spread</li>
+            <li>17. Оператор rest</li>
+            <li>18. Деструктуризация</li>
+            <li>19. Время (Date)</li>
+            <li>20. Введение в DOM</li>
+            <li>21. Атрибуты</li>
+            <li>22. Стилизация</li>
+            <li>23. Поиск (querySelector)</li>
+            <li>24. Узлы (Навигация)</li>
+            <li>25. Обработчики событий</li>
+            <li>26. Асинхронность</li>
+            <li>27. Классы</li>
+        </ul>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 JS Задачник. Сделано с 💖 в стиле Neon-Punk.</p>
+</footer>
+
+<script>
+    /**
+     * Переключает видимость блока решения
+     * @param {string} solutionId - ID блока решения (например, 'solution-1')
+     */
+    function toggleSolution(solutionId) {
+        const solutionDiv = document.getElementById(solutionId);
+        if (solutionDiv) {
+            // Если скрыт -> показать, иначе -> скрыть
+            const isHidden = solutionDiv.style.display === 'none' || solutionDiv.style.display === '';
+            solutionDiv.style.display = isHidden ? 'block' : 'none';
+        }
+    }
+
+    /**
+     * Осуществляет плавный переход к выбранной секции
+     * @param {HTMLSelectElement} selectElement - Элемент <select>
+     */
+    function jumpToSection(selectElement) {
+        const sectionId = selectElement.value;
+        if (sectionId) {
+            const targetElement = document.getElementById(sectionId);
+            if (targetElement) {
+                // Плавная прокрутка к элементу
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+    
+    // =============================================
+    // ФУНКЦИЯ ДЛЯ КОМПИЛЯЦИИ И ЗАПУСКА КОДА
+    // =============================================
+    /**
+     * Выполняет код из текстового поля и выводит результат в блок output.
+     * @param {string} taskId - ID задачи (например, 'task-jsPmBsInr')
+     */
+    function runCode(taskId) {
+        const codeArea = document.getElementById('code-input-' + taskId);
+        const outputDiv = document.getElementById('output-' + taskId);
+        
+        if (!codeArea || !outputDiv) return;
+
+        const code = codeArea.value;
+        outputDiv.textContent = 'Запуск...';
+        
+        // Перехватываем вывод консоли (console.log)
+        let consoleOutput = '';
+        const originalLog = console.log;
+        
+        // Временно переопределяем console.log, чтобы перехватить вывод
+        console.log = function(...args) {
+            consoleOutput += args.map(arg => String(arg)).join(' ') + '\n';
+        };
+
+        try {
+            // Безопасное выполнение кода
+            new Function(code)();
+            
+            if (consoleOutput.trim() === '') {
+                outputDiv.textContent = 'Код выполнен успешно. Убедитесь, что вы использовали console.log() для вывода результата.';
+            } else {
+                outputDiv.textContent = consoleOutput.trim();
+            }
+            
+        } catch (e) {
+            outputDiv.textContent = '❌ Ошибка выполнения:\n' + e.toString();
+        } finally {
+            // Восстанавливаем оригинальный console.log
+            console.log = originalLog;
+        }
+    }
+</script>
+
+</body>
+</html>
